@@ -1,3 +1,5 @@
 I want to push this file 
 
 I created a new brach for this line of text (this is a branch test)
+
+a conflict is about to start
