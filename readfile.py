@@ -14,5 +14,3 @@ def LoadPositionsFromFile():
         positions.append(sor) # Rendezett poziciók hozzáadása a listához
 
     return positions # Rendezett pozició lista visszaadása
-
-print(LoadPositionsFromFile())
