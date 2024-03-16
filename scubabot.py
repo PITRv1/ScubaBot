@@ -23,5 +23,3 @@ for list in poziciok:
 EditorCamera()
 
 app.run()
-
-print("hello world")
