@@ -1,5 +1,6 @@
 from ursina import *
 from readfile import LoadPositionsFromFile
+import time
 
 app = Ursina()
 window.borderless = False
@@ -32,11 +33,41 @@ def point(x,y,z,value):
 for list in poziciok:
   point(list[0], list[1], list[2], list[3])
 
-def pointCollisionDetection(): #prints the data of the points pointDetection collides with
-    for point in inRangePoints:
-      if  pointDetection.intersects(point).hit:
-        print(point.data,int(distance(diveBot,point)))
+alma = False
 
+def pointCollisionDetection(): #prints the data of the points pointDetection collides with
+  closestPointdist = 100000000000
+  for point in inRangePoints:
+    if  pointDetection.intersects(point).hit:
+      print(point.data,int(distance(diveBot,point)))
+      dist = int(distance(diveBot,point))
+      if dist < closestPointdist:
+        closestPointdist = int(distance(diveBot,point))
+        closestPoint = point
+        print(closestPointdist)
+  print(closestPoint.data, closestPointdist, "alma")
+  return closestPoint
+  
+closestPoint = pointCollisionDetection()
+
+print("ugabuga", closestPoint.data)
+
+def burgir():
+  diveBot.animate('position', closestPoint.position, duration=4, curve=curve.linear)
+
+def update():
+  print(diveBot.position)
+  if not alma:
+    if diveBot.intersects(closestPoint).hit:
+          destroy(closestPoint)
+          print('player is inside trigger box')
+          closestPoint = pointCollisionDetection()
+          alma = True
+          print(closestPoint)
+    else:
+        closestPoint.color = color.gray
+
+burgir()
 EditorCamera()
 pointCollisionDetection()
 
