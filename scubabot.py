@@ -18,7 +18,7 @@ water = Entity(model="cube", color=rgb(0,0,100), scale=100)
 water.position = Vec3(50,-50,50)
 water.alpha = .1
 
-points = []
+inRangePoints = []
 
 def point(x,y,z,value):
   point = Entity(model="cube", color=rgb(200,0,0), scale=int(value)/3, collider="cube", )
@@ -27,15 +27,15 @@ def point(x,y,z,value):
 
   point.data = [x,y,z,value]
 
-  points.append(point)
+  inRangePoints.append(point)
 
 for list in poziciok:
   point(list[0], list[1], list[2], list[3])
 
 def pointCollisionDetection(): #prints the data of the points pointDetection collides with
-    for point in points:
+    for point in inRangePoints:
       if  pointDetection.intersects(point).hit:
-        print(point.data)
+        print(point.data,int(distance(diveBot,point)))
 
 EditorCamera()
 pointCollisionDetection()
