@@ -1,1 +1,7 @@
-Todo
+Todo:
+Major:
+Make Launcher for Project
+    
+
+Minor:
+Make shader/texture for water 

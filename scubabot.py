@@ -35,6 +35,7 @@ for list in poziciok:
 def pointCollisionDetection(): #prints the data of the points pointDetection collides with
     for point in points:
       if  pointDetection.intersects(point).hit:
+        print(point.data)
 
 EditorCamera()
 pointCollisionDetection()
