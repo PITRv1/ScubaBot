@@ -1,7 +1,7 @@
 from ursina import *
 from readfile import LoadPositionsFromFile
 
-app = Ursina(development_mode=False)
+app = Ursina()
 
 poziciok = LoadPositionsFromFile()
 
