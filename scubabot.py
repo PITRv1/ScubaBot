@@ -33,8 +33,6 @@ def point(x,y,z,value):
 for list in poziciok:
   point(list[0], list[1], list[2], list[3])
 
-alma = False
-
 def pointCollisionDetection(): #prints the data of the points pointDetection collides with
   closestPointdist = 100000000000
   for point in inRangePoints:
@@ -53,22 +51,26 @@ closestPoint = pointCollisionDetection()
 print("ugabuga", closestPoint.data)
 
 def burgir():
-  diveBot.animate('position', closestPoint.position, duration=4, curve=curve.linear)
+  diveBot.animate('position', closestPoint.position, duration=1, curve=curve.linear)
 
 def update():
+  global closestPoint
   print(diveBot.position)
-  if not alma:
-    if diveBot.intersects(closestPoint).hit:
-          destroy(closestPoint)
-          print('player is inside trigger box')
-          closestPoint = pointCollisionDetection()
-          alma = True
-          print(closestPoint)
-    else:
-        closestPoint.color = color.gray
+  if diveBot.intersects(closestPoint).hit:
+      closestPoint.color = color.red
+      inRangePoints.remove(closestPoint)
+      destroy(closestPoint)
+      closestPoint = pointCollisionDetection()
+      print('player is inside trigger box')   
+      print(closestPoint)
+      burgir()
+  else:
+      closestPoint.color = color.gray
+  
 
+pointCollisionDetection()
 burgir()
 EditorCamera()
-pointCollisionDetection()
+
 
 app.run()
