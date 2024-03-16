@@ -13,7 +13,7 @@ water.position = Vec3(50,-50,50)
 water.alpha = .1
 
 def point(x,y,z,value):
-  point = Entity(model="cube", color=rgb(200,0,0), scale=int(value)/3, collider="sphere")
+  point = Entity(model="cube", color=rgb(200,0,0), scale=int(value)/3, collider="cube")
   point.position = Vec3(int(x),-int(y),int(z))
   point.alpha = .9
 
