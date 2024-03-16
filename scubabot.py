@@ -19,8 +19,6 @@ def point(x,y,z,value):
   point.position = Vec3(int(x),-int(y),int(z))
   point.alpha = .9
 
-for list in poziciok:
-  point(list[0], list[1], list[2], list[3])
 
 EditorCamera()
 
