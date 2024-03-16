@@ -1,10 +1,9 @@
+import sys
 from ursina import *
-from readfile import LoadPositionsFromFile
+import ast
 
 app = Ursina()
 window.borderless = False
-
-poziciok = LoadPositionsFromFile()
 
 diveBot = Entity(model="sphere", color=rgb(200,200,0), scale=1, collider="sphere")
 diveBot.position = Vec3(0,0,0)
@@ -19,6 +18,9 @@ water.position = Vec3(50,-50,50)
 water.alpha = .1
 
 inRangePoints = []
+poziciok = ast.literal_eval(sys.argv[1])
+Speed = sys.argv[2]
+Time = sys.argv[3]
 
 def point(x,y,z,value):
   point = Entity(model="cube", color=rgb(200,0,0), scale=int(value)/3, collider="cube", )
@@ -34,10 +36,11 @@ for list in poziciok:
 
 def pointCollisionDetection(): #prints the data of the points pointDetection collides with
     for point in inRangePoints:
-      if  pointDetection.intersects(point).hit:
+      if pointDetection.intersects(point).hit:
         print(point.data,int(distance(diveBot,point)))
 
 EditorCamera()
 pointCollisionDetection()
+
 
 app.run()
