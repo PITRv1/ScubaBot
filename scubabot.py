@@ -1,18 +1,18 @@
+import sys
 from ursina import *
-from readfile import LoadPositionsFromFile
 import time
+import ast
 
 app = Ursina()
 window.borderless = False
 
-# Majd megvaltoztatni
-Speed = 10
-Time = 10
+Speed = sys.argv[2]
+Time = sys.argv[3]
 dur = 10
 origindiveBot = (0, 0, 0)
 points = 0
 
-poziciok = LoadPositionsFromFile()
+poziciok = ast.literal_eval(sys.argv[1])
 timer = Text(f'Time remaining: {Time}', position=(-0.75, 0.5), t=Time)
 
 pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
@@ -53,6 +53,7 @@ def moveToGem():
   elif len(inRangePoints) <= 0:
     print("aksjdoajdaiu")
     diveBot.animate('position', origindiveBot, duration=distance(diveBot, odiveBot)/Speed, curve=curve.linear)
+
 def pointCollisionDetection(): #prints the data of the points pointDetection collides with
   global dur
   global inRangePoints
@@ -60,7 +61,6 @@ def pointCollisionDetection(): #prints the data of the points pointDetection col
   if len(inRangePoints) > 0:
     for point in inRangePoints:
       if pointDetection.intersects(point).hit:
-        # print(point.data,int(distance(diveBot,point)))
         dist = int(distance(diveBot,point))
         val = dist-int(point.data[3])
         valofclost = closestPointdist-int(point.data[3])
