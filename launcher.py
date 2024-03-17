@@ -10,23 +10,31 @@ app.geometry("600x400")
 app.resizable(False, False)
 app.grid_columnconfigure(0, weight=1)
 
+Lightblue = "#24b9f9"
 Blue = "#0099CA"
-Purple = "#337be6"
+Darkblue = "#337be6"
 padx = 10
 pady = 10
 
 def CreatePopoutWindow(message):
     win = CTkToplevel(app)
     win.title("ScubaBot Launcher Popout")
-    win.geometry("300x200")
+    win.geometry("300x100")
     win.resizable(True, True)
     win.grid_columnconfigure(0, weight=1)
     win.grab_set()
+        
+    def Exit():
+        win.destroy()
+        win.update()
 
     error = CTkLabel(win, text_color=Blue, text=message, font=("Arial", 20))
-    error.grid(row=0, column=0, padx=padx, pady=pady)
     error.focus()
 
+    button_ok = CTkButton(win, fg_color=Blue, hover_color=Darkblue, text="Ok", command=Exit)
+
+    error.grid(row=0, column=0, padx=padx, pady=pady)
+    button_ok.grid(row=1, column=0, padx=padx, pady=pady)
     win.mainloop()
 
 def Start():
@@ -50,7 +58,7 @@ def Start():
         sub.Popen(["python", "scubabot.py", f"{positions}", f"{speed}", f"{time}"])
         exit()
     else:
-        CreatePopoutWindow("Kérem töltsen ki minden mezőt!")
+        CreatePopoutWindow("Kérem töltsön ki minden mezőt!")
 
 
 mainframe = CTkFrame(app)
@@ -64,13 +72,13 @@ file_type_label = CTkLabel(mainframe, text_color=Blue, text=".txt")
 
 speed_text = CTkLabel(mainframe, text_color=Blue, text="Sebesség:")
 speed_input = CTkEntry(mainframe, border_color=Blue)
-speed_dropdown = CTkOptionMenu(mainframe, fg_color=Blue, values=["m/s", "km/h"])
+speed_dropdown = CTkOptionMenu(mainframe, fg_color=Blue, dropdown_hover_color=Blue, button_hover_color=Darkblue, button_color=Lightblue, values=["m/s", "km/h"])
 
 time_text = CTkLabel(mainframe, text_color=Blue, text="Idő:")
 time_input = CTkEntry(mainframe, border_color=Blue)
-time_dropdown = CTkOptionMenu(mainframe, fg_color=Blue, values=["másodperc", "perc"])
+time_dropdown = CTkOptionMenu(mainframe, fg_color=Blue, dropdown_hover_color=Blue, button_hover_color=Darkblue, button_color=Lightblue, values=["másodperc", "perc"])
 
-button_start = CTkButton(app, width=300, fg_color=Blue, hover_color=Purple, text="Start", command=Start)
+button_start = CTkButton(app, width=300, fg_color=Blue, hover_color=Darkblue, text="Start", command=Start)
 
 #Elemek elheleyzése
 title_label.grid(row=0, column=0, padx=padx, pady=pady)
@@ -78,7 +86,6 @@ team_label.grid(row=1, column=0, padx=padx, pady=pady)
 
 mainframe.grid(row=2, column=0, padx=padx, pady=pady)
 button_start.grid(row=3, column=0, padx=padx, pady=pady)
-
 
 file_name_text.grid(row=0, column=0, padx=padx, pady=pady)
 file_name_input.grid(row=0, column=1, padx=padx, pady=pady)
