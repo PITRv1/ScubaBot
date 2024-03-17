@@ -48,65 +48,64 @@ for list in poziciok:
 
 def moveToGem():
   if len(inRangePoints) > 0:
-    print("bihg")
     diveBot.animate('position', closestPoint.position, duration=dur, curve=curve.linear)
+
   elif len(inRangePoints) <= 0:
-    print("aksjdoajdaiu")
     diveBot.animate('position', origindiveBot, duration=distance(diveBot, odiveBot)/Speed, curve=curve.linear)
 
 def pointCollisionDetection(): #prints the data of the points pointDetection collides with
   global dur
   global inRangePoints
   closestPointdist = 100000000000
+
   if len(inRangePoints) > 0:
     for point in inRangePoints:
       if pointDetection.intersects(point).hit:
         dist = int(distance(diveBot,point))
         val = dist-int(point.data[3])
-        valofclost = closestPointdist-int(point.data[3])
-        # print("Value is", val)
+
         if val < closestPointdist:
-          print("alma")
           closestPointdist = val
           closestPoint = point
-          # print(closestPointdist)
+
     if (timer.t-(distance(diveBot, closestPoint)/Speed)) <= distance(closestPoint, odiveBot)/Speed:
         inRangePoints = []
-        print("Dont do it")
+
     if len(inRangePoints) > 0:
-      # print(closestPoint.data, closestPointdist, "alma")
       dur = distance(diveBot, closestPoint)/Speed
-      print("why")
       return closestPoint
 
 def update():
   global closestPoint
   global points
+
   if not (timer.t <= 0):
     timer.t -= time.dt
     timer.text = 'Time remaining: ' + str(round(timer.t, 2))
   else:
     timer.text = str(0)
-  # print(diveBot.position)
+
   if len(inRangePoints) > 0:
     if diveBot.intersects(closestPoint).hit or diveBot.position == closestPoint.position:
-        closestPoint.color = color.red
         points += int(closestPoint.data[3])
+
         pointcount.text = f'Points: {points}'
+        closestPoint.color = color.red
+
         inRangePoints.remove(closestPoint)
         destroy(closestPoint)
+
         closestPoint = pointCollisionDetection()
-        print('player is inside trigger box')   
-        print(closestPoint)
         moveToGem()
     else:
         closestPoint.color = color.gray
   
 closestPoint = pointCollisionDetection()
 pointCollisionDetection()
-print(len(inRangePoints))
+
 if len(inRangePoints) > 0:
   moveToGem()
+
 EditorCamera()
 
 app.run()
