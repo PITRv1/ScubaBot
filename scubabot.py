@@ -6,8 +6,8 @@ import ast
 app = Ursina()
 window.borderless = False
 
-Speed = sys.argv[2]
-Time = sys.argv[3]
+Speed = int(sys.argv[2])
+Time = int(sys.argv[3])
 dur = 10
 origindiveBot = (0, 0, 0)
 points = 0
