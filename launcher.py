@@ -15,6 +15,7 @@ Blue = "#0099CA"
 Darkblue = "#337be6"
 padx = 10
 pady = 10
+pressed = False
 
 def CreatePopoutWindow(message):
     win = CTkToplevel(app)
@@ -42,6 +43,8 @@ def Start():
 
     speedtype = speed_dropdown.get()
     speed = speed_input.get()
+    
+    pressedtype = pressed_dropdown.get()
 
     timetype = time_dropdown.get()
     time = time_input.get()
@@ -52,10 +55,17 @@ def Start():
         
         if(timetype == "perc"):
             time = int(float(time)*60)
+        
+        if(pressedtype == "yes"):
+            pressed = 1
+            print("tisya")
+        else:
+            pressed = 2
+        print("Plesaeesaeae: ", pressedtype, pressed)
 
         positions = LoadPositionsFromFile(file)
 
-        sub.Popen(["python", "scubabot.py", f"{positions}", f"{speed}", f"{time}"])
+        sub.Popen(["python", "scubabot.py", f"{positions}", f"{speed}", f"{time}", f"{pressed}"])
         exit()
     else:
         CreatePopoutWindow("Kérem töltsön ki minden mezőt!")
@@ -69,6 +79,9 @@ team_label = CTkLabel(app, text_color=Blue, text="Csapat: undefined", font=("Ari
 file_name_text = CTkLabel(mainframe, text_color=Blue, text="Gyöngyök poziciói (fájlnév):")
 file_name_input = CTkEntry(mainframe, border_color=Blue)
 file_type_label = CTkLabel(mainframe, text_color=Blue, text=".txt")
+
+pressed_text = CTkLabel(mainframe, text_color=Blue, text="Follow Diver: ")
+pressed_dropdown = CTkOptionMenu(mainframe, fg_color=Blue, dropdown_hover_color=Blue, button_hover_color=Darkblue, button_color=Lightblue, values=["yes", "no"])
 
 speed_text = CTkLabel(mainframe, text_color=Blue, text="Sebesség:")
 speed_input = CTkEntry(mainframe, border_color=Blue)
@@ -99,6 +112,8 @@ time_text.grid(row=2, column=0, padx=padx, pady=pady)
 time_input.grid(row=2, column=1, padx=padx, pady=pady)
 time_dropdown.grid(row=2, column=2, padx=padx, pady=pady)
 
+pressed_text.grid(row=3, column=0, padx=padx, pady=pady)
+pressed_dropdown.grid(row=3, column=2, padx=padx, pady=pady)
 
 file_name_input.insert(0, "gyongyok")
 app.mainloop()

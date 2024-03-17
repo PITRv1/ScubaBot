@@ -10,6 +10,13 @@ camera.position = (50, -30, -200)
 
 Speed = int(sys.argv[2])
 Time = int(sys.argv[3])
+pressed = int(sys.argv[4])
+if pressed == 1:
+  pressed = True
+else:
+  pressed = False
+print("Nezz ide ide ide: ", pressed, type(pressed))
+# pressed = False
 dur = 10
 origindiveBot = (0, 0, 0)
 points = 0
@@ -34,7 +41,7 @@ water = Entity(model="cube", color=rgb(0,0,100), scale=100)
 water.position = Vec3(50,-50,50)
 water.alpha = .1
 
-pressed = False
+
 
 inRangePoints = []
 
