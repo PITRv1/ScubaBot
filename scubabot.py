@@ -53,7 +53,6 @@ def moveToGem():
   elif len(inRangePoints) <= 0:
     print("aksjdoajdaiu")
     diveBot.animate('position', origindiveBot, duration=distance(diveBot, odiveBot)/Speed, curve=curve.linear)
-    
 def pointCollisionDetection(): #prints the data of the points pointDetection collides with
   global dur
   global inRangePoints
