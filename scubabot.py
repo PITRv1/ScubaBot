@@ -34,6 +34,8 @@ water = Entity(model="cube", color=rgb(0,0,100), scale=100)
 water.position = Vec3(50,-50,50)
 water.alpha = .1
 
+pressed = False
+
 inRangePoints = []
 
 def point(x,y,z,value):
@@ -47,10 +49,29 @@ def point(x,y,z,value):
 
 for list in poziciok:
   point(list[0], list[1], list[2], list[3])
+  
+def input(key):
+  global pressed
+  if key == 'c' and not pressed:
+    pressed = True
+    print(key)
+  elif key == 'c' and pressed:
+    pressed = False
+    print(key)
+    
+def moveCamera():
+  global closestPoint
+  if len(inRangePoints) > 0:
+    camera.animate('position', (closestPoint.x, closestPoint.y, -200), duration=dur, curve=curve.linear)
+    print("gubigubigubi")
+  elif len(inRangePoints) <= 0:
+    print("aksjdoajdaiu")
+    camera.animate('position', (odiveBot.x, odiveBot.y, -200), duration=distance(diveBot, odiveBot)/Speed, curve=curve.linear)
+  
 
 def moveToGem():
   if len(inRangePoints) > 0:
-    print("bihg")
+    print(closestPoint.position)
     diveBot.animate('position', closestPoint.position, duration=dur, curve=curve.linear)
   elif len(inRangePoints) <= 0:
     print("aksjdoajdaiu")
@@ -65,7 +86,6 @@ def pointCollisionDetection(): #prints the data of the points pointDetection col
       if pointDetection.intersects(point).hit:
         dist = int(distance(diveBot,point))
         val = dist-int(point.data[3])
-        valofclost = closestPointdist-int(point.data[3])
         # print("Value is", val)
         if val < closestPointdist:
           print("alma")
@@ -84,6 +104,7 @@ def pointCollisionDetection(): #prints the data of the points pointDetection col
 def update():
   global closestPoint
   global points
+  global pressed
   if not (timer.t <= 0):
     timer.t -= time.dt
     timer.text = 'Time remaining: ' + str(round(timer.t, 2))
@@ -102,14 +123,19 @@ def update():
         print('player is inside trigger box')   
         print(closestPoint)
         moveToGem()
+        if pressed:
+          moveCamera()
     else:
         closestPoint.color = color.gray
+  
   
 closestPoint = pointCollisionDetection()
 pointCollisionDetection()
 print(len(inRangePoints))
 if len(inRangePoints) > 0:
   moveToGem()
+if pressed:
+    moveCamera()
 EditorCamera()
 
 app.run()
