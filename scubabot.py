@@ -93,6 +93,7 @@ def update():
         closestPoint.color = color.red
         points += int(closestPoint.data[3])
         pointcount.text = f'Points: {points}'
+        pickup = Audio(sound_file_name='', autoplay=True, auto_destroy=False)
         inRangePoints.remove(closestPoint)
         destroy(closestPoint)
         closestPoint = pointCollisionDetection()
