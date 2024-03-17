@@ -6,7 +6,7 @@ app = Ursina()
 window.borderless = False
 
 # Majd megvaltoztatni
-Speed = 50
+Speed = 10
 Time = 10
 dur = 10
 origindiveBot = (0, 0, 0)
@@ -93,7 +93,7 @@ def update():
         closestPoint.color = color.red
         points += int(closestPoint.data[3])
         pointcount.text = f'Points: {points}'
-        pickup = Audio(sound_file_name='', autoplay=True, auto_destroy=False)
+        pickup = Audio(sound_file_name='SuperMario64_coin.wav', autoplay=True, auto_destroy=False, volume=.1)
         inRangePoints.remove(closestPoint)
         destroy(closestPoint)
         closestPoint = pointCollisionDetection()
