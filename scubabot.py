@@ -5,7 +5,12 @@ import time
 app = Ursina()
 window.borderless = False
 
+# Majd megvaltoztatni
+Speed = 5
+Time = 60
+
 poziciok = LoadPositionsFromFile()
+Text(f'{Time}', position=(window.top_left))
 
 diveBot = Entity(model="sphere", color=rgb(200,200,0), scale=1, collider="sphere")
 diveBot.position = Vec3(0,0,0)
@@ -51,7 +56,7 @@ closestPoint = pointCollisionDetection()
 print("ugabuga", closestPoint.data)
 
 def burgir():
-  diveBot.animate('position', closestPoint.position, duration=1, curve=curve.linear)
+  diveBot.animate('position', closestPoint.position, duration=distance(diveBot, closestPoint)/Speed, curve=curve.linear)
 
 def update():
   global closestPoint
