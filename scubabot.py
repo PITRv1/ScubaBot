@@ -12,6 +12,8 @@ dur = 10
 origindiveBot = (0, 0, 0)
 points = 0
 
+camera.position = (50, -30, -200)
+
 poziciok = ast.literal_eval(sys.argv[1])
 timer = Text(f'Time remaining: {Time}', position=(-0.75, 0.5), t=Time)
 
