@@ -55,7 +55,7 @@ def Start():
 
         positions = LoadPositionsFromFile(file)
 
-        sub.Popen(["python", "scubabot.py", f"{positions}", f"{speed}", f"{time}"])
+        sub.Popen(["python", "opp_sub.py", f"{positions}", f"{speed}", f"{time}"])
         exit()
     else:
         CreatePopoutWindow("Kérem töltsön ki minden mezőt!")

@@ -22,9 +22,6 @@ pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
 diveBot = Entity(model="sphere", color=rgb(200,200,0), scale=1, collider="sphere")
 diveBot.position = Vec3(0,0,0)
 
-odiveBot = Entity(model="sphere", color=rgb(200,200,0), scale=0, collider="sphere")
-odiveBot.position = Vec3(0,0,0)
-
 pointDetection = Entity(model="sphere", color=rgb(200,0,200), scale=1000, collider="sphere")
 pointDetection.alpha = .3
 
@@ -53,7 +50,7 @@ def moveToGem():
     diveBot.animate('position', closestPoint.position, duration=dur, curve=curve.linear)
 
   elif len(inRangePoints) <= 0:
-    diveBot.animate('position', origindiveBot, duration=distance(diveBot, odiveBot)/Speed, curve=curve.linear)
+    diveBot.animate('position', origindiveBot, duration=distance(diveBot, origindiveBot)/Speed, curve=curve.linear)
 
 def pointCollisionDetection(): #prints the data of the points pointDetection collides with
   global dur
@@ -70,7 +67,7 @@ def pointCollisionDetection(): #prints the data of the points pointDetection col
           closestPointdist = val
           closestPoint = point
 
-    if (timer.t-(distance(diveBot, closestPoint)/Speed)) <= distance(closestPoint, odiveBot)/Speed:
+    if (timer.t-(distance(diveBot, closestPoint)/Speed)) <= distance(closestPoint, origindiveBot)/Speed:
         inRangePoints = []
 
     if len(inRangePoints) > 0:
