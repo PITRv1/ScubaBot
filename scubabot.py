@@ -13,6 +13,8 @@ origindiveBot = (0, 0, 0)
 points = 0
 
 camera.position = (50, -30, -200)
+window.title = "Scubabot"
+skybox_image = load_texture("skyboxes/FS002_Day.png")
 
 poziciok = ast.literal_eval(sys.argv[1])
 timer = Text(f'Time remaining: {Time}', position=(-0.75, 0.5), t=Time)
@@ -22,7 +24,10 @@ pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
 diveBot = Entity(model="sphere",scale=1,color=rgb(300,300,0), collider="sphere")
 diveBot.position = Vec3(0,0,0)
 
-pointDetection = Entity(model="sphere", color=rgb(200,0,200), scale=1000, collider="sphere")
+tree = Entity(model="models/tree1.obj", texture="textures/TreeColor.png",scale=1)
+tree.position = Vec3(10,10,10)
+
+pointDetection = Entity(scale=1000, collider="sphere")
 pointDetection.alpha = .3
 
 pointDetection.parent = diveBot
@@ -105,5 +110,7 @@ if len(inRangePoints) > 0:
   moveToGem()
 
 EditorCamera()
+Sky()
+DirectionalLight(y=2,z=3,rotation=(45,-45,45))
 
 app.run()
