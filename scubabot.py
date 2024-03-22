@@ -5,6 +5,7 @@ import ast
 
 app = Ursina()
 window.borderless = False
+window.title = "Scubabot"
 
 Speed = int(sys.argv[2])
 Time = int(sys.argv[3])
@@ -12,9 +13,27 @@ dur = 10
 origindiveBot = (0, 0, 0)
 points = 0
 
-camera.position = (50, -30, -200)
-window.title = "Scubabot"
-skybox_image = load_texture("skyboxes/FS002_Day.png")
+waterMinX = random.randint(100, 200)
+waterMinY = random.randint(50, 200)
+waterMinZ = random.randint(50, 200)
+
+root_entity = Entity()
+root_entity.rotation_x = 90
+
+EditorCamera()
+
+cameraOrbiter = Entity(position=Vec3(waterMinX/2,-(waterMinY/2),-(waterMinZ)), parent=root_entity, scale=1, model='cube')
+cameraOrbiter.rotation_z = 90
+
+kameramera = Entity(position=Vec3(-(waterMinX/2)*2,0,0), scale=3,model="cube")
+kameramera.rotation_y = -(waterMinZ/3)
+
+camera.x = cameraOrbiter.x
+camera.z = cameraOrbiter.z
+camera.y = cameraOrbiter.y
+
+camera.rotation.z = 90
+
 
 poziciok = ast.literal_eval(sys.argv[1])
 timer = Text(f'Time remaining: {Time}', position=(-0.75, 0.5), t=Time)
@@ -23,24 +42,40 @@ pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
 
 diveBot = Entity(model="sphere",scale=1,color=rgb(300,300,0), collider="sphere")
 diveBot.position = Vec3(0,0,0)
-
-tree = Entity(model="models/tree1.obj", texture="textures/TreeColor.png",scale=1)
-tree.position = Vec3(10,10,10)
+diveBot.parent = root_entity
 
 pointDetection = Entity(scale=1000, collider="sphere")
 pointDetection.alpha = .3
 
 pointDetection.parent = diveBot
 
-water = Entity(model="cube", color=rgb(0,0,100), scale=100)
-water.position = Vec3(50,-50,50)
-water.alpha = .1
+# env-----------------------------------------------------------
+
+tree = Entity(model="models/tree1.obj", texture="textures/TreeColor.png",scale=1)
+tree.position = Vec3(10,10,10)
+
+water = Entity(model="models/water.obj", texture="textures/mrWater.png", scale=Vec3(waterMinX/2,waterMinZ/2,waterMinY/2))
+water.position = Vec3(waterMinX/2,-1*(waterMinZ/2),-(waterMinY/2))
+water.alpha = .65
+
+waterWall = Entity(model="models/waterWalls.obj",color=rgb(50,50,50),parent=water,  scale=0.96)
+
+# code-------------------------------------------------------------
+
+isPlaying = False
+music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3', autoplay=True, auto_destroy=False, volume=.5)
+
+if(not isPlaying):
+  isPlaying = True
+  music.play()
 
 inRangePoints = []
 
 def point(x,y,z,value):
-  point = Entity(model="models/waterMine.obj", texture="textures/mineTexture.png", scale=int(value)/4, collider="sphere", )
+  point = Entity(model="models/fish.obj", texture="textures/fish.png", scale=int(value)/4, collider="sphere", )
   point.position = Vec3(int(x),-int(y),int(z))
+  point.rotation = Vec3(1,1,random.randint(1,359)) 
+  point.parent = root_entity
 
   point.data = [x,y,z,value]
 
@@ -102,6 +137,8 @@ def update():
         moveToGem()
     else:
         closestPoint.color = color.gray
+    
+    rotateCamera()
   
 closestPoint = pointCollisionDetection()
 pointCollisionDetection()
@@ -109,8 +146,12 @@ pointCollisionDetection()
 if len(inRangePoints) > 0:
   moveToGem()
 
-EditorCamera()
+def rotateCamera():
+  if held_keys["a"]:
+    print("a key was pressed")
+
 Sky()
-DirectionalLight(y=2,z=3,rotation=(45,-45,45))
+
+DirectionalLight(y=100,z=20,rotation=(45,-45,45), model="sphere")
 
 app.run()
