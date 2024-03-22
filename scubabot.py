@@ -22,17 +22,15 @@ root_entity.rotation_x = 90
 
 EditorCamera()
 
-cameraOrbiter = Entity(position=Vec3(waterMinX/2,-(waterMinY/2),-(waterMinZ)), parent=root_entity, scale=1, model='cube')
-cameraOrbiter.rotation_z = 90
+# cameraOrbiter = Entity(position=Vec3(waterMinX/2,-(waterMinY/2),-(waterMinZ)), parent=root_entity, scale=1, model='cube')
+# cameraOrbiter.rotation_x = -90
 
-kameramera = Entity(position=Vec3(-(waterMinX/2)*2,0,0), scale=3,model="cube")
-kameramera.rotation_y = -(waterMinZ/3)
+# camera.parent = cameraOrbiter
 
-camera.x = cameraOrbiter.x
-camera.z = cameraOrbiter.z
-camera.y = cameraOrbiter.y
 
-camera.rotation.z = 90
+# camera.position = Vec3(0,0,-20)
+
+# print(camera.position)
 
 
 poziciok = ast.literal_eval(sys.argv[1])
@@ -152,6 +150,6 @@ def rotateCamera():
 
 Sky()
 
-DirectionalLight(y=100,z=20,rotation=(45,-45,45), model="sphere")
+DirectionalLight(y=100,z=20,rotation=(45,-45,45))
 
 app.run()
