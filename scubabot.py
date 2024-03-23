@@ -2,6 +2,8 @@ import sys
 from ursina import *
 import time
 import ast
+import math 
+
 
 app = Ursina()
 window.borderless = False
@@ -17,20 +19,17 @@ waterMinX = random.randint(100, 200)
 waterMinY = random.randint(50, 200)
 waterMinZ = random.randint(50, 200)
 
+cameraSpd = (waterMinX+waterMinY+waterMinZ)/6
+
 root_entity = Entity()
 root_entity.rotation_x = 90
 
-EditorCamera()
+cameraOrbiter = Entity(position=Vec3(waterMinX/2,-(waterMinY/2),-(waterMinZ + waterMinY/1.5 + waterMinX/1.5)), parent=root_entity, scale=1, model='cube')
 
-# cameraOrbiter = Entity(position=Vec3(waterMinX/2,-(waterMinY/2),-(waterMinZ)), parent=root_entity, scale=1, model='cube')
-# cameraOrbiter.rotation_x = -90
+camera.parent = cameraOrbiter
 
-# camera.parent = cameraOrbiter
-
-
-# camera.position = Vec3(0,0,-20)
-
-# print(camera.position)
+camera.position = (0,-(waterMinZ + waterMinY/1.5 + waterMinX/1.5),0)
+camera.rotation_x = -45
 
 
 poziciok = ast.literal_eval(sys.argv[1])
@@ -61,7 +60,7 @@ waterWall = Entity(model="models/waterWalls.obj",color=rgb(50,50,50),parent=wate
 # code-------------------------------------------------------------
 
 isPlaying = False
-music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3', autoplay=True, auto_destroy=False, volume=.5)
+music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3', autoplay=True, auto_destroy=False, volume=0)
 
 if(not isPlaying):
   isPlaying = True
@@ -135,18 +134,36 @@ def update():
         moveToGem()
     else:
         closestPoint.color = color.gray
-    
-    rotateCamera()
-  
+
+  cameraHandeler()
+      
 closestPoint = pointCollisionDetection()
 pointCollisionDetection()
 
 if len(inRangePoints) > 0:
   moveToGem()
 
-def rotateCamera():
+def cameraHandeler():
   if held_keys["a"]:
-    print("a key was pressed")
+    cameraOrbiter.rotation_z += 1 * time.dt * cameraSpd
+  elif held_keys["d"]:
+    cameraOrbiter.rotation_z -= 1 * time.dt * cameraSpd
+  elif held_keys["s"]:
+    camera.rotation_x += 1 * time.dt * cameraSpd/2
+  elif held_keys["w"]:
+    camera.rotation_x -= 1 * time.dt * cameraSpd/2
+  elif held_keys["left control"]:
+    cameraOrbiter.z += 1 * time.dt * cameraSpd
+  elif held_keys["space"]:
+    cameraOrbiter.z -= 1 * time.dt * cameraSpd
+
+def input(key):
+  if key == Keys.scroll_up:
+    camera.y += 10
+    print("scroll up")
+  elif key == Keys.scroll_down:
+    camera.y -= 10
+    print("scroll down")
 
 Sky()
 
