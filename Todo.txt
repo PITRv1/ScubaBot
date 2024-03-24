@@ -2,10 +2,20 @@ Todo:
 Major:
 Make hegyek + lokk good mf
 
+hegy remodell:
+  make one side one line
+  make normal textures
+  make origin point to left 
+
+
 make Michael turn to menetirany
 
-make michael have szinek
+
 
 
 Minor:
 Make shader/texture for water 
+
+conclusions 
+100 game unit = 11 * 1,25 mountainsize
+  1 game unit =  0.125

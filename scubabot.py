@@ -9,61 +9,94 @@ app = Ursina()
 window.borderless = False
 window.title = "Scubabot"
 
+
 Speed = int(sys.argv[2])
 Time = int(sys.argv[3])
+poziciok = ast.literal_eval(sys.argv[1])
+
 dur = 10
 origindiveBot = (0, 0, 0)
+
 points = 0
+inRangePoints = []
+
+#UI-----------
+timer = Text(f'Time remaining: {Time}', position=(-0.75, 0.5), t=Time)
+pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
+#-------------
+
 isMoving = False
+sceneScalingAmount = 6 # the higher the value the smaller the scene (right now only camera and water are responsive to that NOTETOSELF:FIX THAT)
 
-waterMinX = random.randint(100, 200)
-waterMinY = random.randint(50, 200)
-waterMinZ = random.randint(50, 200)
-waterTotal = waterMinX + waterMinY + waterMinZ
+waterMinX = 100
+waterMinY = 100
+waterMinZ = 100
+waterExpensionX = waterMinX / 10
+waterExpensionY = waterMinY / 10
 
-cameraSpd = (waterTotal/(waterTotal / 40))
+cameraSpd = 10
 
-root_entity = Entity()
+# env-----------------------------------------------------------
+
+root_entity = Entity() #the root of my suffering
 root_entity.rotation_x = 90
+
+
+def generateEnv():
+  # generateAmountX = waterMinX + waterExpensionX / (waterMinX + waterExpension) / 10
+  # remainderToGenerate = 0
+
+  # if isinstance(generateAmount, float):
+  #   remainderToGenerate  = 
+  #   print(remainderToGenerate)
+
+  for i in range(1):
+    mountain1 = Entity(model="models/mountain2.obj", texture="textures/mountainTexture2.png",scale=1.25)
+    mountain1.rotation_y = 90
+    
+    mountain1.position = Vec3((i * 10),0,0)
+
+    # if i == 0:
+    #   mountain1.position = Vec3((i * 10)-waterExpension,0,0+waterExpension)
+    # elif i == math.ceil(generateAmount):
+    #   mountain1.position = Vec3(((i * 10)-waterExpension,0,0+waterExpension))
+    # else:
+      
+      
+
+    mountainBottom1 = Entity(model="models/mountainBottom1.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
+
+
+water = Entity(model="models/water.obj",parent=root_entity, texture="textures/mrWater.png", scale=Vec3(waterMinX/sceneScalingAmount,
+                                                                                                        waterMinZ/sceneScalingAmount,
+                                                                                                        waterMinY/sceneScalingAmount))
+
+water.position = Vec3(waterMinX/sceneScalingAmount,
+                      -waterMinZ/sceneScalingAmount,
+                      waterMinY/sceneScalingAmount)
+
+water.alpha = .65
 
 # camera--------------------------------------------------------------
 
-cameraOrbiter = Entity(position=Vec3(waterMinX/2,-(waterMinY/2),-(waterMinZ + waterMinY/1.5 + waterMinX/1.5)), parent=root_entity, model="cube", scale=1)
+cameraOrbiter = Entity(position=Vec3(0,0,-6), parent = water, model="cube", scale=1/100)
+
 
 camera.parent = cameraOrbiter
-
-camera.position = (0,-(waterMinZ + waterMinY/1.5 + waterMinX/1.5),0)
+camera.position = (0,-500,0)
 camera.rotation_x = -45
 
 # assets---------------------------------------------------------------
-
-poziciok = ast.literal_eval(sys.argv[1])
-timer = Text(f'Time remaining: {Time}', position=(-0.75, 0.5), t=Time)
-
-pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
 
 diveBot = Entity(model="models/Michael(submarine).obj",texture="textures/Michael(sub)Texture.png",scale=1,parent=root_entity, collider="sphere")
 diveBot.rotation_x = -90
 
 pointDetection = Entity(scale=1000, collider="sphere",parent=diveBot)
 pointDetection.alpha = 0
-
-# env-----------------------------------------------------------
-
-# mountain1 = Entity(model="models/mountain1.obj", texture="textures/mountainTexture1.png",scale=100)
-# mountain1.position = Vec3(10,10,10)
-
-water = Entity(model="models/water.obj", texture="textures/mrWater.png", scale=Vec3(waterMinX/2,waterMinZ/2,waterMinY/2))
-water.position = Vec3(waterMinX/2,-1*(waterMinZ/2),-(waterMinY/2))
-water.alpha = .65
-
-waterWall = Entity(model="models/waterWalls.obj",color=rgb(50,50,50),parent=water,  scale=0.96)
-
 # code-------------------------------------------------------------
 
-music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3', autoplay=True, auto_destroy=False, volume=0.3)
+music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3', autoplay=True, auto_destroy=False, volume=0)
 musicIsPlaying = False
-
 
 def playMusic():
   global musicIsPlaying
@@ -71,10 +104,6 @@ def playMusic():
     musicIsPlaying = True
     music.play()
     invoke(playMusic, delay=200)
-
-invoke(playMusic, delay=200)
-
-inRangePoints = []
 
 def point(x,y,z,value):
   point = Entity(model="models/fish.obj", texture="textures/fish.png", scale=int(value)/4, collider="sphere", )
@@ -153,32 +182,42 @@ def update():
   cameraHandeler()
 
 # User input handeling--------------------------------------------------------------
-
+#Held Actions
+  
 def cameraHandeler():
   if held_keys["a"]:
-    cameraOrbiter.rotation_z += 1 * time.dt * (cameraSpd/2)
+    cameraOrbiter.rotation_z += 1 * time.dt * cameraSpd * 7
+
   elif held_keys["d"]:
-    cameraOrbiter.rotation_z -= 1 * time.dt * (cameraSpd/2)
+    cameraOrbiter.rotation_z -= 1 * time.dt * cameraSpd * 7
+
   elif held_keys["s"] and camera.rotation_x < 0:
-    camera.rotation_x += 1 * time.dt * cameraSpd/2
+    camera.rotation_x += 1 * time.dt * cameraSpd * 5
+
   elif held_keys["w"] and camera.rotation_x > -180:
-    camera.rotation_x -= 1 * time.dt * cameraSpd/2
-  elif held_keys["left control"] and cameraOrbiter.z < 0:
-    cameraOrbiter.z += 1 * time.dt * cameraSpd
-  elif held_keys["space"] and cameraOrbiter.z < 100:
-    cameraOrbiter.z -= 1 * time.dt * cameraSpd
+    camera.rotation_x -= 1 * time.dt * cameraSpd * 5
+
+  elif held_keys["left control"] and cameraOrbiter.z < -1:
+    cameraOrbiter.z += 1 * time.dt * cameraSpd / 5
+
+  elif held_keys["space"] and cameraOrbiter.z > - 10:
+    cameraOrbiter.z -= 1 * time.dt * cameraSpd / 5
+
+#One Time actions
 
 def input(key):
   if key == Keys.scroll_up and camera.y < 10:
     camera.y += 10
-    print(camera.y)
-  elif key == Keys.scroll_down and camera.y > -waterTotal - 100:
-    camera.y -= 10
-    print(camera.y)
 
-#Engine required stuff---------------------------------------------------------
+  elif key == Keys.scroll_down and camera.y > -1000:
+    camera.y -= 10
+
+#Engine required stuff && and startup functions---------------------------------------------------------
+
+generateEnv()
+invoke(playMusic, delay=200)
 
 Sky()
-DirectionalLight(x=waterMinY * 1.5, y=waterMinZ * 5, z=waterMinX*2,rotation=(45,-45,45), size=1000)
+DirectionalLight(y=100, x=3,rotation=(45,-45,45))
 
 app.run()
