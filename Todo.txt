@@ -1,7 +1,11 @@
 Todo:
 Major:
-Make Launcher for Project
-    
+Make hegyek + lokk good mf
+
+make Michael turn to menetirany
+
+make michael have szinek
+
 
 Minor:
 Make shader/texture for water 
