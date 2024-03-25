@@ -1,20 +1,30 @@
-import customtkinter
 from customtkinter import *
 from window_anim import animate_window
-from PIL import Image
 from configparser import RawConfigParser
 from datetime import datetime
 from tkvideo import tkvideo
 from moviepy.editor import VideoFileClip
+from tkinter import filedialog
+from PIL import Image
 import math
+from tkinter import filedialog
 
+
+set_appearance_mode("dark")
 config = RawConfigParser()
 config.read("./seaos.conf")
 
 taskbar_height = int(config.get("TASKBAR", "height"))
 taskbar_color = config.get("TASKBAR", "color")
+
 timescale = int(config.get("LOADING", "timescale"))
-font = (config.get("GLOBAL", "font"), int(config.get("GLOBAL", "size")))
+
+font_family = config.get("GLOBAL", "font")
+font_size = int(config.get("GLOBAL", "size"))
+font = (font_family, font_size)
+title_font_size = int(config.get("MICHAELAPP", "titlefontsize"))
+
+title_font = (font_family ,title_font_size)
 
 app = CTk()
 app.geometry("1200x800")
@@ -44,18 +54,24 @@ date = CTkLabel(app, bg_color=taskbar_color, text_color="black", text="Loading..
 
 # IKONOK
 michael_button = CTkButton(app, text="", width=50, height=50, corner_radius=0, border_width=0, fg_color="cyan", hover_color="cyan", image=LoadImage("./images/michael.png", 50, 50), command=lambda: LoadTestApp())
+michael_button2 = CTkButton(app, text="", width=50, height=50, corner_radius=0, border_width=0, fg_color="cyan", hover_color="cyan", image=LoadImage("./images/michael.png", 50, 50), command=lambda: LoadTestApp())
 
-# TESZT ABLAK
-testwindow = CTkFrame(app, border_width=1, corner_radius=0, border_color="black", fg_color="black")
-found_video_label = CTkLabel(testwindow, text="")
+# MICHAEL ABLAK
+michwin = CTkFrame(app, border_width=1, corner_radius=0, border_color="black", fg_color="black")
+found_video_label = CTkLabel(michwin, text="")
+
+current_title = CTkLabel(michwin, text="", font=title_font, text_color="green", bg_color="black")
+
+file_frame = CTkScrollableFrame(michwin, width=400, height=300)
+#file_title = CTkLabel(file_frame, text="Út: ").place(relx=0.5, rely=0.1, anchor=CENTER)
+file_select_button = CTkButton(file_frame, text="Fájl kiválasztása", font=font, height=200, command=lambda: filedialog.askopenfile("r"))
 
 def PlayVideo(file, label, function):
     video = tkvideo(file, label, loop=0, size=(600, 338))
     video.play()
     
-    duration = math.ceil(VideoFileClip(file).duration*1.65)
+    duration = math.ceil(VideoFileClip(file).duration*2)
     app.after(duration*1000, lambda: (label.place_forget(), function()))
-
 
 def UnloadBootAssets():
     boot_background.place_forget()
@@ -80,12 +96,17 @@ def LoadDesktop():
     app.after(35*timescale, lambda: time.place(x=default_width-70, y=default_height-taskbar_height))
     app.after(35*timescale, lambda: date.place(x=default_width-85, y=default_height-taskbar_height+20))
 
-    app.after(40*timescale, lambda: LoadDesktopIcons())
+    app.after(40*timescale, lambda: LoadDesktopIcons([michael_button, michael_button2]))
 
     app.after(50*timescale, lambda: UpdateTime())
 
-def LoadDesktopIcons():
-    michael_button.place(x=25, y=25)
+def LoadDesktopIcons(icons):
+    for i in range(len(icons)):
+        icons[i].place(x=25, y=25+i*100)
+
+def UnloadDesktopIcons(icons):
+    for i in range(len(icons)):
+        icons[i].place_forget()
 
 def UpdateTime():
     time.configure(text=datetime.now().strftime('%H:%M:%S'))
@@ -93,20 +114,30 @@ def UpdateTime():
 
     app.after(10*timescale, UpdateTime)
 
-def test():
-    print("heloeore")
-
 def LoadTestApp():
-    michael_button.place_forget()
+    UnloadDesktopIcons([michael_button, michael_button2])
 
-    if animate_window(testwindow, app, heightoffset=50, widthoffset=0):
-        buttontest = CTkButton(testwindow, font=font, text="Exit", fg_color="green", hover_color="green", command=lambda: animate_window(testwindow, app, heightoffset=50, widthoffset=0, animtype="close"))
-
+    if animate_window(michwin, app, heightoffset=50, widthoffset=0):
+        current_title.place(relx=0.5, rely=0.1, anchor=CENTER)
         found_video_label.place(relx=0.5, rely=0.5, anchor=CENTER)
-        PlayVideo("./anims/found/found.mp4", found_video_label, lambda: LoadCloseStage())
+
+        current_title.configure(text="michael (búvárhajó) megkeresése".upper())
+        #PlayVideo("./anims/found/found.mp4", found_video_label, lambda: LoadOpenFileStage())
+        
+        def LoadOpenFileStage():
+            current_title.configure(text="adja meg a gyongyok.txt-t".upper())
+            file_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
+            file_select_button.place(x=0, y=0)
+
+
 
         def LoadCloseStage():
-            buttontest.place(relx=0.5, rely=0.5, anchor=CENTER)
+            quit_button = CTkButton(michwin, font=font, text="Exit", fg_color="green", hover_color="green", command=lambda: (animate_window(michwin, app, heightoffset=50, widthoffset=0, animtype="close"), quitwin()))
+            quit_button.place(relx=0.95, rely=0.02, anchor=CENTER)
 
-Boot()
+        def quitwin():
+            LoadDesktopIcons([michael_button, michael_button2])
+        LoadOpenFileStage()
+
+LoadDesktop()
 app.mainloop()
