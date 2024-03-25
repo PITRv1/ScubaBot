@@ -26,13 +26,13 @@ pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
 #-------------
 
 isMoving = False
-sceneScalingAmount = 6 # the higher the value the smaller the scene (right now only camera and water are responsive to that NOTETOSELF:FIX THAT)
+sceneScalingAmount = 1 # the higher the value the smaller the scene (right now only camera and water are responsive to that NOTETOSELF:FIX THAT)
 
 waterMinX = 100
 waterMinY = 100
 waterMinZ = 100
-waterExpensionX = waterMinX / 10
-waterExpensionY = waterMinY / 10
+waterBufferX = waterMinX / 10
+waterBufferY = waterMinY / 10
 
 cameraSpd = 10
 
@@ -41,38 +41,44 @@ cameraSpd = 10
 root_entity = Entity() #the root of my suffering
 root_entity.rotation_x = 90
 
+size = 2
 
 def generateEnv():
-  # generateAmountX = waterMinX + waterExpensionX / (waterMinX + waterExpension) / 10
-  # remainderToGenerate = 0
+  generateAmountX = 25/size
+  remainderToGenerate = None
 
-  # if isinstance(generateAmount, float):
-  #   remainderToGenerate  = 
-  #   print(remainderToGenerate)
-
-  for i in range(1):
-    mountain1 = Entity(model="models/mountain2.obj", texture="textures/mountainTexture2.png",scale=1.25)
+  if isinstance(generateAmountX, float):
+    x =  25 % size
+    x = float(f'0.{x}')
+    remainderToGenerate = 1 - x
+  
+  for i in range(math.ceil(generateAmountX)):
+    mountain1 = Entity(model=f"models/mountain1.obj", texture=f"textures/mountainTexture1.png",parent=water, scale=0.01 * size)
     mountain1.rotation_y = 90
-    
-    mountain1.position = Vec3((i * 10),0,0)
+    mountain1.rotation_z = 90
 
-    # if i == 0:
-    #   mountain1.position = Vec3((i * 10)-waterExpension,0,0+waterExpension)
-    # elif i == math.ceil(generateAmount):
-    #   mountain1.position = Vec3(((i * 10)-waterExpension,0,0+waterExpension))
-    # else:
-      
-      
+    if remainderToGenerate == 1: 
+      mountain1.position = Vec3(-1 + i / (12.5 / size),1,-1)
+      print("it was 0.0")
+    else:
+      if i == 1:
+        mountain1.position = Vec3(-1 + i / (12.5 / size),1,-1)
+        print(f"it was {remainderToGenerate} but Im first also my pos{mountain1.x}")
+      else:
+        mountain1.position = Vec3(-1 + (i / (12.5 / size) - remainderToGenerate),1,-1)
+        print(f"it was {remainderToGenerate}")
 
-    mountainBottom1 = Entity(model="models/mountainBottom1.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
 
 
-water = Entity(model="models/water.obj",parent=root_entity, texture="textures/mrWater.png", scale=Vec3(waterMinX/sceneScalingAmount,
-                                                                                                        waterMinZ/sceneScalingAmount,
+    mountainBottom1 = Entity(model=f"models/mountainBottom1.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
+
+
+water = Entity(model="models/water.obj",parent=root_entity, texture="textures/mrWater.png", scale=Vec3(waterMinX/sceneScalingAmount + waterBufferX,
+                                                                                                        waterMinZ/sceneScalingAmount + waterBufferY,
                                                                                                         waterMinY/sceneScalingAmount))
 
-water.position = Vec3(waterMinX/sceneScalingAmount,
-                      -waterMinZ/sceneScalingAmount,
+water.position = Vec3(waterMinX/sceneScalingAmount - waterBufferX,
+                      -waterMinZ/sceneScalingAmount + waterBufferY,
                       waterMinY/sceneScalingAmount)
 
 water.alpha = .65
@@ -83,7 +89,7 @@ cameraOrbiter = Entity(position=Vec3(0,0,-6), parent = water, model="cube", scal
 
 
 camera.parent = cameraOrbiter
-camera.position = (0,-500,0)
+camera.y = -500
 camera.rotation_x = -45
 
 # assets---------------------------------------------------------------
