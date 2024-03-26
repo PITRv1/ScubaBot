@@ -3,13 +3,13 @@ from ursina import *
 import time
 import ast
 from readfile import LoadPositionsFromFile
+import random
+import itertools
 
 app = Ursina()
 window.borderless = False
 
-class Settings():
-    Time = 30
-    Speed = 80
+sys.setrecursionlimit(1000000)
 
 class Gems():
     
@@ -31,34 +31,14 @@ class Gems():
         inRangePoints.append(point)
         
     for list in poziciok:
-        point(list[0], list[2], list[1], list[3], inRangePoints)
-        
-    print(inRangePoints)
-    
-class Route():
-    
-    nextGem = 0
-    
-    route = []
-    
-    meters = Settings.Time * Settings.Speed
-    print(meters)
-    
-    def findBestRoute(already_on, could_be, s_left):
-        for point in Gems.inRangePoints:
-            if float(point.data[4]) > s_left:
-                Gems.inRangePoints.remove(point)
-            else:
-                s_left -= float(point.data[4])
-                print(point.data[4])
-                print("Itt van séeft ", s_left)
-                return Route.findBestRoute(already_on, could_be, s_left)
-
+        point(list[0], list[2], list[1], list[3], inRangePoints)   
+            
 class Submarine():
     
     # Speed = int(sys.argv[2])
-    Speed = Settings.Speed
-    Time = Settings.Time
+
+    Speed = 10
+    Time = 5
     startPoint = (0, 0, 0)
     points = 0
     
@@ -70,30 +50,6 @@ class Submarine():
     
     odiveBot = Entity(model="sphere", color=rgb(200,200,0), scale=0, collider="sphere")
     odiveBot.position = Vec3(0,0,0)
-    
-    def findClosest(diveBot, odiveBot):
-        closestPointdist = 100000000000
-        
-        if len(Route.route) > 0:
-            for point in Route.route:
-            
-                dist = int(distance(diveBot, point))
-                val = dist-int(point.data[3])
-
-                if val < closestPointdist:
-                    closestPointdist = val
-                    closestPoint = point
-                    
-            return closestPoint
-        else:
-            closestPoint = odiveBot
-            return closestPoint
-    
-    clost = findClosest(diveBot, odiveBot)
-    
-    def moveToGem():
-        print("shudiandasb")
-        Submarine.diveBot.animate('position', Submarine.clost.position, duration=distance(Submarine.diveBot, Submarine.clost.position)/Submarine.Speed, curve=curve.linear)
     
 class Camera():
     
@@ -147,18 +103,24 @@ class waterArea():
     water.position = Vec3(50,-50,50)
     water.alpha = .1
     
+class Route():
+    
+    nextGem = 0
+    
+    route = []
+    
+    meters = Submarine.Time * Submarine.Speed
+    print(meters)
     
 class Game():
     
     points = 0
     
-    # Time = int(sys.argv[3])
-    
-    
+    # Time = int(sys.argv[3])   
     
     # Blit Timer
     
-    timer = Text(f'Time remaining: {Settings.Time}', position=(-0.75, 0.5), t=Settings.Time)
+    timer = Text(f'Time remaining: {Submarine.Time}', position=(-0.75, 0.5), t=Submarine.Time)
     
     # Blit Points
     
@@ -166,10 +128,45 @@ class Game():
     
     timing = False
     
-    t = 3
+    t = 2
     
-    uga = 0
+    Route.route = Gems.inRangePoints[:]
     
+    def findClosest(diveBot, odiveBot, timer):
+        closestPointdist = 100000000000
+        
+        if len(Route.route) > 0:
+            for point in Route.route:
+            
+                dist = int(distance(diveBot, point))
+                val = dist-int(point.data[3])
+
+                if val < closestPointdist:
+                    closestPointdist = val
+                    closestPoint = point
+        if (timer.t-(distance(diveBot, closestPoint)/Submarine.Speed)) <= distance(closestPoint, odiveBot)/Submarine.Speed:
+            Route.route = []
+            closestPoint = odiveBot
+            return closestPoint
+        else:
+            return closestPoint
+            
+    
+    clost = findClosest(Submarine.diveBot, Submarine.odiveBot, timer)
+    
+    def moveToGem():
+        Submarine.diveBot.animate('position', Game.clost.position, duration=distance(Submarine.diveBot, Game.clost.position)/Submarine.Speed, curve=curve.linear)
+        
+    def drawPoints():
+        Game.pointcount.text = f'Points: {Submarine.points}'
+        
+    def drawTime():
+        if Game.timer.t > 0:
+            Game.timer.t -= time.dt
+            Game.timer.text = 'Time remaining: ' + str(round(Game.timer.t, 2))
+        else:
+            Game.timer.text = 'Time remaining: ' + str(0)
+        
     # Update
 def input(key):
     if key == 'k':
@@ -218,17 +215,23 @@ def update():
             Game.timing = True
             Game.t = 3
         
-    if Submarine.diveBot.intersects(Submarine.clost).hit or Submarine.diveBot.position == Submarine.clost.position:
+    if Submarine.diveBot.intersects(Game.clost).hit or Submarine.diveBot.position == Game.clost.position:
         if len(Route.route) > 0:
-            destroy(Submarine.clost)
-            Route.route.remove(Submarine.clost)
-            Submarine.clost = Submarine.findClosest(Submarine.diveBot)
-            Submarine.moveToGem()
+            Submarine.points += int(Game.clost.data[3])
+            if Game.clost != Submarine.odiveBot:
+                destroy(Game.clost)
+                Route.route.remove(Game.clost)
+            Game.clost = Game.findClosest(Submarine.diveBot, Submarine.odiveBot)
+            Game.moveToGem()
+    
+    Game.drawPoints()
+    Game.drawTime()
             
         
         
 
-Route.findBestRoute(0, 0, Route.meters)
-Submarine.moveToGem()
+# Route.findBestRoute([], 500, (0, 0, 0), 0, Gems.inRangePoints[:], [], 0, Gems.inRangePoints[:], Gems.inRangePoints[:])
+Game.findClosest(Submarine.diveBot, Submarine.odiveBot, Game.timer)
+Game.moveToGem()
 
 app.run()
