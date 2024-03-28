@@ -28,9 +28,9 @@ pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
 isMoving = False
 sceneScalingAmount = 1 # the higher the value the smaller the scene (right now only camera and water are responsive to that NOTETOSELF:FIX THAT)
 
-waterMinX = 100
-waterMinY = 100
-waterMinZ = 100
+waterMinX = 1000
+waterMinY = 1
+waterMinZ = 1
 waterBufferX = waterMinX / 10 / sceneScalingAmount
 waterBufferY = waterMinY / 10 / sceneScalingAmount
 
@@ -38,18 +38,16 @@ smallestSide = min(waterMinX, waterMinY)
 
 cameraSpd = 10
 
+print("jancsika")
 # env-----------------------------------------------------------
 
-root_entity = Entity() 
+root_entity = Entity(scale=1) 
 root_entity.rotation_x = 90
 
-water = Entity(model="models/water.obj",parent=root_entity, texture="textures/waterTexture.png", scale=Vec3(waterMinX/sceneScalingAmount + waterBufferX,
-                                                                                                            waterMinZ/sceneScalingAmount + waterBufferY,
-                                                                                                            waterMinY/sceneScalingAmount))
+water = Entity(model="models/water.obj",parent=root_entity, texture="textures/waterTexture.png", scale=Vec3(waterMinX/sceneScalingAmount + waterBufferX,2,3))
+print(water.scale)
 
-water.position = Vec3(waterMinX/sceneScalingAmount - waterBufferX,
-                      -waterMinZ/sceneScalingAmount + waterBufferY,
-                      waterMinY/sceneScalingAmount)
+water.position = Vec3(waterMinX/sceneScalingAmount - waterBufferX,-waterMinZ/sceneScalingAmount + waterBufferY,waterMinY/sceneScalingAmount)
 
 water.alpha = .65
 
@@ -65,6 +63,8 @@ def generateEnv():
     x = float(f'0.{x}')
     remainderToGenerate = 1 - x
     pushInValue = remainderToGenerate / generateAmountX - 1
+
+#Z side
   
   for i in range(0, math.ceil(generateAmountX)):
     if i==0:
@@ -74,7 +74,9 @@ def generateEnv():
 
       mountain1.position = Vec3(-1 + i / (12.5 / size),1,-1)
       
+      
       mountainBottom1 = Entity(model=f"models/mountainBottom1.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
+
     else:
       mountain1 = Entity(model=f"models/mountain{2}.obj", texture=f"textures/mountainTexture{2}.png",parent=mountain1, scale=1)
       mountainBottom1 = Entity(model=f"models/mountainBottom{2}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
@@ -85,15 +87,16 @@ def generateEnv():
       else:          
         mountain1.position = Vec3(0,0,8+pushInValue)
 
+# right Y side
 
-  for i in range(0, math.ceil(generateAmountY)):
+  for i in range(0, math.ceil(generateAmountY)+2):
     if i==0:
       mountain1 = Entity(model=f"models/mountain1.obj", texture=f"textures/mountainTexture1.png",parent=water, scale=0.01 * size)
       mountain1.rotation_y = 90
       mountain1.rotation_z = 90
       
 
-      mountain1.position = Vec3(1 + i / (12.5 / size),1,-1)
+      mountain1.position = Vec3(1 + i / (12.5 / size),2,-1)
       mountain1.rotation_x = 90
       
       mountainBottom1 = Entity(model=f"models/mountainBottom1.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
@@ -107,17 +110,22 @@ def generateEnv():
       else:          
         mountain1.position = Vec3(0,0,8+pushInValue)
 
-  for i in range(0, math.ceil(generateAmountY)):
+# left Y side
+
+  for i in range(0, math.ceil(generateAmountY)+2):
     if i==0:
-      mountain1 = Entity(model=f"models/mountain1.obj", texture=f"textures/mountainTexture1.png",parent=water, scale=0.01 * size)
+      mountain1 = Entity(model=f"models/mountainEndLeft.obj", texture=f"textures/mountainEndLeftTexture.png",parent=water, scale=0.01 * size)
       mountain1.rotation_y = 90
       mountain1.rotation_z = 90
       
 
-      mountain1.position = Vec3(-1 + i / (12.5 / size),-1,-1)
+      mountain1.position = Vec3(-1 + i / (12.5 / size),-1.75,-1)
       mountain1.rotation_x = -90
       
-      mountainBottom1 = Entity(model=f"models/mountainBottom1.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
+      for i in range(3):
+        mountainBottom1 = Entity(model=f"models/mountainEndLeftBottom.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
+        mountainBottom1.position = (0,-(i*8),0)
+
     else:
       mountain1 = Entity(model=f"models/mountain{2}.obj", texture=f"textures/mountainTexture{2}.png",parent=mountain1, scale=1)
       mountainBottom1 = Entity(model=f"models/mountainBottom{2}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
@@ -141,7 +149,7 @@ camera.rotation_x = -45
 
 # assets---------------------------------------------------------------
 
-diveBot = Entity(model="models/Michael(submarine).obj",texture="textures/Michael(sub)Texture.png",scale=1/sceneScalingAmount,parent=root_entity, collider="sphere")
+diveBot = Entity(model="models/Michael(submarine).obj",texture="textures/Michael(sub)Texture.png",scale=1,parent=root_entity, collider="sphere")
 diveBot.rotation_x = -90
 
 pointDetection = Entity(scale=1000, collider="sphere",parent=diveBot)
@@ -160,7 +168,7 @@ def playMusic():
     invoke(playMusic, delay=200)
 
 def point(x,y,z,value):
-  point = Entity(model="models/fish.obj", texture="textures/fish.png", scale=int(value)/4/sceneScalingAmount, collider="sphere", )
+  point = Entity(model="models/fish.obj", texture="textures/fish.png", scale=int(value)/4, collider="sphere", )
   point.position = Vec3(int(x),-int(y),int(z))
   point.rotation = Vec3(1,1,random.randint(1,359))
   point.parent = root_entity
@@ -268,7 +276,7 @@ def input(key):
 
 #Engine required stuff && and startup functions---------------------------------------------------------
 
-generateEnv()
+# generateEnv()
 invoke(playMusic, delay=200)
 
 Sky(texture = "sky_default")
