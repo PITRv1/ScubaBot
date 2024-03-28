@@ -4,12 +4,17 @@ def animate_window(frame, app, heightoffset: int, widthoffset: int, animtype="op
      
     width = app.winfo_screenwidth()-widthoffset
     height = app.winfo_screenheight()-heightoffset
-    
+
+    if animtype == "open":
+        frame.configure(height=200)
+
     while True:
         currwidth = frame.winfo_width()
         currheight = frame.winfo_height()
 
         if animtype == "open":
+            
+
             if currwidth < width:
                 frame.configure(width=currwidth+step)
             elif currheight < height:
