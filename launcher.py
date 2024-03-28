@@ -13,8 +13,13 @@ app.grid_columnconfigure(0, weight=1)
 Lightblue = "#24b9f9"
 Blue = "#0099CA"
 Darkblue = "#337be6"
+Red = "#FF0000"
+White = "#FFFFFF"
+Black = "#000000"
 padx = 10
 pady = 10
+
+GemNew = None
 
 def CreatePopoutWindow(message):
     win = CTkToplevel(app)
@@ -37,7 +42,31 @@ def CreatePopoutWindow(message):
     button_ok.grid(row=1, column=0, padx=padx, pady=pady)
     win.mainloop()
 
+def buttonSelector1():
+    global button_gem_yes
+    global button_gem_no
+    global GemNew
+    
+    GemNew = True
+    button_gem_yes = CTkButton(mainframe, fg_color=Red, hover_color=Red, text="yes", command=buttonSelector1)
+    button_gem_yes.grid(row=3, column=1, padx=padx, pady=pady)
+    button_gem_no = CTkButton(mainframe, fg_color=Blue, hover_color=Darkblue, text="no", command=buttonSelector2)
+    button_gem_no.grid(row=3, column=2, padx=padx, pady=pady)
+        
+def buttonSelector2():
+    global button_gem_yes
+    global button_gem_no
+    global GemNew
+    
+    GemNew = False
+    button_gem_no = CTkButton(mainframe, fg_color=Red, hover_color=Red, text="no", command=buttonSelector2)
+    button_gem_no.grid(row=3, column=2, padx=padx, pady=pady)
+    button_gem_yes = CTkButton(mainframe, fg_color=Blue, hover_color=Darkblue, text="yes", command=buttonSelector1)
+    button_gem_yes.grid(row=3, column=1, padx=padx, pady=pady)
+
 def Start():
+    global GemNew
+    
     file = str(file_name_input.get())+".txt"
 
     speedtype = speed_dropdown.get()
@@ -46,16 +75,21 @@ def Start():
     timetype = time_dropdown.get()
     time = time_input.get()
 
-    if(file and speed and time):
+    if(file and speed and time and GemNew == False or GemNew == True):
         if(speedtype == "km/h"):
             speed = int(float(speed) * 3.6)
         
         if(timetype == "perc"):
             time = int(float(time)*60)
 
-        positions = LoadPositionsFromFile(file)
+        if not GemNew:
+            positions = LoadPositionsFromFile('gyongyok.txt')
+        else:
+            with open("gem_generator.py") as file:
+                exec(file.read())
+            positions = LoadPositionsFromFile('gems.txt')
 
-        sub.Popen(["python", "opp_sub.py", f"{positions}", f"{speed}", f"{time}"])
+        sub.Popen(["python", "oop_sub.py", f"{positions}", f"{speed}", f"{time}"])
         exit()
     else:
         CreatePopoutWindow("Kérem töltsön ki minden mezőt!")
@@ -78,6 +112,10 @@ time_text = CTkLabel(mainframe, text_color=Blue, text="Idő:")
 time_input = CTkEntry(mainframe, border_color=Blue)
 time_dropdown = CTkOptionMenu(mainframe, fg_color=Blue, dropdown_hover_color=Blue, button_hover_color=Darkblue, button_color=Lightblue, values=["másodperc", "perc"])
 
+gems_text = CTkLabel(mainframe, text_color=Blue, text="Generate Random Gem positions:")
+button_gem_yes = CTkButton(mainframe, fg_color=Blue, hover_color=Darkblue, text="yes", command=buttonSelector1)
+button_gem_no = CTkButton(mainframe, fg_color=Blue, hover_color=Darkblue, text="no", command=buttonSelector2)
+
 button_start = CTkButton(app, width=300, fg_color=Blue, hover_color=Darkblue, text="Start", command=Start)
 
 #Elemek elheleyzése
@@ -99,6 +137,9 @@ time_text.grid(row=2, column=0, padx=padx, pady=pady)
 time_input.grid(row=2, column=1, padx=padx, pady=pady)
 time_dropdown.grid(row=2, column=2, padx=padx, pady=pady)
 
+gems_text.grid(row=3, column=0, padx=padx, pady=pady)
+button_gem_yes.grid(row=3, column=1, padx=padx, pady=pady)
+button_gem_no.grid(row=3, column=2, padx=padx, pady=pady)
 
 file_name_input.insert(0, "gyongyok")
 app.mainloop()

@@ -14,13 +14,7 @@ sys.setrecursionlimit(1000000)
 
 class Gems():
     
-    if str(input("Generate random: ")) == 'no':
-        poziciok = LoadPositionsFromFile('gyongyok.txt')
-    else:
-        with open("gem_generator.py") as file:
-            exec(file.read())
-        poziciok = LoadPositionsFromFile('gems.txt')
-    
+    poziciok = ast.literal_eval(sys.argv[1])
     
     # Take up points
     
@@ -44,8 +38,8 @@ class Submarine():
     
     # Speed = int(sys.argv[2])
 
-    Speed = 100
-    Time = 5
+    Speed = int(sys.argv[2])
+    Time = int(sys.argv[3])
     startPoint = (0, 0, 0)
     points = 0
     
@@ -123,10 +117,12 @@ class Game():
     
     points = 0
     
-    startGame = False
+    startGame = True
     
     def bruh():
+        print("apple")
         Game.startGame = True
+        Game.moveToGem()
         
     def gubik():
         pag.press('F5')
@@ -227,10 +223,7 @@ def input(key):
         if Camera.pos == len(Camera.poses):
             Camera.pos = 0
             
-        Game.timing = False
-        
-        
-        
+        Game.timing = False       
     
 def update():
     
@@ -246,6 +239,8 @@ def update():
             Game.t = 3
     
     if Game.startGame:
+        
+        print("aaa")
  
         if Submarine.diveBot.intersects(Game.clost).hit or Submarine.diveBot.position == Game.clost.position:
             if len(Route.route) > 0:
@@ -264,5 +259,6 @@ def update():
 
 # Route.findBestRoute([], 500, (0, 0, 0), 0, Gems.inRangePoints[:], [], 0, Gems.inRangePoints[:], Gems.inRangePoints[:])
 Game.findClosest(Submarine.diveBot, Submarine.odiveBot, Game.timer)
+Game.moveToGem()
 
 app.run()
