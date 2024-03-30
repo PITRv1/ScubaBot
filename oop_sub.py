@@ -40,17 +40,17 @@ class Submarine():
 
     Speed = int(sys.argv[2])
     Time = int(sys.argv[3])
-    startPoint = (0, 0, 0)
+    startPoint = (100, 0, 0)
     points = 0
     
     
     # Set Startpoint of Sub
     
     diveBot = Entity(model="sphere", color=rgb(200,200,0), scale=1, collider="sphere")
-    diveBot.position = Vec3(0,0,0)
+    diveBot.position = startPoint
     
     odiveBot = Entity(model="sphere", color=rgb(200,200,0), scale=0, collider="sphere")
-    odiveBot.position = Vec3(0,0,0)
+    odiveBot.position = startPoint
     
 class Camera():
     
@@ -58,8 +58,8 @@ class Camera():
     EditorCamera.enabled = False
     
     cam = camera
-    cameraStartPos = (50, 125, -200)
-    cameraStartRot = [30, 0, 0]
+    cameraStartPos = (50, 300, 50)
+    cameraStartRot = [90, 180, 0]
     
     cameraPos = cameraStartPos
     cameraRot = cameraStartRot
@@ -117,7 +117,7 @@ class Game():
     
     points = 0
     
-    startGame = True
+    startGame = False
     
     def bruh():
         print("apple")
@@ -130,10 +130,10 @@ class Game():
     # Start button
     
     b = Button(model='quad', scale_x=.15, scale_y=0.1, position=(-0.75, 0.4), color=Color(192, 192, 192, 255), text='Start Sim', text_size=.5, text_color=color.black)
-    b.text_size = .5
+    b.text_size = .7
     
-    p = Button(model='quad', scale_x=.15, scale_y=0.1, position=(-0.75, 0.325), color=Color(192, 192, 192, 255), text='Reset Sim', text_size=.5, text_color=color.black)
-    p.text_size = .5
+    # p = Button(model='quad', scale_x=.15, scale_y=0.1, position=(-0.75, 0.325), color=Color(192, 192, 192, 255), text='Reset Sim', text_size=.5, text_color=color.black)
+    # p.text_size = .5
     
     # Time = int(sys.argv[3])   
     
@@ -190,8 +190,8 @@ class Game():
             Game.timer.text = 'Time remaining: ' + str(0)
             
     
-    b.on_click = Sequence(Wait(.5), Func(moveToGem), Func(bruh))
-    p.on_click = Sequence(Wait(.5), Func(gubik))
+    b.on_click = bruh
+    # p.on_click = Sequence(Wait(.5), Func(gubik))
         
     # Update
 def input(key):
@@ -239,8 +239,6 @@ def update():
             Game.t = 3
     
     if Game.startGame:
-        
-        print("aaa")
  
         if Submarine.diveBot.intersects(Game.clost).hit or Submarine.diveBot.position == Game.clost.position:
             if len(Route.route) > 0:
@@ -259,6 +257,5 @@ def update():
 
 # Route.findBestRoute([], 500, (0, 0, 0), 0, Gems.inRangePoints[:], [], 0, Gems.inRangePoints[:], Gems.inRangePoints[:])
 Game.findClosest(Submarine.diveBot, Submarine.odiveBot, Game.timer)
-Game.moveToGem()
 
 app.run()
