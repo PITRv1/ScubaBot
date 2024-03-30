@@ -1,4 +1,4 @@
-from tkvideo import tkvideo
+from lib.tkvideo import tkvideo
 from moviepy.editor import VideoFileClip
 import math
 from PIL import Image

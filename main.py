@@ -33,10 +33,10 @@ system_text = CTkLabel(app, text="sysfo.run", text_color="black", bg_color="whit
 icons = [michael_button, system_button]
 texts = [micheal_text, system_text]
 
-
 # ABLAKOK
 michwin = CTkFrame(app, border_width=1, corner_radius=0, border_color=appbackgroundcolor, fg_color=appbackgroundcolor)
 systemwin = CTkFrame(app, border_width=1, corner_radius=0, border_color=appbackgroundcolor, fg_color=appbackgroundcolor)
+
 
 def Boot():
     boot_background.place(x=0, y=0)
@@ -172,8 +172,8 @@ def LoadMichaelApp():
             file_done_button.configure(command=lambda: LoadMedenceStage(), state=DISABLED)
 
             file_title.place(relx=0.5, rely=0.45, anchor=CENTER)
-            file_select_button.place(relx=0.5, rely=0.5, anchor=CENTER)
-            file_delfirstrow_checkbox.place(relx=0.5, rely=0.55, anchor=CENTER)
+            file_delfirstrow_checkbox.place(relx=0.5, rely=0.5, anchor=CENTER)
+            file_select_button.place(relx=0.5, rely=0.55, anchor=CENTER)
 
             file_done_button.place(relx=0.5, rely=0.65, anchor=CENTER)
 

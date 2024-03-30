@@ -1,48 +1,75 @@
-import sys
 from ursina import *
 import time
 import ast
 import math
 from ursina.shaders import lit_with_shadows_shader
+<<<<<<< Updated upstream
 
+=======
+from module import GetMedence, config
+>>>>>>> Stashed changes
 
 app = Ursina()
 window.borderless = False
 window.title = "Scubabot"
 
 
+<<<<<<< Updated upstream
 Speed = int(sys.argv[2])
 Time = int(sys.argv[3])
 poziciok = ast.literal_eval(sys.argv[1])
+=======
+Speed = config.getint("3DSCENE", "speed")
+Time = config.getint("3DSCENE", "time")
+FPSViewBool = config.getboolean("3DSCENE", "fps")
+RawFishPositions = config.get("3DSCENE", "points")
+FishPositions = ast.literal_eval(RawFishPositions)
+>>>>>>> Stashed changes
 
+cameraSpd = 10
 dur = 10
 origindiveBot = (0, 0, 0)
-
 points = 0
 inRangePoints = []
-
-#UI-----------
-timer = Text(f'Time remaining: {Time}', position=(-0.75, 0.5), t=Time)
-pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
-#-------------
-
 isMoving = False
 
+<<<<<<< Updated upstream
 scaleX = 100
 scaleY = 100
 scaleZ = 100
+=======
+medence = GetMedence()
+scaleX = medence[0]
+scaleY = medence[2]
+scaleZ = medence[1]
+>>>>>>> Stashed changes
 waterScaleSum = (scaleX + scaleY + scaleZ) / 3
+
+#UI-----------
+text_x = window.top_left[0]
+text_y = window.top_left[1]
+
+Text.default_font = "system.ttf"
+
+system_text = Text("Michael 3D Environment Visualizer (M3DEV)", position=(text_x, text_y), color=color.green)
+speed_text = Text(f"Speed: {Speed} m/s", position=(text_x, text_y-0.03), color=color.green)
+timer = Text(f'Time remaining: {Time}', position=(text_x, text_y-0.06), t=Time, color=color.green)
+pointcount = Text(f'Points: {points}', position=(text_x, text_y-0.09), color=color.green)
+fps_text = Text('FPS:', position=(text_x, text_y-0.12), color=color.green)
+Text.create_background(system_text, 0.25, 0.02, color.black90)
+#-------------
 
 if waterScaleSum < 300:
   sceneScalingAmount = 1
-elif waterScaleSum > 15000:
-  sceneScalingAmount = 500
-elif waterScaleSum > 1500:
-  sceneScalingAmount = 50
-elif waterScaleSum > 1000:
-  sceneScalingAmount = 3
 elif waterScaleSum > 400:
   sceneScalingAmount = 2
+elif waterScaleSum > 1000:
+  sceneScalingAmount = 3
+elif waterScaleSum > 1500:
+  sceneScalingAmount = 50
+elif waterScaleSum > 15000:
+  sceneScalingAmount = 500
+
 
 waterMinX = scaleX / sceneScalingAmount
 waterMinY = scaleY / sceneScalingAmount
@@ -54,7 +81,7 @@ waterBufferY = waterMinY / 10
 smallestSide = min(waterMinX + waterBufferX, waterMinY + waterBufferY)
 largestSide = max(waterMinX, waterMinY)
 
-cameraSpd = 10
+
 
 # env-----------------------------------------------------------
 
@@ -259,6 +286,8 @@ if len(inRangePoints) > 0:
   moveToGem()
 
 def update():
+  fps_text.text = f"FPS: {int(round(1 / time.dt, 2))}"
+
   global closestPoint
   global points
 
