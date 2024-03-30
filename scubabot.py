@@ -4,16 +4,22 @@ import time
 import ast
 import math
 from ursina.shaders import lit_with_shadows_shader
+from module import GetMedence
+from module import config
 
 
 app = Ursina()
 window.borderless = False
 window.title = "Scubabot"
 
+config.read("config.conf")
 
-Speed = int(sys.argv[2])
-Time = int(sys.argv[3])
-poziciok = ast.literal_eval(sys.argv[1])
+RawFishPositions = config.get("3DSCENE", "points")
+FishPositions = ast.literal_eval(RawFishPositions)
+
+Speed = config.getint("3DSCENE", "speed")
+Time = config.getint("3DSCENE", "time")
+FPSViewBool = config.getboolean("3DSCENE", "fps")
 
 dur = 10
 origindiveBot = (0, 0, 0)
@@ -28,9 +34,11 @@ pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
 
 isMoving = False
 
-scaleX = 100
-scaleY = 100
-scaleZ = 100
+medence = GetMedence()
+
+scaleX = medence[0]
+scaleY = medence[2]
+scaleZ = medence[1]
 waterScaleSum = (scaleX + scaleY + scaleZ) / 3
 
 if waterScaleSum < 300:
@@ -217,8 +225,8 @@ def point(x,y,z,value):
 
   inRangePoints.append(point)
 
-for list in poziciok:
-  point(list[0], list[1], list[2], list[3])
+for i in range(len(FishPositions)):
+    point(FishPositions[i]["x"], FishPositions[i]["y"], FishPositions[i]["z"], FishPositions[i]["e"])
 
 def moveToGem():
   if len(inRangePoints) > 0:
