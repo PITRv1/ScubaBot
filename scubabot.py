@@ -226,7 +226,7 @@ def point(x,y,z,value):
   inRangePoints.append(point)
 
 for i in range(len(FishPositions)):
-    point(FishPositions[i]["x"], FishPositions[i]["y"], FishPositions[i]["z"], FishPositions[i]["e"])
+  point(FishPositions[i]["x"], FishPositions[i]["y"], FishPositions[i]["z"], FishPositions[i]["e"])
 
 def moveToGem():
   if len(inRangePoints) > 0:
