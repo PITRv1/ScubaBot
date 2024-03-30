@@ -1,7 +1,7 @@
-# Blender 4.0.2 MTL File: 'Michael(submarine).blend'
+# Blender 4.1.0 MTL File: 'None'
 # www.blender.org
 
-newmtl Material
+newmtl Material.049
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -11,7 +11,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.001
+newmtl Material.050
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -21,7 +21,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.002
+newmtl Material.051
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -31,7 +31,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.003
+newmtl Material.052
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -41,7 +41,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.004
+newmtl Material.053
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -51,87 +51,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.005
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd D:/Downloads/colorGrid.png
-
-newmtl Material.006
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd D:/Downloads/colorGrid.png
-
-newmtl Material.007
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd D:/Downloads/colorGrid.png
-
-newmtl Material.008
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd D:/Downloads/colorGrid.png
-
-newmtl Material.009
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd D:/Downloads/colorGrid.png
-
-newmtl Material.010
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd D:/Downloads/colorGrid.png
-
-newmtl Material.011
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd D:/Downloads/colorGrid.png
-
-newmtl Material.012
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd D:/Downloads/colorGrid.png
-
-newmtl Material.013
+newmtl Material.054
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -141,7 +61,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 
-newmtl Material.014
+newmtl Material.055
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -151,7 +71,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.015
+newmtl Material.056
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -161,7 +81,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.016
+newmtl Material.057
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -171,7 +91,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.017
+newmtl Material.058
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -181,7 +101,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.018
+newmtl Material.059
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -191,7 +111,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.019
+newmtl Material.060
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -201,7 +121,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.020
+newmtl Material.061
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -211,7 +131,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.021
+newmtl Material.062
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -221,7 +141,7 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.022
+newmtl Material.063
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -231,7 +151,87 @@ d 1.000000
 illum 2
 map_Kd D:/Downloads/colorGrid.png
 
-newmtl Material.023
+newmtl Material.064
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/Downloads/colorGrid.png
+
+newmtl Material.065
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/Downloads/colorGrid.png
+
+newmtl Material.066
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/Downloads/colorGrid.png
+
+newmtl Material.067
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/Downloads/colorGrid.png
+
+newmtl Material.068
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/Downloads/colorGrid.png
+
+newmtl Material.069
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/Downloads/colorGrid.png
+
+newmtl Material.070
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/Downloads/colorGrid.png
+
+newmtl Material.071
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/Downloads/colorGrid.png
+
+newmtl Material.072
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000

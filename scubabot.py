@@ -52,7 +52,7 @@ waterBufferX = waterMinX / 10
 waterBufferY = waterMinY / 10
 
 smallestSide = min(waterMinX + waterBufferX, waterMinY + waterBufferY)
-largestSide = max(waterMinX, waterMinY) 
+largestSide = max(waterMinX, waterMinY)
 
 cameraSpd = 10
 
@@ -207,10 +207,6 @@ def playMusic():
     music.play()
     invoke(playMusic, delay=200)
 
-
-def lookAtPoint(submarine, closestPoint):
-  print("pee is stored in the balls in the balls")
-
 def point(x,y,z,value):
   point = Entity(model="models/fish.obj", texture="textures/fish.png", scale=int(value) / 4, collider="sphere", )
   point.position = Vec3(int(x),-int(y),int(z))
@@ -228,9 +224,11 @@ def moveToGem():
   if len(inRangePoints) > 0:
 
     diveBot.animate('position', closestPoint.position, duration=dur, curve=curve.linear)
+    diveBot.look_at(closestPoint)
 
   elif len(inRangePoints) <= 0:
     diveBot.animate('position', origindiveBot, duration=distance(diveBot, origindiveBot)/Speed, curve=curve.linear)
+    diveBot.look_at(origindiveBot)
 
 def pointCollisionDetection():
   global dur
