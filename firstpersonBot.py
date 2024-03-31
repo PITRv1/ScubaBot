@@ -24,12 +24,12 @@ origindiveBot = (0, 0, 0)
 
 points = 0
 inRangePoints = []
-#UI-----------
+#UI---------------------------------------------------------------
+
 timer = Text(f'Time remaining: {Time}', position=(-0.75, 0.5), t=Time)
 pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
-#-------------
 
-isMoving = False
+# waterScale && scene scaling-------------------------------------
 
 medence = GetMedence()
 
@@ -38,15 +38,15 @@ scaleY = medence[2]
 scaleZ = medence[1]
 waterScaleSum = (scaleX + scaleY + scaleZ) / 3
 
-if waterScaleSum < 300:
+if waterScaleSum < 500:
   sceneScalingAmount = 1
-elif waterScaleSum > 15000:
+elif waterScaleSum >= 15000:
   sceneScalingAmount = 500
-elif waterScaleSum > 1500:
+elif waterScaleSum >= 1500:
   sceneScalingAmount = 50
-elif waterScaleSum > 1000:
-  sceneScalingAmount = 3
-elif waterScaleSum > 400:
+elif waterScaleSum >= 1000:
+  sceneScalingAmount = 5
+elif waterScaleSum >= 500:
   sceneScalingAmount = 2
 
 waterMinX = scaleX / sceneScalingAmount
@@ -59,8 +59,6 @@ waterBufferY = waterMinY / 10
 smallestSide = min(waterMinX + waterBufferX, waterMinY + waterBufferY)
 largestSide = max(waterMinX, waterMinY)
 
-cameraSpd = 10
-
 # env-----------------------------------------------------------
 
 root_entity = Entity()
@@ -70,7 +68,13 @@ water = Entity(model="models/water.obj",parent=root_entity, texture="textures/wa
 water.position = (waterMinX, -waterMinY, waterMinZ)
 water.alpha = .65
 
-size = smallestSide/10
+bottomWall = Entity(collider="box", parent=water,position=(0,0,1),  scale=2)
+topWall = Entity(collider="box", parent=water,position=(0,0,-1), scale=2)
+leftWall = Entity(collider="box", parent=water,position=(-1,0,0),rotation = (0,90,0), scale=2)
+rightWall = Entity(collider="box", parent=water,position=(1,0,0), rotation = (0,-90,0), scale=2)
+backWall = Entity(collider="box", parent=water,position=(0,-1,0), rotation = (90,0,0), scale=2)
+forntWall = Entity(collider="box", parent=water,position=(0,1,0), rotation = (-90,0,0), scale=2)
+
 
 def generateBottom(generateAmountZ, mountainId, mountain1):
   for i in range(math.ceil(generateAmountZ)):
@@ -104,8 +108,6 @@ def generateEnv():
 
       mountain1.position = Vec3(0,0,8)
 
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
-
       generateBottom(generateAmountZ, randomNum, mountain1)
 
 
@@ -120,17 +122,11 @@ def generateEnv():
       mountain1.rotation_y = 90
       mountain1.rotation_x = -90
       mountain1.position = Vec3(-waterBufferX,waterBufferY,0)
-      
-      
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
-
 
       generateBottom(generateAmountZ, randomNum, mountain1)
 
     else:
       mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
-
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
       
       mountain1.position = Vec3(0,0,-8)
 
@@ -150,14 +146,10 @@ def generateEnv():
 
       mountain1.position = Vec3(waterMinX * 2 + waterBufferX, waterBufferY,0)
 
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
-
       generateBottom(generateAmountZ, randomNum, mountain1)
       
     elif i == 1:
       mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
-
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
       
       mountain1.position = Vec3(0,0,-8)
 
@@ -165,8 +157,6 @@ def generateEnv():
 
     elif i == 2:
       mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
-
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
       
       mountain1.position = Vec3(0,0,16)
       
@@ -174,31 +164,38 @@ def generateEnv():
 
     else:
       mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
-
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
       
       mountain1.position = Vec3(0,0,8)
       
       generateBottom(generateAmountZ, randomNum, mountain1)
 
-# camera--------------------------------------------------------------
-
-cameraOrbiter = Entity(position=Vec3(waterMinX, -waterMinY,-largestSide * 2), parent = root_entity, scale = 1)
-
-camera.parent = cameraOrbiter
-camera.position = (0,-largestSide * 2,0)
-camera.rotation_x = -45
-
 # assets---------------------------------------------------------------
+class CameraController(Entity):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mouse_sensitivity = Vec2(40, 40)
+        camera.parent = self
+        camera.position = (0, 0, 0)
+        camera.rotation = (0, 0, 0)                
+        camera.fov = 100
+        mouse.locked = True
+        mouse.visible = False
 
-diveBot = Entity(model="models/Michael(submarine).obj",texture="textures/Michael(sub)Texture.png",scale = (waterMinX * waterMinZ * waterMinY) / (waterMinX * waterMinZ * waterMinY),parent=root_entity, collider="sphere")
-diveBot.rotation_x = -90
+    def update(self):
+        self.rotation_y += mouse.velocity[0] * self.mouse_sensitivity[1]
+        camera.rotation_x -= mouse.velocity[1] * self.mouse_sensitivity[0]
+        camera.rotation_x = clamp(camera.rotation_x, -90, 90)
 
-pointDetection = Entity(collider="sphere",parent=diveBot)
-if waterMinZ * waterMinX * waterMinY <= 1 :
-    pointDetection.scale = 10000
-else:
-  pointDetection.scale = waterMinZ * waterMinX * waterMinY
+player = CameraController()
+player.rotation = (0,135,0)
+
+boundsDetectionForwards = Entity(parent = camera, z=1, collider = "box")
+boundsDetectionBackwards = Entity(parent = camera, z=-1, collider = "box")
+
+pointDetection = Entity(collider="sphere",parent=player)
+pointDetection.scale = 1
+
+# camera--------------------------------------------------------------
 
 # code-----------------------------------------------------------------
 
@@ -227,49 +224,17 @@ def point(x,y,z,value):
 for i in range(len(FishPositions)):
     point(FishPositions[i]["x"], FishPositions[i]["y"], FishPositions[i]["z"], FishPositions[i]["e"])
 
-def moveToGem(lookPoint):
-  if len(inRangePoints) > 0:
-
-    diveBot.rotation = 90,0,0
-    diveBot.look_at(lookPoint)
-    diveBot.animate('position', closestPoint.position, duration=dur, curve=curve.linear)
-    
-  elif len(inRangePoints) <= 0:
-    diveBot.animate('position', origindiveBot, duration=distance(diveBot, origindiveBot)/Speed, curve=curve.linear)
-    diveBot.rotation = -90,0,0
-    diveBot.look_at(origindiveBot)
-
 def pointCollisionDetection():
-  global dur
-  global inRangePoints
-  closestPointdist = 100000000000
+  for point in inRangePoints:
+    if pointDetection.intersects(point).hit:
+      print("a point was hit")
 
-  if len(inRangePoints) > 0:
-    for point in inRangePoints:
-      if pointDetection.intersects(point).hit:
-        dist = int(distance(diveBot,point))
-        val = dist-int(point.data[3])
-
-        if val < closestPointdist:
-          closestPointdist = val
-          closestPoint = point
-
-    if (timer.t-(distance(diveBot, closestPoint)/Speed)) <= distance(closestPoint, origindiveBot)/Speed:
-        inRangePoints = []
-
-    if len(inRangePoints) > 0:
-      dur = distance(diveBot, closestPoint)/Speed
-      return closestPoint
-
-closestPoint = pointCollisionDetection()
 pointCollisionDetection()
 
-if len(inRangePoints) > 0:
-  moveToGem(closestPoint.data[4])
+lastposition = 0,0,0
 
 def update():
-  global closestPoint
-  global points
+  global points,inRangePoints
 
   if not (timer.t <= 0):
     timer.t -= time.dt
@@ -277,56 +242,26 @@ def update():
   else:
     timer.text = str(0)
 
-  if len(inRangePoints) > 0:
-    if diveBot.intersects(closestPoint).hit or diveBot.position == closestPoint.position:
-        points += int(closestPoint.data[3])
+  points_to_destroy = []
 
-        pointcount.text = f'Points: {points}'
-        closestPoint.color = color.red
+  for point in inRangePoints:
+    if pointDetection.intersects(point).hit:
+      points += point.data[3]
+      pointcount.text = f'Points: {points}'
+      points_to_destroy.append(point)
 
-        inRangePoints.remove(closestPoint)
-        destroy(closestPoint)
+  for point in points_to_destroy:
+    destroy(point)
+    inRangePoints.remove(point)
 
-        closestPoint = pointCollisionDetection()
-        try:
-          moveToGem(closestPoint.data[4])
-        except:
-          moveToGem(origindiveBot)
-    else:
-        closestPoint.color = color.gray
-
-  cameraHandeler()
+  movement()
 
 # User input handeling--------------------------------------------------------------
-#Held Actions
-  
-def cameraHandeler():
-  if held_keys["a"]:
-    cameraOrbiter.rotation_z += 1 * time.dt * cameraSpd * 7
+def movement():
 
-  elif held_keys["d"]:
-    cameraOrbiter.rotation_z -= 1 * time.dt * cameraSpd * 7
-
-  elif held_keys["s"] and camera.rotation_x < 0:
-    camera.rotation_x += 1 * time.dt * cameraSpd * 5
-
-  elif held_keys["w"] and camera.rotation_x > -180:
-    camera.rotation_x -= 1 * time.dt * cameraSpd * 5
-
-  elif held_keys["left control"] and cameraOrbiter.z < 10:
-    cameraOrbiter.z += 1 * time.dt * cameraSpd * 7
-
-  elif held_keys["space"] and cameraOrbiter.z > -largestSide * 10:
-    cameraOrbiter.z -= 1 * time.dt * cameraSpd * 7
-
-#One Time actions
-
-def input(key):
-  if key == Keys.scroll_up and camera.y < 0:
-    camera.y += 10
-
-  elif key == Keys.scroll_down and camera.y > -largestSide * 10:
-    camera.y -= 10
+  if not player.position.y > 0 + 10 * time.dt:
+    player.position += camera.forward * Speed * time.dt * held_keys['w']
+    player.position -= camera.forward * Speed * time.dt * held_keys['s']
 
 #Engine required stuff && and startup functions---------------------------------------------------------
 

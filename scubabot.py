@@ -3,7 +3,6 @@ from ursina import *
 import time
 import ast
 import math
-from ursina.shaders import lit_with_shadows_shader
 from module import GetMedence
 from module import config
 
