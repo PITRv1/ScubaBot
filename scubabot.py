@@ -15,7 +15,8 @@ class Settings():
   
   config.read("config.conf")
   
-  Speed = config.getint("3DSCENE", "speed")
+  # Speed = config.getint("3DSCENE", "speed")
+  Speed = 0.000000000000001
   # Time = config.getint("3DSCENE", "time")
   Time = 50000
   FPSViewBool = config.getboolean("3DSCENE", "fps")
@@ -235,7 +236,14 @@ class Assets():
     
   pointPosList = Fishes.inRangePoints[:]
   circleList = []
-  circles = []
+  circles = {}
+  circ = []
+  
+  def drawt(temp, point):
+    
+    circle = Entity(model="sphere", color=rgb(200,0,200), scale=temp[22], collider="sphere", parent=point, alpha = 0)
+    
+    return circle
   
 #Tudom hogy rosszul irtam le, idc
 class Algorithms():
@@ -298,52 +306,36 @@ class Algorithms():
   
   def drawCircles():
     
+    print("Pront: ", len(Fishes.inRangePoints))
+    
     if len(Fishes.inRangePoints) > 0:
       
-      for mainPoint in Assets.pointPosList:
+      for points in Fishes.inRangePoints:
         
-        closestPointdist = 100000000000
+        temp = []
         
-        point = Fishes.inRangePoints[:]
-        if mainPoint in point:
-          point.remove(mainPoint)
-        
-        for i in range(12):
-        
-          for points in point:
-            
-            if points not in Assets.circleList:
-            
-              dist = distance(mainPoint, points)
-              
-              if dist < closestPointdist:
-                
-                closestPointdist = dist
-                closestPoint = points
-            
-            Assets.circleList.append(closestPoint)
-            if closestPoint in point:
-              point.remove(closestPoint)
+        for pants in Fishes.inRangePoints:
           
-        print(len(point))
+          temp.append(distance(pants, points))
+          
+        temp.sort()
         
-        circle = Entity(model="sphere", color=rgb(211,211,211), scale=distance(mainPoint, Assets.circleList[-1]), collider="sphere")
-        circle.position = (mainPoint)
-        circle.alpha = 0
-        mainPoint.color = rgb(0, 255, 0)
-        circle.parent = mainPoint
-        Assets.circles.append(circle)
-        Assets.circleList = []
-           
-      buh = 1
+        Assets.circleList.append(Assets.drawt(temp, points))
+        
+        print(len(Assets.circleList))
+        
+    buh = 22
+        
+    Assets.circleList[buh].alpha = .3
+    
+    gub = 0
+    
+    for item in Fishes.inRangePoints:
       
-      Assets.circles[55].alpha = .3
-      Assets.circles[55].parent.color = rgb(255, 0, 0)
-      
-      for item in Fishes.inRangePoints:
-        if item.intersects(Assets.circles[55]):
-          print(buh)
-          buh += 1
+      if item.intersects(Assets.circleList[buh].parent):
+        
+        print("gubs: ", gub)
+        gub += 1
         
       
   drawCircles()
