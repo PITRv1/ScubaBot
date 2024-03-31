@@ -3,7 +3,6 @@ from ursina import *
 import time
 import ast
 import math
-from ursina.shaders import lit_with_shadows_shader
 from module import GetMedence
 from module import config
 
@@ -21,12 +20,10 @@ Speed = config.getint("3DSCENE", "speed")
 Time = config.getint("3DSCENE", "time")
 FPSViewBool = config.getboolean("3DSCENE", "fps")
 
-dur = 10
 origindiveBot = (0, 0, 0)
 
 points = 0
 inRangePoints = []
-
 #UI-----------
 timer = Text(f'Time remaining: {Time}', position=(-0.75, 0.5), t=Time)
 pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
