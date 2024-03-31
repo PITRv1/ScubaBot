@@ -26,13 +26,15 @@ origindiveBot = (0, 0, 0)
 
 points = 0
 inRangePoints = []
+isMoving = False
+cameraSpd = 10
 
-#UI-----------
+#UI---------------------------------------------------------------
+
 timer = Text(f'Time remaining: {Time}', position=(-0.75, 0.5), t=Time)
 pointcount = Text(f'Points: {points}', position=(window.top_left), t=Time)
-#-------------
 
-isMoving = False
+# waterScale && scene scaling-------------------------------------
 
 medence = GetMedence()
 
@@ -41,15 +43,15 @@ scaleY = medence[2]
 scaleZ = medence[1]
 waterScaleSum = (scaleX + scaleY + scaleZ) / 3
 
-if waterScaleSum < 300:
+if waterScaleSum < 500:
   sceneScalingAmount = 1
-elif waterScaleSum > 15000:
+elif waterScaleSum >= 15000:
   sceneScalingAmount = 500
-elif waterScaleSum > 1500:
+elif waterScaleSum >= 1500:
   sceneScalingAmount = 50
-elif waterScaleSum > 1000:
-  sceneScalingAmount = 3
-elif waterScaleSum > 400:
+elif waterScaleSum >= 1000:
+  sceneScalingAmount = 5
+elif waterScaleSum >= 500:
   sceneScalingAmount = 2
 
 waterMinX = scaleX / sceneScalingAmount
@@ -62,8 +64,6 @@ waterBufferY = waterMinY / 10
 smallestSide = min(waterMinX + waterBufferX, waterMinY + waterBufferY)
 largestSide = max(waterMinX, waterMinY)
 
-cameraSpd = 10
-
 # env-----------------------------------------------------------
 
 root_entity = Entity()
@@ -72,8 +72,6 @@ root_entity.rotation_x = 90
 water = Entity(model="models/water.obj",parent=root_entity, texture="textures/waterTexture.png", scale=Vec3(waterMinX + waterBufferX, waterMinY + waterBufferY, waterMinZ))
 water.position = (waterMinX, -waterMinY, waterMinZ)
 water.alpha = .65
-
-size = smallestSide/10
 
 def generateBottom(generateAmountZ, mountainId, mountain1):
   for i in range(math.ceil(generateAmountZ)):
@@ -107,8 +105,6 @@ def generateEnv():
 
       mountain1.position = Vec3(0,0,8)
 
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
-
       generateBottom(generateAmountZ, randomNum, mountain1)
 
 
@@ -123,17 +119,11 @@ def generateEnv():
       mountain1.rotation_y = 90
       mountain1.rotation_x = -90
       mountain1.position = Vec3(-waterBufferX,waterBufferY,0)
-      
-      
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
-
 
       generateBottom(generateAmountZ, randomNum, mountain1)
 
     else:
       mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
-
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
       
       mountain1.position = Vec3(0,0,-8)
 
@@ -153,14 +143,10 @@ def generateEnv():
 
       mountain1.position = Vec3(waterMinX * 2 + waterBufferX, waterBufferY,0)
 
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
-
       generateBottom(generateAmountZ, randomNum, mountain1)
       
     elif i == 1:
       mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
-
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
       
       mountain1.position = Vec3(0,0,-8)
 
@@ -168,8 +154,6 @@ def generateEnv():
 
     elif i == 2:
       mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
-
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
       
       mountain1.position = Vec3(0,0,16)
       
@@ -177,8 +161,6 @@ def generateEnv():
 
     else:
       mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
-
-      mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
       
       mountain1.position = Vec3(0,0,8)
       
