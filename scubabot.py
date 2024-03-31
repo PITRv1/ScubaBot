@@ -244,7 +244,6 @@ class Algorithms():
   
   def closestValueFinder():
     closestPointdist = 100000000000
-    print(len(Fishes.inRangePoints))
 
     if len(Fishes.inRangePoints) > 0:
       for point in Fishes.inRangePoints:
@@ -295,17 +294,15 @@ class Algorithms():
       if len(Fishes.inRangePoints) > 0:
         dur = distance(Assets.diveBot, closestPoint)/Settings.Speed
         return closestPoint
-      
-  print("asdjsaoudhaiuhdiu")
   
   
   def drawCircles():
     
     if len(Fishes.inRangePoints) > 0:
-    
-      closestPointdist = 100000000000
       
       for mainPoint in Assets.pointPosList:
+        
+        closestPointdist = 100000000000
         
         point = Fishes.inRangePoints[:]
         if mainPoint in point:
@@ -315,16 +312,20 @@ class Algorithms():
         
           for points in point:
             
-            dist = distance(mainPoint, points)
+            if points not in Assets.circleList:
             
-            if dist < closestPointdist:
+              dist = distance(mainPoint, points)
               
-              closestPointdist = dist
-              closestPoint = points
+              if dist < closestPointdist:
+                
+                closestPointdist = dist
+                closestPoint = points
+            
+            Assets.circleList.append(closestPoint)
+            if closestPoint in point:
+              point.remove(closestPoint)
           
-          Assets.circleList.append(closestPoint)
-          if closestPoint in point:
-            point.remove(closestPoint)
+        print(len(point))
         
         circle = Entity(model="sphere", color=rgb(211,211,211), scale=distance(mainPoint, Assets.circleList[-1]), collider="sphere")
         circle.position = (mainPoint)
