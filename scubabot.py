@@ -2,13 +2,10 @@ from ursina import *
 import time
 import ast
 import math
-from ursina.shaders import lit_with_shadows_shader
 from module import GetMedence, config
 
-app = Ursina()
+app = Ursina(icon="./assets/images/michael.ico", title="Scubabot")
 window.borderless = False
-window.title = "Scubabot"
-
 
 Speed = config.getint("3DSCENE", "speed")
 Time = config.getint("3DSCENE", "time")
@@ -45,7 +42,7 @@ Text.create_background(system_text, 0.25, 0.02, color.black90)
 
 if waterScaleSum < 300:
   sceneScalingAmount = 1
-elif waterScaleSum > 400:
+elif waterScaleSum > 300:
   sceneScalingAmount = 2
 elif waterScaleSum > 1000:
   sceneScalingAmount = 3
@@ -229,7 +226,12 @@ def point(x,y,z,value):
   inRangePoints.append(point)
 
 for i in range(len(FishPositions)):
-  point(FishPositions[0]["x"], FishPositions[0]["y"], FishPositions[0]["z"], FishPositions[0]["e"],)
+  x = FishPositions[i]["x"]
+  y = FishPositions[i]["y"]
+  z = FishPositions[i]["z"]
+  e = FishPositions[i]["e"]
+
+  point(x, z, y, e)
 
 def moveToGem():
   if len(inRangePoints) > 0:
@@ -275,11 +277,15 @@ def update():
   global closestPoint
   global points
 
+
+  if int(timer.t) < 20:
+    timer.color = color.red
+
   if not (timer.t <= 0):
     timer.t -= time.dt
-    timer.text = 'Time remaining: ' + str(round(timer.t, 2))
+    timer.text = f"Time remaining: {round(timer.t, 2)}"
   else:
-    timer.text = str(0)
+    timer.text = "Time remaining: 0"
 
   if len(inRangePoints) > 0:
     if diveBot.intersects(closestPoint).hit or diveBot.position == closestPoint.position:
