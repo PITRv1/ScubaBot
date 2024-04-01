@@ -244,7 +244,7 @@ class Assets():
       print(temp)
     Camera.bancs += 1
     
-    mans = temp[55]
+    mans = int(temp[55])*2
 
     circle = Entity(model="sphere", color=rgb(200,0,200), scale=mans, collider="sphere", alpha = 0, position=item.position, parent=Map.root_entity)
       
@@ -252,8 +252,6 @@ class Assets():
   
 #Tudom hogy rosszul irtam le, idc
 class Algorithms():
-  
-  
   
   def closestValueFinder():
     closestPointdist = 100000000000
@@ -281,6 +279,7 @@ class Algorithms():
   
   #Moho angolul frfr
   #De am van par otlet
+  
   def Gubi():
     
     for point in Fishes.inRangePoints:
@@ -311,85 +310,85 @@ class Algorithms():
   
   def drawCircles():
     
-    # temp = []
+    temp = []
     
-    # for item in Fishes.inRangePoints:
+    for item in Fishes.inRangePoints:
       
-    #   for point in Fishes.inRangePoints:
+      for point in Fishes.inRangePoints:
         
-    #     temp.append(round(distance(item, point), 5))
+        temp.append(round(distance(item, point), 5))
         
-    #   temp.remove(0.0)
+      temp.remove(0.0)
       
-    #   res = []
-    #   [res.append(x) for x in temp if x not in res]
+      res = []
+      [res.append(x) for x in temp if x not in res]
         
-    #   res.sort()
+      res.sort()
       
-    #   Assets.buh(res, item)
+      Assets.buh(res, item)
       
-    #   res = []
-    #   temp = []
+      res = []
+      temp = []
             
-    # print("Lenss: ", Assets.circleList[55].scale)
+    # print("Lenss: ", Assets.circleList[44].scale)
     
-    # Assets.circleList[55].alpha = .3
+    # Assets.circleList[44].alpha = .3
     
     # gub = 0
     
     # for item in Fishes.inRangePoints:
       
-    #   if item.intersects(Assets.circleList[55]):
+    #   if item.intersects(Assets.circleList[44]):
         
     #     print("gubs: ", gub)
     #     gub += 1
     
-    for item in Fishes.inRangePoints:
+    # for item in Fishes.inRangePoints:
       
-      circle = Entity(model="sphere", color=rgb(200,0,200), scale=0, collider="sphere", alpha = 0, position=item.position, parent=Map.root_entity)
+    #   circle = Entity(model="sphere", color=rgb(200,0,200), scale=0, collider="sphere", alpha = 0, position=item.position, parent=Map.root_entity)
       
-      buh = False
+    #   buh = False
       
-      j = 0
+    #   j = 0
       
-      gub = 0
+    #   gub = 0
       
-      while not buh:
+    #   while not buh:
         
-        for mans in Fishes.inRangePoints:
+    #     for mans in Fishes.inRangePoints:
           
-          if mans.intersects(circle):
+    #       if mans.intersects(circle):
             
-            gub += 1
+    #         gub += 1
             
-        if gub <= 33:
+    #     if gub <= 33:
           
-          circle.scale = j
-          j += 1
-          gub = 0
+    #       circle.scale = j
+    #       j += 1
+    #       gub = 0
         
-        else:
+    #     else:
           
-          Assets.circleList.append(circle)
-          buh = True
+    #       Assets.circleList.append(circle)
+    #       buh = True
           
     print(len(Assets.circleList))
     
-    print("Lenss: ", Assets.circleList[55].scale)
+    print("Lenss: ", Assets.circleList[22].scale)
     
-    Assets.circleList[55].alpha = .3
+    Assets.circleList[22].alpha = .3
     
     gub = 0
     
     for item in Fishes.inRangePoints:
       
-      if item.intersects(Assets.circleList[55]):
+      if item.intersects(Assets.circleList[22]):
         
         print("gubs: ", gub)
         gub += 1  
           
         
-  # drawCircles()
+  drawCircles()
   closestPoint = Gubi()
   Gubi()
 
