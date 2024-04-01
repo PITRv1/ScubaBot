@@ -22,8 +22,8 @@ isMoving = False
 
 medence = GetMedence()
 scaleX = medence[0]
-scaleY = medence[2]
-scaleZ = medence[1]
+scaleY = medence[1]
+scaleZ = medence[2]
 waterScaleSum = (scaleX + scaleY + scaleZ) / 3
 
 #UI-----------
@@ -37,7 +37,7 @@ speed_text = Text(f"Speed: {Speed} m/s", position=(text_x, text_y-0.03), color=c
 timer = Text(f'Time remaining: {Time}', position=(text_x, text_y-0.06), t=Time, color=color.green)
 pointcount = Text(f'Points: {points}', position=(text_x, text_y-0.09), color=color.green)
 fps_text = Text('FPS:', position=(text_x, text_y-0.12), color=color.green)
-Text.create_background(system_text, 0.25, 0.02, color.black90)
+Text.create_background(system_text, 0.25, 0.02, color.black66)
 #-------------
 
 if waterScaleSum < 300:
@@ -69,8 +69,8 @@ largestSide = max(waterMinX, waterMinY)
 root_entity = Entity()
 root_entity.rotation_x = 90
 
-water = Entity(model="models/water.obj",parent=root_entity, texture="textures/waterTexture.png", scale=Vec3(waterMinX + waterBufferX, waterMinY + waterBufferY, waterMinZ))
-water.position = (waterMinX, -waterMinY, waterMinZ)
+water = Entity(model="models/water.obj",parent=root_entity, texture="textures/waterTexture.png", scale=Vec3(waterMinX/2 + waterBufferX, waterMinY/2 + waterBufferY, waterMinZ))
+water.position = (waterMinX/2, -waterMinY/2, waterMinZ)
 water.alpha = .65
 
 size = smallestSide/10
@@ -205,7 +205,7 @@ else:
 
 # code-----------------------------------------------------------------
 
-music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3', autoplay=True, auto_destroy=False, volume=0.3)
+music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3', autoplay=True, auto_destroy=False, volume=2)
 musicIsPlaying = False
 
 def playMusic():
@@ -231,7 +231,7 @@ for i in range(len(FishPositions)):
   z = FishPositions[i]["z"]
   e = FishPositions[i]["e"]
 
-  point(x, z, y, e)
+  point(x, y, z, e)
 
 def moveToGem():
   if len(inRangePoints) > 0:
