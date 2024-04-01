@@ -16,9 +16,9 @@ class Settings():
   config.read("config.conf")
   
   # Speed = config.getint("3DSCENE", "speed")
-  Speed = 0.000000000000001
+  Speed = 10
   # Time = config.getint("3DSCENE", "time")
-  Time = 50000
+  Time = 88
   FPSViewBool = config.getboolean("3DSCENE", "fps")
   
 origindiveBot = (0, 0, 0)
@@ -389,7 +389,7 @@ class Algorithms():
         gub += 1  
           
         
-  drawCircles()
+  # drawCircles()
   closestPoint = Gubi()
   Gubi()
 
