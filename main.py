@@ -5,7 +5,7 @@ from module import *
 set_appearance_mode("dark")
 app = CTk()
 app.title = "SEAOS"
-# app.attributes("-fullscreen", True)
+app.attributes("-fullscreen", True)
 
 default_height = app.winfo_screenheight()
 default_width = app.winfo_screenwidth()

@@ -186,7 +186,9 @@ else:
 
 # code-----------------------------------------------------------------
 
-music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3', autoplay=True, auto_destroy=False, volume=0.3)
+music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3', autoplay=True, auto_destroy=False, volume=5)
+waterSounds = Audio(sound_file_name='songs/Sea Waves - Sound Effect.mp3', autoplay=True, auto_destroy=False, volume=0.2)
+forestSounds = Audio(sound_file_name='songs/Forest sound effect for editing for free.mp3', autoplay=True, auto_destroy=False, volume=0.2)
 musicIsPlaying = False
 
 def playMusic():
@@ -195,6 +197,14 @@ def playMusic():
     musicIsPlaying = True
     music.play()
     invoke(playMusic, delay=200)
+
+def playWaterSounds():
+  waterSounds.play()
+  invoke(playWaterSounds, delay = 16)
+
+def playForestSounds():
+  forestSounds.play()
+  invoke(playForestSounds, delay = 63)
 
 def point(x,y,z,value):
   point = Entity(model="models/fish.obj", texture="textures/fish.png", scale=int(value) / 4, collider="sphere", )
@@ -316,6 +326,8 @@ def input(key):
 
 generateEnv()
 invoke(playMusic, delay=200)
+playWaterSounds()
+playForestSounds()
 
 Sky(texture = "sky_default")
 PointLight( position = (-4,-4,-10), parent = water)

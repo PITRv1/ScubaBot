@@ -21,6 +21,7 @@ Time = config.getint("3DSCENE", "time")
 FPSViewBool = config.getboolean("3DSCENE", "fps")
 
 origindiveBot = (0, 0, 0)
+canMove = True
 
 points = 0
 inRangePoints = []
@@ -64,17 +65,17 @@ largestSide = max(waterMinX, waterMinY)
 root_entity = Entity()
 root_entity.rotation_x = 90
 
-water = Entity(model="models/water.obj",parent=root_entity, texture="textures/waterTexture.png", scale=Vec3(waterMinX + waterBufferX, waterMinY + waterBufferY, waterMinZ))
+water = Entity(parent=root_entity, scale=Vec3(waterMinX + waterBufferX, waterMinY + waterBufferY, waterMinZ))
 water.position = (waterMinX, -waterMinY, waterMinZ)
-water.alpha = .65
 
-bottomWall = Entity(collider="box", parent=water,position=(0,0,1),  scale=2)
+bottomWall = Entity(collider="box", parent=water,position=(0,0,1),  scale=2, model="quad", color=rgb(120,120,120))
 topWall = Entity(collider="box", parent=water,position=(0,0,-1), scale=2)
 leftWall = Entity(collider="box", parent=water,position=(-1,0,0),rotation = (0,90,0), scale=2)
 rightWall = Entity(collider="box", parent=water,position=(1,0,0), rotation = (0,-90,0), scale=2)
 backWall = Entity(collider="box", parent=water,position=(0,-1,0), rotation = (90,0,0), scale=2)
-forntWall = Entity(collider="box", parent=water,position=(0,1,0), rotation = (-90,0,0), scale=2)
+frontWall = Entity(collider="box", parent=water,position=(0,1,0), rotation = (-90,0,0), scale=2)
 
+walls = [bottomWall, topWall, leftWall, rightWall, backWall, frontWall]
 
 def generateBottom(generateAmountZ, mountainId, mountain1):
   for i in range(math.ceil(generateAmountZ)):
@@ -182,6 +183,7 @@ class CameraController(Entity):
         mouse.visible = False
 
     def update(self):
+      if canMove:
         self.rotation_y += mouse.velocity[0] * self.mouse_sensitivity[1]
         camera.rotation_x -= mouse.velocity[1] * self.mouse_sensitivity[0]
         camera.rotation_x = clamp(camera.rotation_x, -90, 90)
@@ -195,11 +197,38 @@ boundsDetectionBackwards = Entity(parent = camera, z=-1, collider = "box")
 pointDetection = Entity(collider="sphere",parent=player)
 pointDetection.scale = 1
 
-# camera--------------------------------------------------------------
+
+# UI------------------------------
+
+UI = Entity(parent = camera, z = 1, rotation_z = 45)
+waterFilter = Entity(parent = UI, z = 0.1,model = "quad", scale=3, color=rgb(0,191,255), alpha = .3, unlit = True)
+
+Entity(parent = UI , x=1.1, model = "quad", scale=(.5,2,1), color=rgb(0,0,139), unlit = True)
+Entity(parent = UI,x=-1.1, model = "quad", scale=(.5,2,1), color=rgb(0,0,139), unlit = True)
+Entity(parent = UI,y=1.1, model = "quad", scale=(2,.5,1), color=rgb(0,0,139), unlit = True)
+Entity(parent = UI,y=-1.1, model = "quad", scale=(2,.5,1), color=rgb(0,0,139), unlit = True)
+
+def endScreen():
+  global canMove
+
+  mouse.locked = False
+  mouse.visible = True
+  canMove = False
+
+  Text(
+        parent=camera.ui,
+        text='E X I T I N G   W I N D O W',
+        scale=(2, 2),
+        color=color.red,
+        position=window.center
+    )
+  
 
 # code-----------------------------------------------------------------
 
-music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3', autoplay=True, auto_destroy=False, volume=0.3)
+music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3', autoplay=True, auto_destroy=False, volume=5)
+waterSounds = Audio(sound_file_name='songs/Sea Waves - Sound Effect.mp3', autoplay=True, auto_destroy=False, volume=0.2)
+forestSounds = Audio(sound_file_name='songs/Forest sound effect for editing for free.mp3', autoplay=True, auto_destroy=False, volume=0.2)
 musicIsPlaying = False
 
 def playMusic():
@@ -208,6 +237,14 @@ def playMusic():
     musicIsPlaying = True
     music.play()
     invoke(playMusic, delay=200)
+
+def playWaterSounds():
+  waterSounds.play()
+  invoke(playWaterSounds, delay = 16)
+
+def playForestSounds():
+  forestSounds.play()
+  invoke(playForestSounds, delay = 63)
 
 def point(x,y,z,value):
   point = Entity(model="models/fish.obj", texture="textures/fish.png", scale=int(value) / 4, collider="sphere", )
@@ -224,23 +261,19 @@ def point(x,y,z,value):
 for i in range(len(FishPositions)):
     point(FishPositions[i]["x"], FishPositions[i]["y"], FishPositions[i]["z"], FishPositions[i]["e"])
 
-def pointCollisionDetection():
-  for point in inRangePoints:
-    if pointDetection.intersects(point).hit:
-      print("a point was hit")
-
-pointCollisionDetection()
-
-lastposition = 0,0,0
+endScreenCalled = False
 
 def update():
-  global points,inRangePoints
+  global points,inRangePoints,endScreenCalled,walls
 
   if not (timer.t <= 0):
     timer.t -= time.dt
     timer.text = 'Time remaining: ' + str(round(timer.t, 2))
   else:
     timer.text = str(0)
+    if not endScreenCalled:
+      endScreen()
+      endScreenCalled = True 
 
   points_to_destroy = []
 
@@ -254,20 +287,25 @@ def update():
     destroy(point)
     inRangePoints.remove(point)
 
+  for wall in walls:  
+    if boundsDetectionForwards.intersects(wall).hit:
+      print("this boundary to hold me?")
+
   movement()
 
 # User input handeling--------------------------------------------------------------
 def movement():
-
-  if not player.position.y > 0 + 10 * time.dt:
+  if canMove:
     player.position += camera.forward * Speed * time.dt * held_keys['w']
     player.position -= camera.forward * Speed * time.dt * held_keys['s']
 
 #Engine required stuff && and startup functions---------------------------------------------------------
 
 generateEnv()
-invoke(playMusic, delay=200)
+playMusic()
+playWaterSounds()
+playForestSounds()
 
 Sky(texture = "sky_default")
-PointLight( position = (-4,-4,-10), parent = water)
+PointLight( position = (0,-4,-10), parent = water)
 app.run()
