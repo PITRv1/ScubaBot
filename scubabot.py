@@ -446,7 +446,18 @@ class Game():
                 autoplay=True, 
                 auto_destroy=False, 
                 volume=0.3)
+
+  waterSounds = Audio(sound_file_name='songs/Sea Waves - Sound Effect.mp3', 
+                      autoplay=True, 
+                      auto_destroy=False, 
+                      volume=0.2)
   
+  forestSounds = Audio(sound_file_name='songs/Forest sound effect for editing for free.mp3', 
+                       autoplay=True, 
+                       auto_destroy=False, 
+                       volume=0.2)
+
+    
   musicIsPlaying = False
 
   def playMusic():
@@ -455,6 +466,14 @@ class Game():
       musicIsPlaying = True
       Game.music.play()
       invoke(Game.playMusic, delay=200)
+
+  def playWaterSounds():
+    Game.waterSounds.play()
+    invoke(Game.playWaterSounds, delay = 16)
+
+  def playForestSounds():
+    Game.forestSounds.play()
+    invoke(Game.playForestSounds, delay = 63)
 
 # -----------------------/////////////-------------------------
   
@@ -550,6 +569,8 @@ def input(key):
       
 Map.generateEnv()
 invoke(Game.playMusic, delay=200)
+Game.playWaterSounds()
+Game.playForestSounds()
 
 skybox_texture = load_texture("skyboxes/FS002_Day_Sunless.png")
 Sky(texture = skybox_texture)
