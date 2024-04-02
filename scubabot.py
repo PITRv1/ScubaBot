@@ -49,16 +49,16 @@ class UI():
 class Map():
   waterScaleSum = (Settings.scaleX + Settings.scaleY + Settings.scaleZ) / 3
 
-  if waterScaleSum <= 500:
-    sceneScalingAmount = 1
-  elif waterScaleSum > 500:
-    sceneScalingAmount = 2
+  if waterScaleSum >= 100000:
+    sceneScalingAmount = 500
+  elif waterScaleSum >= 10000:
+    sceneScalingAmount = 50
   elif waterScaleSum >= 1000:
     sceneScalingAmount = 3
-  elif waterScaleSum >= 1500:
-    sceneScalingAmount = 50
-  elif waterScaleSum >= 15000:
-    sceneScalingAmount = 500
+  elif waterScaleSum >= 500:
+    sceneScalingAmount = 2
+  elif waterScaleSum < 500:
+    sceneScalingAmount = 1
 
   waterMinX = Settings.scaleX / sceneScalingAmount
   waterMinY = Settings.scaleY / sceneScalingAmount
@@ -70,20 +70,19 @@ class Map():
   smallestSide = min(waterMinX/2 + waterBufferX, waterMinY/2 + waterBufferY)
   largestSide = max(waterMinX/2, waterMinY/2)
 
-  root_entity = Entity()
-  root_entity.rotation_x = 90
+  root_entity = Entity(rotation_x = 90)
 
   water = Entity(parent=root_entity,
-                 scale=Vec3(waterMinX/4 + waterBufferX, waterMinY/4 + waterBufferY, waterMinZ/4))
-  
-  water.position = (waterMinX/4, -waterMinY/4, waterMinZ/4)
-  water.alpha = .65
+                 scale=Vec3(waterMinX/4 + waterBufferX, waterMinY/4 + waterBufferY, waterMinZ/4),
+                 position = (waterMinX/4, -waterMinY/4, waterMinZ/4),
+                 alpha = .65)
 
-  outsideWater = Entity(parent = water,
+  outsideWater = Entity(parent = root_entity,
                         model="quad",
                         color=color.blue,
-                        scale = (500,500,0),
-                        z = -.95, unlit = True,
+                        z = .1,
+                        scale = (waterMinX * waterMinY,waterMinX * waterMinY,0),
+                        unlit = True,
                         alpha = .5)
 
   def generateBottom(generateAmountZ, mountainId, mountain1):
@@ -98,9 +97,8 @@ class Map():
             mountainBottom1 = Entity(model=f"models/mountainBottom{mountainId}.obj",
                                      color=rgb(120,120,120),
                                      scale=1,
+                                     position = (0,-8,0),
                                      parent=mountainBottom1)
-            
-            mountainBottom1.position = (0,-8,0)
 
   def generateEnv():
     generateAmountX = (Map.waterMinX + Map.waterBufferX)/4 / (Map.smallestSide / 2.50)
@@ -109,18 +107,16 @@ class Map():
 
   #Z side)
     
-    for i in range(0, math.ceil(generateAmountX)+ 1):
+    for i in range(0, math.ceil(generateAmountX)):
       randomNum = random.randint(1,2)
 
       if i==0:
         mountain1 = Entity(model = f"models/mountain{randomNum}.obj",
                            texture = f"textures/mountainTexture{randomNum}.png",
                            parent = Map.root_entity,
-                           scale = Map.smallestSide/10)
-        
-        mountain1.rotation_z = 90
-        mountain1.rotation_y = 90
-        mountain1.position = Vec3(-Map.waterBufferX,Map.waterBufferY,0)
+                           scale = Map.smallestSide/10,
+                           rotation = (0,90,90),
+                           position = Vec3(-Map.waterBufferX,Map.waterBufferY,0))
         
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
           
@@ -128,12 +124,10 @@ class Map():
         mountain1 = Entity(model=f"models/mountain{randomNum}.obj", 
                           texture=f"textures/mountainTexture{randomNum}.png",
                           parent=mountain1,
-                          scale=1)
-
-        mountain1.position = Vec3(0,0,8)
+                          scale=1,
+                          position = Vec3(0,0,8))
 
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
-
 
   # left Y side
 
@@ -144,12 +138,9 @@ class Map():
         mountain1 = Entity(model = f"models/mountain{randomNum}.obj",
                            texture = f"textures/mountainTexture{randomNum}.png",
                            parent = Map.root_entity,
-                           scale = Map.smallestSide/10)
-        
-        mountain1.rotation_z = 90
-        mountain1.rotation_y = 90
-        mountain1.rotation_x = -90
-        mountain1.position = Vec3(-Map.waterBufferX, Map.waterBufferY,0)
+                           scale = Map.smallestSide/10,
+                           rotation = (-90, 90, 90),
+                           position = (-Map.waterBufferX, Map.waterBufferY,0))
 
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
 
@@ -157,10 +148,9 @@ class Map():
         mountain1 = Entity(model=f"models/mountain{randomNum}.obj",
                            texture=f"textures/mountainTexture{randomNum}.png",
                            parent=mountain1,
-                           scale=1)
+                           scale=1,
+                           position = (0,0,-8))
         
-        mountain1.position = Vec3(0,0,-8)
-
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
 
   # right Y side
@@ -172,14 +162,9 @@ class Map():
         mountain1 = Entity(model = f"models/mountain{randomNum}.obj", 
                            texture = f"textures/mountainTexture{randomNum}.png",
                            parent = Map.root_entity, 
-                           scale = Map.smallestSide/10)
-        
-        mountain1.rotation_z = 90
-        mountain1.rotation_y = 90
-        mountain1.rotation_x = 90
-        
-
-        mountain1.position = Vec3(Map.waterMinX / 2 + Map.waterBufferX, Map.waterBufferY,0)
+                           scale = Map.smallestSide/10,
+                           rotation = (90, 90, 90),
+                           position = (Map.waterMinX + Map.waterBufferX, Map.waterBufferY,0))
 
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
         
@@ -218,12 +203,11 @@ class Fish():
   def point(x, y, z, value):
     point = Entity(model="models/fish.obj",
                    texture="textures/fish.png",
-                   scale=int(value) / 4,
-                   collider="sphere")
-    
-    point.position = Vec3(int(x),-int(y),int(z))
-    point.rotation = Vec3(1,1,random.randint(1,359))
-    point.parent = Map.root_entity
+                   scale=(int(value) / 4) * Map.smallestSide / 60 / Map.sceneScalingAmount,
+                   collider="sphere",
+                   position = Vec3(int(x),-int(y),int(z)),
+                   rotation = Vec3(1,1,random.randint(1,359)),
+                   parent = Map.root_entity)
 
     lookPoint = Entity(position = point.position)
 
@@ -237,6 +221,7 @@ class Fish():
     e = Settings.FishPositions[i]["e"]
 
     point(x, y, z, e)
+
 
 class Camera():
   if not Settings.FPSViewBool:
@@ -252,11 +237,10 @@ class Camera():
 class Assets():
   diveBot = Entity(model="models/Michael(submarine).obj", 
                   texture="textures/Michael(sub)Texture.png",
-                  scale = (Map.waterMinX * Map.waterMinZ * Map.waterMinY) / (Map.waterMinX * Map.waterMinZ * Map.waterMinY),
+                  scale = Map.smallestSide / 60 / Map.sceneScalingAmount,
                   parent=Map.root_entity, 
-                  collider="sphere")
-  
-  diveBot.rotation_x = -90
+                  collider="sphere",
+                  rotation_x = -90)
 
   pointDetection = Entity(collider="sphere",
                           parent=diveBot)
@@ -292,13 +276,10 @@ if Settings.FPSViewBool:
 
       Assets.diveBot.alpha = 0
       Map.water.alpha = 0
-      Map.outsideWater.alpha = .5
+
       Map.outsideWater.rotation_x = 180
-      Map.outsideWater.z = -1
       
-
-      PointLight(parent = camera, y = 100, rotation_x = -90)
-
+      #Water Filter
       Entity(parent = camera,
               model = "quad",
               color = rgb(0,0,200),
@@ -327,13 +308,8 @@ class Algorithms():
           inRangePoints = []
 
       if len(inRangePoints) > 0:
-        #dur = distance(Assets.diveBot, closestPoint)/Settings.Speed
         return closestPoint
       
-  # print("asdjsaoudhaiuhdiu")
-  # closestPoint = closestValueFinder()
-  # closestValueFinder()
-
   def Gubi():
     
     for point in Settings.inRangePoints:
@@ -358,7 +334,6 @@ class Algorithms():
           Settings.inRangePoints = []
 
       if len(Settings.inRangePoints) > 0:
-        #dur = distance(Assets.diveBot, closestPoint)/Settings.Speed
         return closestPoint
   
   
@@ -377,50 +352,6 @@ class Algorithms():
       
       res = []
       temp = []
-            
-    # print("Lenss: ", Assets.circleList[44].scale)
-    
-    # Assets.circleList[44].alpha = .3
-    
-    # gub = 0
-    
-    # for item in Fishes.inRangePoints:
-      
-    #   if item.intersects(Assets.circleList[44]):
-        
-    #     print("gubs: ", gub)
-    #     gub += 1
-    
-    # for item in Fishes.inRangePoints:
-      
-    #   circle = Entity(model="sphere", color=rgb(200,0,200), scale=0, collider="sphere", alpha = 0, position=item.position, parent=Map.root_entity)
-      
-    #   buh = False
-      
-    #   j = 0
-      
-    #   gub = 0
-      
-    #   while not buh:
-        
-    #     for mans in Fishes.inRangePoints:
-          
-    #       if mans.intersects(circle):
-            
-    #         gub += 1
-            
-    #     if gub <= 33:
-          
-    #       circle.scale = j
-    #       j += 1
-    #       gub = 0
-        
-    #     else:
-          
-    #       Assets.circleList.append(circle)
-    #       buh = True
-
-          
         
   drawCircles()
   closestPoint = Gubi()
@@ -538,7 +469,7 @@ def cameraHandeler():
     elif held_keys["w"] and camera.rotation_x > -180:
       camera.rotation_x -= 1 * time.dt * Settings.cameraSpd * 5
 
-    elif held_keys["left control"] and Camera.cameraOrbiter.z < 10:
+    elif held_keys["left control"] and Camera.cameraOrbiter.z < -10:
       Camera.cameraOrbiter.z += 1 * time.dt * Settings.cameraSpd * 7
 
     elif held_keys["space"] and Camera.cameraOrbiter.z > -Map.largestSide * 10:
@@ -562,5 +493,5 @@ Game.playForestSounds()
 
 skybox_texture = load_texture("skyboxes/FS002_Day_Sunless.png")
 Sky(texture = skybox_texture)
-PointLight( position = (0,-4,-10), parent = Map.water)
+PointLight( position = (0,-4,-10), parent = camera)
 Settings.app.run()
