@@ -335,7 +335,6 @@ class Algorithms():
   # closestValueFinder()
 
   def Gubi():
-    global inRangePoints
     
     for point in Settings.inRangePoints:
       
@@ -356,7 +355,7 @@ class Algorithms():
             closestPoint = point
 
       if (UI.timer.t-(distance(Assets.diveBot, closestPoint)/Settings.Speed)) <= distance(closestPoint, Settings.origindiveBot)/Settings.Speed:
-          inRangePoints = []
+          Settings.inRangePoints = []
 
       if len(Settings.inRangePoints) > 0:
         #dur = distance(Assets.diveBot, closestPoint)/Settings.Speed
