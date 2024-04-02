@@ -40,8 +40,8 @@ def PlayVideo(app: CTk, file: str, label: CTkLabel, Function: Callable):
     app.after(duration*1000, lambda: (label.place_forget(), Function()))
 
 
-def SetView(var: StringVar):
-    value = bool(int(var.get()))
+def SetView(value: int):
+    value = bool(value)
     config.set("3DSCENE", "fps", value)
     SaveConfig()
 
@@ -205,36 +205,39 @@ def SaveConfig():
 
 
 def AnimateFrame(frame: CTkFrame, app: CTk, heightoffset: int, widthoffset: int, animtype: str="open") -> bool:
-    frame.place(x=0, y=0)
-    step=10
-     
-    width = app.winfo_screenwidth()-widthoffset
-    height = app.winfo_screenheight()-heightoffset
-
-    if animtype == "open":
-        frame.configure(height=200)
-
-    while True:
-        currwidth = frame.winfo_width()
-        currheight = frame.winfo_height()
+    try:
+        frame.place(x=0, y=0)
+        step=10
+        
+        width = app.winfo_screenwidth()-widthoffset
+        height = app.winfo_screenheight()-heightoffset
 
         if animtype == "open":
-            
+            frame.configure(height=200)
 
-            if currwidth < width:
-                frame.configure(width=currwidth+step)
-            elif currheight < height:
-                frame.configure(height=currheight+step)
-            elif currheight == height or currheight > height:
-                return True
+        while True:
+            currwidth = frame.winfo_width()
+            currheight = frame.winfo_height()
+
+            if animtype == "open":
+                
+
+                if currwidth < width:
+                    frame.configure(width=currwidth+step)
+                elif currheight < height:
+                    frame.configure(height=currheight+step)
+                elif currheight == height or currheight > height:
+                    return True
+                
+            else:
+                if currwidth-step != 1:
+                    frame.configure(width=currwidth-step)
+                elif currheight != 1:
+                    frame.configure(height=currheight-step)
+                elif currheight == 1:
+                    frame.place_forget()
+                    return True
             
-        else:
-            if currwidth-step != 1:
-                frame.configure(width=currwidth-step)
-            elif currheight != 1:
-                frame.configure(height=currheight-step)
-            elif currheight == 1:
-                frame.place_forget()
-                return True
-        
-        frame.update()
+            frame.update()
+    except:
+        return False

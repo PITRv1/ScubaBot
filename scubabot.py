@@ -315,7 +315,6 @@ class Algorithms():
   def Gubi():
     
     for point in Settings.inRangePoints:
-      
       if point.data["value"] < 6:
         
         Settings.inRangePoints.remove(point)
