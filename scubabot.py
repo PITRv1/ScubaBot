@@ -67,20 +67,20 @@ class Map():
   waterBufferX = waterMinX / 10
   waterBufferY = waterMinY / 10
 
-  smallestSide = min(waterMinX/2 + waterBufferX, waterMinY/2 + waterBufferY)
-  largestSide = max(waterMinX/2, waterMinY/2)
+  smallestSide = min(waterMinX + waterBufferX, waterMinY + waterBufferY)
+  largestSide = max(waterMinX, waterMinY)
 
   root_entity = Entity(rotation_x = 90)
 
   water = Entity(parent=root_entity,
-                 scale=Vec3(waterMinX/4 + waterBufferX, waterMinY/4 + waterBufferY, waterMinZ/4),
-                 position = (waterMinX/4, -waterMinY/4, waterMinZ/4),
+                 scale=Vec3(waterMinX/2 + waterBufferX, waterMinY/2 + waterBufferY, waterMinZ/2),
+                 position = (waterMinX/2, -waterMinY/2, waterMinZ/2),
                  alpha = .65)
 
   outsideWater = Entity(parent = root_entity,
                         model="quad",
                         color=color.blue,
-                        z = .1,
+                        position = (0,0,0),
                         scale = (waterMinX * waterMinY,waterMinX * waterMinY,0),
                         unlit = True,
                         alpha = .5)
@@ -101,11 +101,11 @@ class Map():
                                      parent=mountainBottom1)
 
   def generateEnv():
-    generateAmountX = (Map.waterMinX + Map.waterBufferX)/4 / (Map.smallestSide / 2.50)
-    generateAmountY = (Map.waterMinY + Map.waterBufferY)/4 / (Map.smallestSide / 2.50)
-    generateAmountZ = Map.waterMinZ/4 / (Map.smallestSide / 2.50)
+    generateAmountX = (Map.waterMinX + Map.waterBufferX) / 2 / (Map.smallestSide / 2.50)
+    generateAmountY = (Map.waterMinY + Map.waterBufferY) / 2 / (Map.smallestSide / 2.50)
+    generateAmountZ = Map.waterMinZ / 2 / (Map.smallestSide / 2.50)
 
-  #Z side)
+  #Back side)
     
     for i in range(0, math.ceil(generateAmountX)):
       randomNum = random.randint(1,2)
@@ -161,7 +161,7 @@ class Map():
       if i==0:
         mountain1 = Entity(model = f"models/mountain{randomNum}.obj", 
                            texture = f"textures/mountainTexture{randomNum}.png",
-                           parent = Map.root_entity, 
+                           parent = Map.root_entity,
                            scale = Map.smallestSide/10,
                            rotation = (90, 90, 90),
                            position = (Map.waterMinX + Map.waterBufferX, Map.waterBufferY,0))
@@ -203,7 +203,7 @@ class Fish():
   def point(x, y, z, value):
     point = Entity(model="models/fish.obj",
                    texture="textures/fish.png",
-                   scale=(int(value) / 4) * Map.smallestSide / 60 / Map.sceneScalingAmount,
+                   scale=(int(value) / 4) * Map.smallestSide / 50 / Map.sceneScalingAmount,
                    collider="sphere",
                    position = Vec3(int(x),-int(y),int(z)),
                    rotation = Vec3(1,1,random.randint(1,359)),
@@ -237,7 +237,7 @@ class Camera():
 class Assets():
   diveBot = Entity(model="models/Michael(submarine).obj", 
                   texture="textures/Michael(sub)Texture.png",
-                  scale = Map.smallestSide / 60 / Map.sceneScalingAmount,
+                  scale = Map.smallestSide / 50 / Map.sceneScalingAmount,
                   parent=Map.root_entity, 
                   collider="sphere",
                   rotation_x = -90)
