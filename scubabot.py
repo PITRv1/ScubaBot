@@ -6,7 +6,9 @@ from module import GetMedence, config
 
 
 class Settings():
-  app = Ursina(icon="./assets/images/michael.ico", title="Scubabot")
+  app = Ursina(icon="./assets/images/michael.ico", 
+               title="Scubabot")
+  
   window.borderless = False
   
   Speed = float(config.get("3DSCENE", "speed"))
@@ -20,7 +22,7 @@ class Settings():
   origindiveBot = (0, 0, 0)
   points = 0
   inRangePoints = []
-  isMoving = False
+  canMoveCamera = True
 
   medence = GetMedence()
   scaleX = medence[0]
@@ -65,44 +67,57 @@ class Map():
   waterBufferX = waterMinX / 10
   waterBufferY = waterMinY / 10
 
-  smallestSide = min(waterMinX + waterBufferX, waterMinY + waterBufferY)
-  largestSide = max(waterMinX, waterMinY)
-
-# env-----------------------------------------------------------
+  smallestSide = min(waterMinX/2 + waterBufferX, waterMinY/2 + waterBufferY)
+  largestSide = max(waterMinX/2, waterMinY/2)
 
   root_entity = Entity()
   root_entity.rotation_x = 90
 
-  water = Entity(model="models/water.obj", 
-                parent=root_entity,
-                texture="textures/waterTexture.png", 
-                scale=Vec3(waterMinX + waterBufferX, waterMinY + waterBufferY, waterMinZ))
-  water.position = (waterMinX, -waterMinY, waterMinZ)
+  water = Entity(parent=root_entity,
+                 scale=Vec3(waterMinX/4 + waterBufferX, waterMinY/4 + waterBufferY, waterMinZ/4))
+  
+  water.position = (waterMinX/4, -waterMinY/4, waterMinZ/4)
   water.alpha = .65
 
-  size = smallestSide/10
+  outsideWater = Entity(parent = water,
+                        model="quad",
+                        color=color.blue,
+                        scale = (500,500,0),
+                        z = -.95, unlit = True,
+                        alpha = .5)
 
   def generateBottom(generateAmountZ, mountainId, mountain1):
     for i in range(math.ceil(generateAmountZ)):
           if i == 0:
-            mountainBottom1 = Entity(model=f"models/mountainBottom{mountainId}.obj", color=rgb(120,120,120), scale=1, parent = mountain1)
+            mountainBottom1 = Entity(model=f"models/mountainBottom{mountainId}.obj",
+                                     color=rgb(120,120,120),
+                                     scale=1,
+                                     parent = mountain1)
 
           else:
-            mountainBottom1 = Entity(model=f"models/mountainBottom{mountainId}.obj", color=rgb(120,120,120), scale=1, parent=mountainBottom1)
+            mountainBottom1 = Entity(model=f"models/mountainBottom{mountainId}.obj",
+                                     color=rgb(120,120,120),
+                                     scale=1,
+                                     parent=mountainBottom1)
+            
             mountainBottom1.position = (0,-8,0)
 
   def generateEnv():
-    generateAmountX = (Map.waterMinX + Map.waterBufferX) / (Map.smallestSide / 2.50)
-    generateAmountY = (Map.waterMinY + Map.waterBufferY) / (Map.smallestSide / 2.50)
-    generateAmountZ = Map.waterMinZ / (Map.smallestSide / 2.50)
+    generateAmountX = (Map.waterMinX + Map.waterBufferX)/4 / (Map.smallestSide / 2.50)
+    generateAmountY = (Map.waterMinY + Map.waterBufferY)/4 / (Map.smallestSide / 2.50)
+    generateAmountZ = Map.waterMinZ/4 / (Map.smallestSide / 2.50)
 
   #Z side)
     
-    for i in range(0, math.ceil(generateAmountX)):
+    for i in range(0, math.ceil(generateAmountX)+ 1):
       randomNum = random.randint(1,2)
 
       if i==0:
-        mountain1 = Entity(model = f"models/mountain{randomNum}.obj", texture = f"textures/mountainTexture{randomNum}.png",parent = Map.root_entity, scale = Map.smallestSide/10)
+        mountain1 = Entity(model = f"models/mountain{randomNum}.obj",
+                           texture = f"textures/mountainTexture{randomNum}.png",
+                           parent = Map.root_entity,
+                           scale = Map.smallestSide/10)
+        
         mountain1.rotation_z = 90
         mountain1.rotation_y = 90
         mountain1.position = Vec3(-Map.waterBufferX,Map.waterBufferY,0)
@@ -110,11 +125,12 @@ class Map():
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
           
       else:
-        mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
+        mountain1 = Entity(model=f"models/mountain{randomNum}.obj", 
+                          texture=f"textures/mountainTexture{randomNum}.png",
+                          parent=mountain1,
+                          scale=1)
 
         mountain1.position = Vec3(0,0,8)
-
-        mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
 
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
 
@@ -125,22 +141,23 @@ class Map():
       randomNum = random.randint(1,2)
 
       if i==0:
-        mountain1 = Entity(model = f"models/mountain{randomNum}.obj", texture = f"textures/mountainTexture{randomNum}.png",parent = Map.root_entity, scale = Map.smallestSide/10)
+        mountain1 = Entity(model = f"models/mountain{randomNum}.obj",
+                           texture = f"textures/mountainTexture{randomNum}.png",
+                           parent = Map.root_entity,
+                           scale = Map.smallestSide/10)
+        
         mountain1.rotation_z = 90
         mountain1.rotation_y = 90
         mountain1.rotation_x = -90
         mountain1.position = Vec3(-Map.waterBufferX, Map.waterBufferY,0)
-        
-        
-        mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
-
 
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
 
       else:
-        mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
-
-        mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
+        mountain1 = Entity(model=f"models/mountain{randomNum}.obj",
+                           texture=f"textures/mountainTexture{randomNum}.png",
+                           parent=mountain1,
+                           scale=1)
         
         mountain1.position = Vec3(0,0,-8)
 
@@ -152,56 +169,65 @@ class Map():
       randomNum = random.randint(1,2)
 
       if i==0:
-        mountain1 = Entity(model = f"models/mountain{randomNum}.obj", texture = f"textures/mountainTexture{randomNum}.png",parent = Map.root_entity, scale = Map.smallestSide/10)
+        mountain1 = Entity(model = f"models/mountain{randomNum}.obj", 
+                           texture = f"textures/mountainTexture{randomNum}.png",
+                           parent = Map.root_entity, 
+                           scale = Map.smallestSide/10)
+        
         mountain1.rotation_z = 90
         mountain1.rotation_y = 90
         mountain1.rotation_x = 90
         
 
-        mountain1.position = Vec3(Map.waterMinX * 2 + Map.waterBufferX, Map.waterBufferY,0)
-
-        mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
+        mountain1.position = Vec3(Map.waterMinX / 2 + Map.waterBufferX, Map.waterBufferY,0)
 
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
         
       elif i == 1:
-        mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
+        mountain1 = Entity(model=f"models/mountain{randomNum}.obj",
+                           texture=f"textures/mountainTexture{randomNum}.png",
+                           parent=mountain1, 
+                           scale=1)
 
-        mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
-        
         mountain1.position = Vec3(0,0,-8)
 
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
 
       elif i == 2:
-        mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
-
-        mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
+        mountain1 = Entity(model=f"models/mountain{randomNum}.obj", 
+                           texture=f"textures/mountainTexture{randomNum}.png",
+                           parent=mountain1, 
+                           scale=1)
         
         mountain1.position = Vec3(0,0,16)
         
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
 
       else:
-        mountain1 = Entity(model=f"models/mountain{randomNum}.obj", texture=f"textures/mountainTexture{randomNum}.png",parent=mountain1, scale=1)
-
-        mountainBottom1 = Entity(model=f"models/mountainBottom{randomNum}.obj", color=rgb(120,120,120), scale=1, parent=mountain1)
+        mountain1 = Entity(model=f"models/mountain{randomNum}.obj",
+                           texture=f"textures/mountainTexture{randomNum}.png",
+                           parent=mountain1,
+                           scale=1)
         
         mountain1.position = Vec3(0,0,8)
         
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
-        
-#Majd ide vmi better name kene
-class Fish():
 
+
+class Fish():
   def point(x, y, z, value):
-    point = Entity(model="models/fish.obj", texture="textures/fish.png", scale=int(value) / 4, collider="sphere", )
+    point = Entity(model="models/fish.obj",
+                   texture="textures/fish.png",
+                   scale=int(value) / 4,
+                   collider="sphere")
+    
     point.position = Vec3(int(x),-int(y),int(z))
     point.rotation = Vec3(1,1,random.randint(1,359))
     point.parent = Map.root_entity
 
-    point.data = {"x":x, "y":y, "z":z, "value":value}
+    lookPoint = Entity(position = point.position)
 
+    point.data = {"x":x, "y":y, "z":z, "value":value, "lookPoint":lookPoint}
     Settings.inRangePoints.append(point)
 
   for i in range(len(Settings.FishPositions)):
@@ -213,48 +239,77 @@ class Fish():
     point(x, y, z, e)
 
 class Camera():
-  cameraOrbiter = Entity(position=Vec3(Map.waterMinX, -Map.waterMinY,-Map.largestSide * 2), parent = Map.root_entity, scale = 1)
+  if not Settings.FPSViewBool:
+    cameraOrbiter = Entity(position=Vec3(Map.waterMinX/4,
+                                        -Map.waterMinY/4,-Map.largestSide * 2), 
+                                        parent = Map.root_entity)
 
-  camera.parent = cameraOrbiter
-  camera.position = (0,-Map.largestSide * 2,0)
-  camera.rotation_x = -45
-  
-  bancs = 0
+    camera.parent = cameraOrbiter
+    camera.position = (0,-Map.largestSide * 2,0)
+    camera.rotation_x = -45
 
-# assets---------------------------------------------------------------
 
 class Assets():
-
   diveBot = Entity(model="models/Michael(submarine).obj", 
                   texture="textures/Michael(sub)Texture.png",
                   scale = (Map.waterMinX * Map.waterMinZ * Map.waterMinY) / (Map.waterMinX * Map.waterMinZ * Map.waterMinY),
                   parent=Map.root_entity, 
                   collider="sphere")
+  
   diveBot.rotation_x = -90
 
-  pointDetection = Entity(collider="sphere",parent=diveBot)
+  pointDetection = Entity(collider="sphere",
+                          parent=diveBot)
+  
   if Map.waterMinZ * Map.waterMinX * Map.waterMinY <= 1 :
       pointDetection.scale = 10000
   else:
     pointDetection.scale = Map.waterMinZ * Map.waterMinX * Map.waterMinY
 
+
   circleList = [] 
   
   def buh(temp, item):
-    
-    if Camera.bancs == 44:
-      print(temp)
-    Camera.bancs += 1
-    
     mans = int(temp[55])*2
 
-    circle = Entity(model="sphere", color=rgb(200,0,200), scale=mans, collider="sphere", alpha = 0, position=item.position, parent=Map.root_entity)
+    circle = Entity(model="sphere", 
+                    color=rgb(200,0,200), 
+                    scale=mans, 
+                    collider="sphere", 
+                    alpha = 0, 
+                    position=item.position, 
+                    parent=Map.root_entity)
       
     Assets.circleList.append(circle)
-  
-#Tudom hogy rosszul irtam le, idc
+
+# -----------------------///////FPS CAMERA HANDELING//////-------------------------
+
+if Settings.FPSViewBool:
+      Settings.canMoveCamera = False
+      camera.parent = Assets.diveBot
+      camera.position = (0,0,0)
+      camera.fov = 100
+
+      Assets.diveBot.alpha = 0
+      Map.water.alpha = 0
+      Map.outsideWater.alpha = .5
+      Map.outsideWater.rotation_x = 180
+      Map.outsideWater.z = -1
+      
+
+      PointLight(parent = camera, y = 100, rotation_x = -90)
+
+      Entity(parent = camera,
+              model = "quad",
+              color = rgb(0,0,200),
+              alpha = .3,
+              z=1,
+              scale = 5,
+              unlit = True)
+
+# -----------------------/////////////-------------------------
+
 class Algorithms():
-  
   def closestValueFinder():
     closestPointdist = 100000000000
 
@@ -278,10 +333,7 @@ class Algorithms():
   # print("asdjsaoudhaiuhdiu")
   # closestPoint = closestValueFinder()
   # closestValueFinder()
-  
-  #Moho angolul frfr
-  #De am van par otlet
-  
+
   def Gubi():
     global inRangePoints
     
@@ -312,22 +364,16 @@ class Algorithms():
   
   
   def drawCircles():
-    
     temp = []
     
     for item in Settings.inRangePoints:
-      
       for point in Settings.inRangePoints:
-        
         temp.append(round(distance(item, point), 5))
-        
+
       temp.remove(0.0)
-      
       res = []
       [res.append(x) for x in temp if x not in res]
-        
       res.sort()
-      
       Assets.buh(res, item)
       
       res = []
@@ -394,10 +440,13 @@ class Algorithms():
 
           
 class Game():
+# -----------------------///////AUDIO//////-------------------------
 
-# code-----------------------------------------------------------------
-
-  music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3', autoplay=True, auto_destroy=False, volume=0.3)
+  music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3',
+                autoplay=True, 
+                auto_destroy=False, 
+                volume=0.3)
+  
   musicIsPlaying = False
 
   def playMusic():
@@ -406,20 +455,33 @@ class Game():
       musicIsPlaying = True
       Game.music.play()
       invoke(Game.playMusic, delay=200)
+
+# -----------------------/////////////-------------------------
   
   def moveToGem():
     if len(Settings.inRangePoints) > 0:
 
-      Assets.diveBot.animate('position', Algorithms.closestPoint.position, duration=distance(Assets.diveBot, Algorithms.closestPoint)/Settings.Speed, curve=curve.linear)
-      Assets.diveBot.look_at(Algorithms.closestPoint)
+      Assets.diveBot.animate('position', 
+                             Algorithms.closestPoint.position, 
+                             duration=distance(Assets.diveBot, Algorithms.closestPoint)/Settings.Speed, 
+                             curve=curve.linear)
+      
+      Assets.diveBot.rotation = (180,0,0)
+      Assets.diveBot.look_at(Algorithms.closestPoint.data["lookPoint"])
 
     elif len(Settings.inRangePoints) <= 0:
-      Assets.diveBot.animate('position', Settings.origindiveBot, duration=distance(Assets.diveBot, Settings.origindiveBot)/Settings.Speed, curve=curve.linear)
+      Assets.diveBot.animate('position', 
+                             Settings.origindiveBot, 
+                             duration=distance(Assets.diveBot, Settings.origindiveBot)/Settings.Speed, 
+                             curve=curve.linear)
+      
+      Assets.diveBot.rotation = (180,0,0)
       Assets.diveBot.look_at(Settings.origindiveBot)
 
   if len(Settings.inRangePoints) > 0:
     moveToGem()
 
+# -----------------------///////UPDATE METHOD//////-------------------------
 
 def update():
   UI.fps_text.text = f"FPS: {int(round(1 / time.dt, 2))}"
@@ -450,41 +512,46 @@ def update():
 
   cameraHandeler()
 
-# User input handeling--------------------------------------------------------------
-#Held Actions
-  
+# -----------------------/////////////-------------------------
+
+# -----------------------///////USERINPUT HANDELING//////-------------------------
+
+#Held Actions  
 def cameraHandeler():
-  if held_keys["a"]:
-    Camera.cameraOrbiter.rotation_z += 1 * time.dt * Settings.cameraSpd * 7
+  if Settings.canMoveCamera:
+    if held_keys["a"]:
+      Camera.cameraOrbiter.rotation_z += 1 * time.dt * Settings.cameraSpd * 7
 
-  elif held_keys["d"]:
-    Camera.cameraOrbiter.rotation_z -= 1 * time.dt * Settings.cameraSpd * 7
+    elif held_keys["d"]:
+      Camera.cameraOrbiter.rotation_z -= 1 * time.dt * Settings.cameraSpd * 7
 
-  elif held_keys["s"] and camera.rotation_x < 0:
-    camera.rotation_x += 1 * time.dt * Settings.cameraSpd * 5
+    elif held_keys["s"] and camera.rotation_x < 0:
+      camera.rotation_x += 1 * time.dt * Settings.cameraSpd * 5
 
-  elif held_keys["w"] and camera.rotation_x > -180:
-    camera.rotation_x -= 1 * time.dt * Settings.cameraSpd * 5
+    elif held_keys["w"] and camera.rotation_x > -180:
+      camera.rotation_x -= 1 * time.dt * Settings.cameraSpd * 5
 
-  elif held_keys["left control"] and Camera.cameraOrbiter.z < 10:
-    Camera.cameraOrbiter.z += 1 * time.dt * Settings.cameraSpd * 7
+    elif held_keys["left control"] and Camera.cameraOrbiter.z < 10:
+      Camera.cameraOrbiter.z += 1 * time.dt * Settings.cameraSpd * 7
 
-  elif held_keys["space"] and Camera.cameraOrbiter.z > -Map.largestSide * 10:
-    Camera.cameraOrbiter.z -= 1 * time.dt * Settings.cameraSpd * 7
+    elif held_keys["space"] and Camera.cameraOrbiter.z > -Map.largestSide * 10:
+      Camera.cameraOrbiter.z -= 1 * time.dt * Settings.cameraSpd * 7
 
 #One Time actions
 def input(key):
-  if key == Keys.scroll_up and camera.y < 0:
-    camera.y += 10
+  if Settings.canMoveCamera:
+    if key == Keys.scroll_up and camera.y < 0:
+      camera.y += 10
 
-  elif key == Keys.scroll_down and camera.y > -Map.largestSide * 10:
-    camera.y -= 10
+    elif key == Keys.scroll_down and camera.y > -Map.largestSide * 10:
+      camera.y -= 10
 
-#Engine required stuff && and startup functions---------------------------------------------------------
-
+# -----------------------///////ENGINE PARAMETERS && STARTUP FUNCTIONS//////-------------------------
+      
 Map.generateEnv()
 invoke(Game.playMusic, delay=200)
 
-Sky(texture = "sky_default")
-PointLight( position = (-4,-4,-10), parent = Map.water)
+skybox_texture = load_texture("skyboxes/FS002_Day_Sunless.png")
+Sky(texture = skybox_texture)
+PointLight( position = (0,-4,-10), parent = Map.water)
 Settings.app.run()
