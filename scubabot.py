@@ -72,7 +72,9 @@ class Map():
 
   root_entity = Entity(rotation_x = 90)
 
-  water = Entity(parent=root_entity,
+  water = Entity(model = "models/water.obj",
+                 texture = "textures/waterTexture.png",
+                 parent=root_entity,
                  scale=Vec3(waterMinX/2 + waterBufferX, waterMinY/2 + waterBufferY, waterMinZ/2),
                  position = (waterMinX/2, -waterMinY/2, waterMinZ/2),
                  alpha = .65)
@@ -80,7 +82,7 @@ class Map():
   outsideWater = Entity(parent = root_entity,
                         model="quad",
                         color=color.blue,
-                        position = (0,0,0),
+                        position = (0,0,waterMinZ),
                         scale = (waterMinX * waterMinY,waterMinX * waterMinY,0),
                         unlit = True,
                         alpha = .5)
