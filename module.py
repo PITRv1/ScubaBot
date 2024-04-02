@@ -1,4 +1,4 @@
-from tkvideo import tkvideo
+from assets.lib.tkvideo import tkvideo
 from moviepy.editor import VideoFileClip
 import math
 from PIL import Image
@@ -9,7 +9,7 @@ from typing import Callable
 from ast import literal_eval
 
 config = RawConfigParser()
-config.read("config.conf")
+config.read("config.conf", encoding="utf8")
 
 timescale = config.getint("LOADING", "timescale")
 fastboot = config.getboolean("LOADING", "fastboot")
@@ -95,31 +95,31 @@ def PlaceRow(attributes: list, values:list):
         value.place(x=1110, y=ypos, anchor="e")
 
 
-def SetSpeedAndTime(speed: str, speedtype: str, time: str, timetype: str, Function: Callable):
+def SetSpeedAndTime(speed: str, speedtype: str, time: str, timetype: str):
     try:
         if speed and time:
-            speed, time = float(speed), float(time)
+            speed, time = float(speed), int(time)
 
             if(speedtype == "km/h"):
-                speed = round(speed * 3.6)
+                speed = speed * 3.6
             else:
-                speed = round(speed)
+                speed = speed
 
             if(timetype == "perc"):
-                time = int(time*60)
+                time = time*60
             else:
                 time = round(time)
 
             config.set("3DSCENE", "speed", speed)
             config.set("3DSCENE", "time", time)
             SaveConfig()
-            Function()
+            return True
     except:
-        pass
+        return False
 
 
 def GetMedence() -> list:
-    config.read("config.conf")
+    config.read("config.conf",  encoding="utf8")
 
     medence = config.get("3DSCENE", "medence")
     medence = literal_eval(medence)
@@ -127,24 +127,36 @@ def GetMedence() -> list:
     return medence
 
 
-def SelectPath(label: CTkLabel, delfirstrow: StringVar):
+def SelectPath(label: CTkLabel):
+    global positionsfilepath
     file = filedialog.askopenfilename(initialdir="/", title="Pontok megadása", filetypes=(("Szöveges fájl", "*.txt"),))
     filepathtext = file
+    positionsfilepath = file
 
     if len(file) > 100:
         filepathtext = file[:100]+"..."
     else:
         filepathtext = file
-
     if file:
         label.configure(text=filepathtext)
-        LoadPositionsFromFile(file, delfirstrow)
     else:
         label.configure(text="Hiba: Kérem adja meg a fájlt!")
 
 
-def LoadPositionsFromFile(file: str, delfirstrow: StringVar):
-    gyongyok = open(file)
+def SetAlgorithm(algo: str):
+    
+    if algo == "Egyszerű":
+        algo = 1
+    elif algo == "Mohó":
+        algo = 2
+    
+    config.set("3DSCENE", "algo", algo)
+    SaveConfig()
+
+
+
+def LoadPositionsFromFile(delfirstrow: StringVar):
+    gyongyok = open(positionsfilepath)
     sorok = gyongyok.readlines()
     gyongyok.close()
 
@@ -155,12 +167,12 @@ def LoadPositionsFromFile(file: str, delfirstrow: StringVar):
 
     positions = {}
     x, y, z = 0, 0, 0
+    
+    try:
+        for i in range(len(sorok)):
+            sor = sorok[i].split(";")
+            sor = sor[:-1]
 
-    for i in range(len(sorok)):
-        sor = sorok[i].split(";")
-        sor = sor[:-1]
-
-        try:
             current_x = int(sor[0])
             current_y = int(sor[1])
             current_z = int(sor[2])
@@ -180,12 +192,15 @@ def LoadPositionsFromFile(file: str, delfirstrow: StringVar):
             config.set("3DSCENE", "points", positions)
             config.set("3DSCENE", "medence", [x, y, z])
             SaveConfig()
-        except IndexError and ValueError:
+    except IndexError and ValueError:
             messagebox.showerror("Betöltés sikertelen", "Hiba lépett fel a fájl betöltése során.")
+            return False
+    return True
+    
 
 
 def SaveConfig():
-    with open("config.conf", 'w') as configfile:
+    with open("config.conf", 'w', encoding="utf8") as configfile:
         config.write(configfile)
 
 
