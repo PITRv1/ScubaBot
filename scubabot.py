@@ -419,18 +419,7 @@ class Algorithms():
           
     #       Assets.circleList.append(circle)
     #       buh = True
-          
-    print(len(Assets.circleList))
-    print("Lenss: ", Assets.circleList[22].scale)
-    
-    Assets.circleList[22].alpha = .3
-    
-    gub = 0
-    for item in Settings.inRangePoints:
-      
-      if item.intersects(Assets.circleList[22]):
-        print("gubs: ", gub)
-        gub += 1  
+
           
         
   drawCircles()
