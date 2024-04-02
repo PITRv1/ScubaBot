@@ -324,38 +324,33 @@ class Algorithms():
     
     if len(Settings.inRangePoints) > 0:
       for point in Settings.inRangePoints:
-        if Assets.pointDetection.intersects(point).hit:
+        
           dist = int(distance(Assets.diveBot,point))
-          val = dist-int(point.data["value"])
+          val = dist/int(point.data["value"])
 
           if val < closestPointdist:
             closestPointdist = val
             closestPoint = point
+            
+      print(len(Settings.inRangePoints))
 
       if (UI.timer.t-(distance(Assets.diveBot, closestPoint)/Settings.Speed)) <= distance(closestPoint, Settings.origindiveBot)/Settings.Speed:
-          Settings.inRangePoints = []
-
+        
+        for point in Settings.inRangePoints:
+        
+          if (UI.timer.t-(distance(Assets.diveBot, point)/Settings.Speed)) >= distance(point, Settings.origindiveBot)/Settings.Speed:
+            
+            print("gapplse")
+            
+            closestPoint = point
+              
+      if (UI.timer.t-(distance(Assets.diveBot, closestPoint)/Settings.Speed)) <= distance(closestPoint, Settings.origindiveBot)/Settings.Speed:
+        
+        Settings.inRangePoints = []
+          
       if len(Settings.inRangePoints) > 0:
         return closestPoint
   
-  
-  def drawCircles():
-    temp = []
-    
-    for item in Settings.inRangePoints:
-      for point in Settings.inRangePoints:
-        temp.append(round(distance(item, point), 5))
-
-      temp.remove(0.0)
-      res = []
-      [res.append(x) for x in temp if x not in res]
-      res.sort()
-      Assets.buh(res, item)
-      
-      res = []
-      temp = []
-        
-  drawCircles()
   closestPoint = Gubi()
   Gubi()
 
@@ -442,7 +437,8 @@ def update():
         UI.pointcount.text = f'Points: {UI.points}'
         Algorithms.closestPoint.color = color.red
 
-        Settings.inRangePoints.remove(Algorithms.closestPoint)
+        if Algorithms.closestPoint in Settings.inRangePoints:
+          Settings.inRangePoints.remove(Algorithms.closestPoint)
         destroy(Algorithms.closestPoint)
 
         Algorithms.closestPoint = Algorithms.Gubi()
