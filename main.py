@@ -254,9 +254,9 @@ def LoadMichaelApp():
             speedtime_done_button.place(relx=0.5, rely=0.65, anchor=CENTER)
 
             def SetInfo():
-                SetSpeedAndTime(speed_input.get(), speed_dropdown.get(), time_input.get(), time_dropdown.get())
-                SetAlgorithm(algo_dropdown.get())
-                LoadVideos()
+                if (SetSpeedAndTime(speed_input.get(), speed_dropdown.get(), time_input.get(), time_dropdown.get())):
+                    SetAlgorithm(algo_dropdown.get())
+                    LoadVideos()
 
 
         def LoadVideos():
@@ -287,7 +287,7 @@ def LoadMichaelApp():
                 except:
                     Popen(["python3", "scubabot.py"])
 
-
+        
         LoadOpenFileStage()
 
 if fastboot:

@@ -98,23 +98,24 @@ def PlaceRow(attributes: list, values:list):
 def SetSpeedAndTime(speed: str, speedtype: str, time: str, timetype: str):
     try:
         if speed and time:
-            speed, time = float(speed), float(time)
+            speed, time = float(speed), int(time)
 
             if(speedtype == "km/h"):
-                speed = round(speed * 3.6)
+                speed = speed * 3.6
             else:
-                speed = round(speed)
+                speed = speed
 
             if(timetype == "perc"):
-                time = int(time*60)
+                time = time*60
             else:
                 time = round(time)
 
             config.set("3DSCENE", "speed", speed)
             config.set("3DSCENE", "time", time)
             SaveConfig()
+            return True
     except:
-        pass
+        return False
 
 
 def GetMedence() -> list:
@@ -146,7 +147,7 @@ def SetAlgorithm(algo: str):
     
     if algo == "Egyszerű":
         algo = 1
-    elif algo == "MOHÓ":
+    elif algo == "Mohó":
         algo = 2
     
     config.set("3DSCENE", "algo", algo)
