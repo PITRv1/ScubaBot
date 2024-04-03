@@ -56,6 +56,15 @@ Ha mind ez sikerült, akkor látni kell 2 darab ikont az asztal bal felső sark�
 4. Amennyiben van ideje, nézze végig az animációkat.
 ![Screenshot 2024-04-03 204247](https://github.com/PITRv1/ScubaBot/assets/159771306/2bfaff62-67aa-4924-acc5-50f270897947)
 
-> [!IMPORTANT]
-> Én, amiután megcsináltam az animációkat.
-> ![Screenshot 2024-04-02 175905](https://github.com/PITRv1/ScubaBot/assets/159771306/85c024bf-33fe-483e-adaf-e8ba93bd03d3)
+5. A program majd automatikusan bezárja magát és elindítja a 3D-s környzetet.
+1. Kamera forgatása
+   -W: felfele
+   -S: lefele
+   -A: balra
+   -D: jobbra
+
+2. Kamera mozgása
+   -LEFT CTRL: lefele
+   -SPACE: felfele
+   -GÖRGŐ FEL: közelítés
+   -GÖRGŐ LE:  távolítás
