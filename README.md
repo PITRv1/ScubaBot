@@ -87,4 +87,4 @@ Ha mind ez sikerült, akkor látni fog 2 darab ikont az asztal bal felső sarká
 > [!NOTE]
 > ![Screenshot 2024-04-03 205549](https://github.com/PITRv1/ScubaBot/assets/159771306/51142a55-81fa-4d63-8a9a-b654377564ff)
 > 
-> A start gombra kattintva meg tudja nyitni a start menüt, ahol be tudja zárni a programot.
+> A start gombra kattintva meg tudja nyitni a start menüt, ahol be tudja zárni a Sea OS-t.
