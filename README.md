@@ -69,7 +69,7 @@ Ha mind ez sikerült, akkor látni fog 2 darab ikont az asztal bal felső sarká
 
 ---
 
-5. A micheal program majd automatikusan bezárja magát és elindítja a 3D-s környzetet.
+5. A _**buvar.run**_ program majd automatikusan bezárja magát és elindítja a 3D-s környzetet.
 - Kamera forgatása
    - W: felfele
    - S: lefele
