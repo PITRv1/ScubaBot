@@ -47,10 +47,10 @@ Ha mind ez sikerült, akkor látni kell 2 darab ikont az asztal bal felső sark�
 
 ![Screenshot 2024-04-03 203150](https://github.com/PITRv1/ScubaBot/assets/159771306/51d912dc-b2e7-459f-b68a-70d1e6820c55)
 
-3. Állítsa be a medencét tetszőleges méretre vagy hagyja a minimum értékeken.
+2. Állítsa be a medencét tetszőleges méretre vagy hagyja a minimum értékeken.
 ![Screenshot 2024-04-03 203804](https://github.com/PITRv1/ScubaBot/assets/159771306/7f65afd8-c4f6-4ee7-863b-4b9e17bab764)
 
-4. Adja meg az időt, sebességet és amennyiben szeretne belsőnézetben lenni, pipálja be a dobozt.
+3. Adja meg az időt, sebességet és amennyiben szeretne belsőnézetben lenni, pipálja be a dobozt.
 ![Screenshot 2024-04-03 204031](https://github.com/PITRv1/ScubaBot/assets/159771306/b18075f5-2956-47e5-be47-998d436f26a7)
 
 
