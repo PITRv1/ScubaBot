@@ -77,7 +77,6 @@ def collectCloud(cloudList, avalibleDist, allPoints, finalChain):
   if cloudList:
     firstCloud = cloudList[0]
 
-
     if avalibleDist >= distance(currentLocation, firstCloud) + distance(originPoint, firstCloud) + firstCloud.data["numberOfElements"] * cloudRad:
 
       avalibleDist -= distance(currentLocation, firstCloud) + distance(originPoint, firstCloud) + firstCloud.data["numberOfElements"] * cloudRad

@@ -3,23 +3,40 @@ import time
 import ast
 import math
 from module import GetMedence, config
-
+from algorithm import collectCloud, calculateClouds, updateCurrentLocation, pathCalculation
 
 class Settings():
-  app = Ursina(icon="./assets/images/michael.ico", 
-               title="Scubabot")
+  app = Ursina(icon='./assets/images/michael.icon', 
+               title='Scubabot',
+               development_mode = False)
   
+  window.title = 'Scubabot'
+  window.cog_button.enabled = False
+  window.fps_counter.enabled = False
+  
+  window.collider_counter.enabled = False
+  window.entity_counter.enabled = False
   window.borderless = False
+  window.fullscreen = False
   
   Speed = float(config.get("3DSCENE", "speed"))
   Time = config.getint("3DSCENE", "time")
+  maxDistance = Speed*Time
   FPSViewBool = config.getboolean("3DSCENE", "fps")
   RawFishPositions = config.get("3DSCENE", "points")
   FishPositions = ast.literal_eval(RawFishPositions)
+  
+  deletedPoints = []
 
   cameraSpd = 10
   dur = 10
-  origindiveBot = (0, 0, 0)
+  origindiveBot = diveBot = Entity(model="models/Michael(submarine).obj", 
+                  texture="textures/Michael(sub)Texture.png",
+                  scale = 0,
+                  parent=Entity(rotation_x = 90),
+                  collider="sphere",
+                  rotation_x = -90)
+  origindiveBot.data = {"lookPoint": origindiveBot.position, "value": 0}
   points = 0
   inRangePoints = []
   canMoveCamera = True
@@ -251,8 +268,8 @@ class Fish():
 
 class Camera():
   if not Settings.FPSViewBool:
-    cameraOrbiter = Entity(position=Vec3(Map.waterMinX/4,
-                                        -Map.waterMinY/4,-Map.largestSide * 2), 
+    cameraOrbiter = Entity(position=Vec3(Map.waterMinX/2,
+                                        -Map.waterMinY/2,-Map.largestSide * 2), 
                                         parent = Map.root_entity)
 
     camera.parent = cameraOrbiter
@@ -275,22 +292,6 @@ class Assets():
       pointDetection.scale = 10000
   else:
     pointDetection.scale = Map.waterMinZ * Map.waterMinX * Map.waterMinY
-
-
-  circleList = [] 
-  
-  def buh(temp, item):
-    mans = int(temp[55])*2
-
-    circle = Entity(model="sphere", 
-                    color=rgb(200,0,200), 
-                    scale=mans, 
-                    collider="sphere", 
-                    alpha = 0, 
-                    position=item.position, 
-                    parent=Map.root_entity)
-      
-    Assets.circleList.append(circle)
 
 # -----------------------///////FPS CAMERA HANDELING//////-------------------------
 
@@ -317,74 +318,146 @@ if Settings.FPSViewBool:
 # -----------------------/////////////-------------------------
 
 class Algorithms():
-  def closestValueFinder():
-    closestPointdist = 100000000000
-
-    if len(inRangePoints) > 0:
-      for point in inRangePoints:
-        if Assets.pointDetection.intersects(point).hit:
-          dist = int(distance(Assets.diveBot,point))
-          val = dist-int(point.data[3])
-
-          if val < closestPointdist:
-            closestPointdist = val
-            closestPoint = point
-
-      if (UI.timer.t-(distance(Assets.diveBot, closestPoint)/Settings.Speed)) <= distance(closestPoint, Settings.origindiveBot)/Settings.Speed:
-          inRangePoints = []
-
-      if len(inRangePoints) > 0:
-        return closestPoint
-      
-  def Gubi():
+  
+  def makePath(self, points, pointList, num):
     
-    for point in Settings.inRangePoints:
-      if point.data["value"] < 6:
-        
-        Settings.inRangePoints.remove(point)
-        
+    for point in points:
+      if point.data["value"] < num:
+
+        Settings.deletedPoints.append(point)
+        points.remove(point)
+    
     closestPointdist = 100000000000
     
-    if len(Settings.inRangePoints) > 0:
-      for point in Settings.inRangePoints:
-        
-          dist = int(distance(Assets.diveBot,point))
+    if len(points) > 0:
+      for point in points:
+
+          if len(pointList) == 0:
+            dist = int(distance(Assets.diveBot, point))
+          else:
+            dist = int(distance(pointList[-1], point))
           val = dist/int(point.data["value"])
 
           if val < closestPointdist:
             closestPointdist = val
             closestPoint = point
             
-      print(len(Settings.inRangePoints))
-
-      if (UI.timer.t-(distance(Assets.diveBot, closestPoint)/Settings.Speed)) <= distance(closestPoint, Settings.origindiveBot)/Settings.Speed:
-        
-        for point in Settings.inRangePoints:
-        
-          if (UI.timer.t-(distance(Assets.diveBot, point)/Settings.Speed)) >= distance(point, Settings.origindiveBot)/Settings.Speed:
-            
-            print("gapplse")
-            
-            closestPoint = point
-              
-      if (UI.timer.t-(distance(Assets.diveBot, closestPoint)/Settings.Speed)) <= distance(closestPoint, Settings.origindiveBot)/Settings.Speed:
-        
-        Settings.inRangePoints = []
-          
-      if len(Settings.inRangePoints) > 0:
-        return closestPoint
+      points.remove(closestPoint)
+      pointList.append(closestPoint)
+    
+    if len(points) > 0:
+      return(self(self, points, pointList, num))
+    
+    return(pointList) 
   
-  closestPoint = Gubi()
-  Gubi()
+  def makeDelPath(self, points, pointingList, prevList):
+    
+    closestPointdist = 100000000000
+    
+    if len(points) > 0:
+      
+      for point in points:
 
+          if len(pointingList) == 0:
+            dist = int(distance(prevList[-1], point))
+          else:
+            dist = int(distance(pointingList[len(pointingList)-1], point))
+          val = dist/int(point.data["value"])
+
+          if val < closestPointdist:
+            closestPointdist = val
+            closestPoint = point
+            
+      points.remove(closestPoint)
+      pointingList.append(closestPoint)
+    
+    if len(points) > 0:
+      return(self(self, points, pointingList, prevList))
+    
+    return(pointingList)
+  
+  def calculatePath(self, pointList, distLeft, path, delPointList):
+    
+    prevPoint = Settings.origindiveBot.position
+    
+    opoint = Settings.origindiveBot.position
+    
+    for point in pointList:
+      
+        if distLeft-distance(prevPoint, point) >= distance(point, opoint):
           
+          path.append(point)
+          distLeft -= distance(prevPoint, point)
+          prevPoint = point
+        
+    for points in delPointList:
+      
+        if distLeft > distance(points.position, opoint)+distance(prevPoint, points):
+          
+          path.append(points)
+          distLeft-=distance(prevPoint, points)
+          prevPoint = points
+        
+    path.append(Settings.origindiveBot)
+    
+    return(path)
+  
+  temp = []
+  
+  for item in Settings.inRangePoints:
+    
+    temp.append(item.data["value"])
+
+  maxNum = max(temp)
+  
+  paths = []
+  
+  for i in range(maxNum+1):
+    
+    pointList = makePath(makePath, Settings.inRangePoints[:], [], i)
+    delPointList = makeDelPath(makeDelPath, Settings.deletedPoints, [], pointList)
+    path = calculatePath(calculatePath, pointList, Settings.maxDistance, [], delPointList)
+    
+    paths.append(path)
+    
+  helper = {}
+  helper2 = []
+  forme = {}
+    
+  for item in paths:
+  
+    pront = 0
+    
+    for point in item:
+      
+      pront += point.data["value"]
+    
+    helper2.append(pront)
+    
+    helper.update({f"{pront}": item})
+  
+  bestAlg = max(helper2)
+  
+  path = helper[f"{bestAlg}"]
+  
+  pront = 0
+    
+  for point in path:
+      
+    pront += point.data["value"]
+    
+  print("pontok: ", pront)
+  
+  with open("pontok.txt", "a") as f:
+     f.write(f"Pontok száma: {pront} \n\n")
+     
 class Game():
 # -----------------------///////AUDIO//////-------------------------
 
   music = Audio(sound_file_name='songs/LakeSide Saucebook.mp3',
                 autoplay=True, 
                 auto_destroy=False, 
-                volume=0.3)
+                volume=1)
 
   waterSounds = Audio(sound_file_name='songs/Sea Waves - Sound Effect.mp3', 
                       autoplay=True, 
@@ -399,12 +472,11 @@ class Game():
     
   musicIsPlaying = False
 
-  def playMusic():
-    global musicIsPlaying
+  def playMusic(musicIsPlaying):
     if not musicIsPlaying:
       musicIsPlaying = True
       Game.music.play()
-      invoke(Game.playMusic, delay=200)
+      invoke(Game.playMusic(musicIsPlaying), delay=200)
 
   def playWaterSounds():
     Game.waterSounds.play()
@@ -416,28 +488,18 @@ class Game():
 
 # -----------------------/////////////-------------------------
   
-  def moveToGem():
-    if len(Settings.inRangePoints) > 0:
+  def moveToGem(point):
+    if len(Algorithms.path) > 0:
 
       Assets.diveBot.animate('position', 
-                             Algorithms.closestPoint.position, 
-                             duration=distance(Assets.diveBot, Algorithms.closestPoint)/Settings.Speed, 
+                             point.position, 
+                             duration=distance(Assets.diveBot, point)/Settings.Speed,
                              curve=curve.linear)
       
       Assets.diveBot.rotation = (180,0,0)
-      Assets.diveBot.look_at(Algorithms.closestPoint.data["lookPoint"])
+      Assets.diveBot.look_at(point.data["lookPoint"])
 
-    elif len(Settings.inRangePoints) <= 0:
-      Assets.diveBot.animate('position', 
-                             Settings.origindiveBot, 
-                             duration=distance(Assets.diveBot, Settings.origindiveBot)/Settings.Speed, 
-                             curve=curve.linear)
-      
-      Assets.diveBot.rotation = (180,0,0)
-      Assets.diveBot.look_at(Settings.origindiveBot)
-
-  if len(Settings.inRangePoints) > 0:
-    moveToGem()
+  moveToGem(Algorithms.path[0])
 
 # -----------------------///////UPDATE METHOD//////-------------------------
 
@@ -452,22 +514,18 @@ def update():
     UI.timer.text = f"Time remaining: {round(UI.timer.t, 2)}"
   else:
     UI.timer.text = "Time remaining: 0"
-
-  if len(Settings.inRangePoints) > 0:
-    if Assets.diveBot.intersects(Algorithms.closestPoint).hit or Assets.diveBot.position == Algorithms.closestPoint.position:
-        UI.points += int(Algorithms.closestPoint.data["value"])
-
+  
+  if len(Algorithms.path) > 0:
+    
+    if Assets.diveBot.intersects(Algorithms.path[0]):
+      
+      if Algorithms.path[0] != Settings.origindiveBot:
+        UI.points+=Algorithms.path[0].data["value"]
         UI.pointcount.text = f'Points: {UI.points}'
-        Algorithms.closestPoint.color = color.red
-
-        if Algorithms.closestPoint in Settings.inRangePoints:
-          Settings.inRangePoints.remove(Algorithms.closestPoint)
-        destroy(Algorithms.closestPoint)
-
-        Algorithms.closestPoint = Algorithms.Gubi()
-        Game.moveToGem()
-    else:
-        Algorithms.closestPoint.color = color.gray
+      destroy(Algorithms.path[0])
+      Algorithms.path.pop(0)
+      if len(Algorithms.path) > 0:
+        Game.moveToGem(Algorithms.path[0])
 
   cameraHandeler()
 
