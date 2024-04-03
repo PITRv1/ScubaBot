@@ -31,7 +31,13 @@ Lépjen be a program mappájába. Nyissa meg a _**main.py**_-t. Ez a program fog
 Ha mind ez sikerült, akkor látni kell 2 darab ikont az asztal bal felső sarkában.
 - **sysfo.run**: Ebben a programban találja meg a készítőket.
 
-<p align="center">
+<p align="left">
     <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/9214bd5d-fb8f-4230-9ba9-dfe1dcab2754" style="width:200px; "/>
+</p>
+
+- **buvar.run**: Ezzel a programmal tud csatlakozni M.I.C.H.E.A.L.-höz.
+
+<p align="left">
+    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/1efbd075-3d00-4c47-bcfd-0058499b0aa1" style="width:200px; "/>
 </p>
 
