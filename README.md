@@ -31,7 +31,7 @@ Lépjen be a program mappájába. Nyissa meg a _**main.py**_-t. Ez a program fog
     <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/fefa9293-afa1-4ca4-b927-04ab3cacb4b8" style="width:1920px; "/>
 </p>
 
-Ha mind ez sikerült, akkor látni kell 2 darab ikont az asztal bal felső sarkában.
+Ha mind ez sikerült, akkor látni fog 2 darab ikont az asztal bal felső sarkában.
 - **sysfo.run**: Ebben a programban találja meg a készítőket.
 
 <p align="left">
