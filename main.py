@@ -139,7 +139,7 @@ def LoadMichaelApp():
     quit_button = CTkButton(michwin, font=font, text="Bezárás", fg_color=accentcolor, hover_color=hovercolor, command=lambda: CloseApp())
     current_title = CTkLabel(app, text="betöltés...".upper(), font=title_font, text_color=accentcolor, bg_color=framecolor)
     video_label = CTkLabel(michwin, text="", bg_color=framecolor)
-    skip_button = CTkButton(michwin, text="Átugrás", font=font, bg_color="black", text_color="black" , fg_color="#00FF51", hover_color="#009951", command=lambda: CloseApp())
+    skip_button = CTkButton(michwin, text="Átugrás", font=font, bg_color="black", text_color="black" , fg_color="#00FF51", hover_color="#009951", command=lambda: (CloseApp(), LoadScene()))
 
     # <FÁJL KIVÁLASZTÁS>
     file_frame = CTkFrame(michwin, fg_color=framecolor)
@@ -267,7 +267,7 @@ def LoadMichaelApp():
             def PlaySendVideo():
                 app.after(500, lambda: current_title.configure(text_color="#00FF51", bg_color="black", text="Konfigurációs fájl küldése".upper()))
                 video_label.place(relx=0.5, rely=0.5, anchor=CENTER)
-                app.after(1500, lambda: PlayVideo(app, "./assets/anims/send/send.mp4", video_label, lambda: CloseApp()))
+                app.after(1500, lambda: PlayVideo(app, "./assets/anims/send/send.mp4", video_label, lambda: (CloseApp(), LoadScene())))
 
             PlayFindVideo()
 
@@ -278,7 +278,10 @@ def LoadMichaelApp():
                 michwin.configure(fg_color=appbackgroundcolor)
                 current_title.configure(text_color=accentcolor, bg_color=appbackgroundcolor)
                 LoadDesktopIcons()
-                Popen(["python", "scubabot.py"])
+                
+
+        def LoadScene():
+            Popen(["python", "scubabot.py"])
 
         
         LoadOpenFileStage()

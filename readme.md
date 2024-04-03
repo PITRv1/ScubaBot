@@ -1,0 +1,1 @@
+A readme.md megtalálható a projekt Github oldalán: https://github.com/PITRv1/ScubaBot/blob/master/README.md
