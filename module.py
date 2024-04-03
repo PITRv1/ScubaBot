@@ -143,19 +143,11 @@ def SelectPath(label: CTkLabel):
         label.configure(text="Hiba: Kérem adja meg a fájlt!")
 
 
-def SetAlgorithm(algo: str):
-    
-    if algo == "Egyszerű":
-        algo = 1
-    elif algo == "Mohó":
-        algo = 2
-    
-    config.set("3DSCENE", "algo", algo)
-    SaveConfig()
-
-
-
 def LoadPositionsFromFile(delfirstrow: StringVar):
+
+    if len(positionsfilepath) == 0:
+        return
+
     gyongyok = open(positionsfilepath)
     sorok = gyongyok.readlines()
     gyongyok.close()
