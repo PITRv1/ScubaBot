@@ -175,10 +175,6 @@ def LoadMichaelApp():
     view_var = StringVar(value=0)
     view_checkbox = CTkCheckBox(timeandspeed_frame, font=font, text="Belsőnézet", fg_color=accentcolor, text_color=accentcolor, variable=view_var, onvalue=True, offvalue=False, command=lambda: SetView(int(view_var.get())))
 
-    algo_label = CTkLabel(timeandspeed_frame, text="Algoritmus: ", font=font, text_color=accentcolor, bg_color=framecolor, fg_color=framecolor)
-    algo_dropdown = CTkOptionMenu(timeandspeed_frame, font=font, fg_color=accentcolor, dropdown_font=font, dropdown_hover_color=accentcolor, values=["Egyszerű", "MOHO"])
-
-
 
     if AnimateFrame(michwin, app, 50, 0):
         SetFramesWidthAndHeight(michwin, [file_frame, medence_frame, timeandspeed_frame])
@@ -192,7 +188,7 @@ def LoadMichaelApp():
 
         def LoadOpenFileStage():
             UnloadAssets([medence_frame])
-            current_title.configure(text="adja meg a gyongyok.txt-t".upper())
+            current_title.configure(text="válassza ki a gyöngyöket tartalmazó fájlt".upper())
 
             file_select_button.configure(command=lambda: (SelectPath(file_title), file_done_button.configure(state=NORMAL)))
             file_done_button.configure(command=lambda: WaitForSuccesOrFailure(), state=DISABLED)
@@ -248,17 +244,13 @@ def LoadMichaelApp():
             time_input.place(relx=0.45, rely=0.50, anchor=CENTER)
             time_dropdown.place(relx=0.55, rely=0.50, anchor=CENTER)
 
-            algo_label.place(relx=0.45, rely=0.55, anchor=CENTER)
-            algo_dropdown.place(relx=0.55, rely=0.55, anchor=CENTER)
-
-            view_checkbox.place(relx=0.5, rely=0.60, anchor=CENTER)
+            view_checkbox.place(relx=0.5, rely=0.55, anchor=CENTER)
 
             speedtime_done_button.configure(command=lambda: SetInfo())
             speedtime_done_button.place(relx=0.5, rely=0.65, anchor=CENTER)
 
             def SetInfo():
                 if (SetSpeedAndTime(speed_input.get(), speed_dropdown.get(), time_input.get(), time_dropdown.get())):
-                    SetAlgorithm(algo_dropdown.get())
                     LoadVideos()
 
 
@@ -286,10 +278,7 @@ def LoadMichaelApp():
                 michwin.configure(fg_color=appbackgroundcolor)
                 current_title.configure(text_color=accentcolor, bg_color=appbackgroundcolor)
                 LoadDesktopIcons()
-                try:
-                    Popen(["python", "scubabot.py"])
-                except:
-                    Popen(["python3", "scubabot.py"])
+                Popen(["python", "scubabot.py"])
 
         
         LoadOpenFileStage()
