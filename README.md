@@ -1,6 +1,7 @@
 <p align="center">
     <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/1cae5473-d150-4c05-9bd2-a19618c527dc" style="width:300px; "/>
 </p>
+
 > [!IMPORTANT]
 > Amennyiben lehetséges a program futtatása közben vegye fel a hangerőt a jobb élmény elérése érdekében.
 
