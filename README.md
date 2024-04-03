@@ -25,6 +25,6 @@ Lépjen be a program mappájába. Nyissa meg a _**main.py**_-t. Ez a program fog
     <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/fbf3b679-acaf-41dd-945e-4a3b7db5a2ca" style="width:400px; "/>
 </p>
 <p align="center">
-    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/fefa9293-afa1-4ca4-b927-04ab3cacb4b8" style="width:500px; "/>
+    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/fefa9293-afa1-4ca4-b927-04ab3cacb4b8" style="width:1920px; "/>
 </p>
 
