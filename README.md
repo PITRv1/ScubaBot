@@ -1,5 +1,4 @@
-![michael](https://github.com/PITRv1/ScubaBot/assets/159771306/1cae5473-d150-4c05-9bd2-a19618c527dc)
-
+<img src="(https://github.com/PITRv1/ScubaBot/assets/159771306/1cae5473-d150-4c05-9bd2-a19618c527dc" alt="Image Description" style="width:300px;" />
 
 ## TELEPÍTÉS
 
