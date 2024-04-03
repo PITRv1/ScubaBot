@@ -93,3 +93,5 @@ Ha mind ez sikerült, akkor látni fog 2 darab ikont az asztal bal felső sarká
 
 ---
 ## ALGORITMUS LEÍRÁSA:
+
+A makePath függvény segítségével kiszűri a pontokat úgy, hogy egy pontérték alatt átrakja azokat egy deletedPoints listába. A többi pont a points listában marad. Ezután a points listából készítünk egy olyan listát, amelyet egy for ciklus segítségével optimalitás szerint növekvő sorrendbe rendezünk távolság/érték szempontjából. Ugyanezt megteszzük a deletedPoints listával is. A két lista összefűzésére a calculatePath függvény segítségével kerül sor, amely létrehoz egy útvonalat a búvárrobotnak. A pontértékeket úgy találjuk meg, hogy a pontok közül kiválasztjuk a legnagyobb értéket, és addig ismételjük meg az előző folyamatot, amíg megtaláljuk a legtöbb pontot hozó útvonalat, majd odamozgatjuk a búvárrobotot (figyelembe véve, hogy van-e egyáltalán útvonal, amelyen el tud haladni a robot). Amikor a pontokhoz ér, elküldjük a következő elemhez, ha összeszedte az összeset vagy kezd kifutni az időből, akkor visszamegy a kezdőértékhez.
