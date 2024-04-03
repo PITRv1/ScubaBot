@@ -67,6 +67,11 @@ Ha mind ez sikerült, akkor látni kell 2 darab ikont az asztal bal felső sark�
 4. Amennyiben van ideje, nézze végig az animációkat.
 ![Screenshot 2024-04-03 204247](https://github.com/PITRv1/ScubaBot/assets/159771306/2bfaff62-67aa-4924-acc5-50f270897947)
 
+
+> [!NOTE]
+> A start gombra kattintva meg tudja nyitni a start menüt, ahol be tudja zárni a programot.
+> ![Screenshot 2024-04-03 205549](https://github.com/PITRv1/ScubaBot/assets/159771306/51142a55-81fa-4d63-8a9a-b654377564ff)
+
 ---
 
 5. A program majd automatikusan bezárja magát és elindítja a 3D-s környzetet.
