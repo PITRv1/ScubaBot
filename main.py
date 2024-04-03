@@ -4,12 +4,14 @@ from module import *
 from subprocess import Popen
 
 set_appearance_mode("dark")
+SetView(0)
 app = CTk()
 app.title("SEAOS")
 app.attributes("-fullscreen", True)
 app.iconbitmap("./assets/images/michael.ico")
 default_height = app.winfo_screenheight()
 default_width = app.winfo_screenwidth()
+
 
 # BOOT
 boot_background = CTkLabel(app, text="", image=LoadImage("./assets/images/blackscreen.png", default_width, default_height))
@@ -136,7 +138,8 @@ def LoadMichaelApp():
     win_title = CTkLabel(michwin, text="michael remote shell UI.app".upper(), font=font, text_color=accentcolor, bg_color=appbackgroundcolor)
     quit_button = CTkButton(michwin, font=font, text="Bezárás", fg_color=accentcolor, hover_color=hovercolor, command=lambda: CloseApp())
     current_title = CTkLabel(app, text="betöltés...".upper(), font=title_font, text_color=accentcolor, bg_color=framecolor)
-    found_video_label = CTkLabel(michwin, text="", bg_color=framecolor)
+    video_label = CTkLabel(michwin, text="", bg_color=framecolor)
+    skip_button = CTkButton(michwin, text="Átugrás", font=font, bg_color="black", text_color="black" , fg_color="#00FF51", hover_color="#009951", command=lambda: CloseApp())
 
     # <FÁJL KIVÁLASZTÁS>
     file_frame = CTkFrame(michwin, fg_color=framecolor)
@@ -170,7 +173,7 @@ def LoadMichaelApp():
     time_dropdown = CTkOptionMenu(timeandspeed_frame, font=font, fg_color=accentcolor, dropdown_font=font, dropdown_hover_color=accentcolor, values=["másodperc", "perc"])
 
     view_var = StringVar(value=0)
-    view_checkbox = CTkCheckBox(timeandspeed_frame, font=font, text="Belsőnézet", fg_color=accentcolor, text_color=accentcolor, variable=view_var, onvalue=True, offvalue=False, command=lambda: SetView(view_var))
+    view_checkbox = CTkCheckBox(timeandspeed_frame, font=font, text="Belsőnézet", fg_color=accentcolor, text_color=accentcolor, variable=view_var, onvalue=True, offvalue=False, command=lambda: SetView(int(view_var.get())))
 
     algo_label = CTkLabel(timeandspeed_frame, text="Algoritmus: ", font=font, text_color=accentcolor, bg_color=framecolor, fg_color=framecolor)
     algo_dropdown = CTkOptionMenu(timeandspeed_frame, font=font, fg_color=accentcolor, dropdown_font=font, dropdown_hover_color=accentcolor, values=["Egyszerű", "MOHO"])
@@ -263,21 +266,22 @@ def LoadMichaelApp():
             UnloadAssets([timeandspeed_frame, quit_button, win_title])
             michwin.configure(fg_color="black")
 
+            skip_button.place(relx=0.5, rely=0.8, anchor=CENTER)
             def PlayFindVideo():
                 app.after(500, lambda: current_title.configure(text_color="#00FF51", bg_color="black", text="michael (búvárhajó) megkeresése".upper()))
-                found_video_label.place(relx=0.5, rely=0.5, anchor=CENTER)
-                app.after(1500, lambda: PlayVideo(app, "./assets/anims/found/found.mp4", found_video_label, lambda: PlaySendVideo()))
+                video_label.place(relx=0.5, rely=0.5, anchor=CENTER)
+                app.after(1500, lambda: PlayVideo(app, "./assets/anims/found/found.mp4", video_label, lambda: PlaySendVideo()))
 
             def PlaySendVideo():
                 app.after(500, lambda: current_title.configure(text_color="#00FF51", bg_color="black", text="Konfigurációs fájl küldése".upper()))
-                found_video_label.place(relx=0.5, rely=0.5, anchor=CENTER)
-                app.after(1500, lambda: PlayVideo(app, "./assets/anims/send/send.mp4", found_video_label, lambda: CloseApp()))
+                video_label.place(relx=0.5, rely=0.5, anchor=CENTER)
+                app.after(1500, lambda: PlayVideo(app, "./assets/anims/send/send.mp4", video_label, lambda: CloseApp()))
 
             PlayFindVideo()
 
 
         def CloseApp():
-            UnloadAssets([file_frame, medence_frame, timeandspeed_frame, timeandspeed_frame, current_title, quit_button, win_title])
+            UnloadAssets([file_frame, medence_frame, timeandspeed_frame, timeandspeed_frame, current_title, quit_button, win_title, video_label, skip_button])
             if (AnimateFrame(michwin, app, 50, 0, animtype="close")):
                 michwin.configure(fg_color=appbackgroundcolor)
                 current_title.configure(text_color=accentcolor, bg_color=appbackgroundcolor)

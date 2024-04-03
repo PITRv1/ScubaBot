@@ -199,6 +199,30 @@ class Map():
         mountain1.position = Vec3(0,0,8)
         
         Map.generateBottom(generateAmountZ, randomNum, mountain1)
+            
+    #generate front X side if FPS is on
+    if Settings.FPSViewBool:
+        for i in range(0, math.ceil(generateAmountX) + 1):
+          randomNum = random.randint(1,2)
+
+          if i==0:
+            mountain1 = Entity(model = f"models/mountain{randomNum}.obj", 
+                              texture = f"textures/mountainTexture{randomNum}.png",
+                              parent = Map.root_entity,
+                              scale = Map.smallestSide/10,
+                              rotation = (180, 90, 90),
+                              position = (-Map.waterBufferX, -Map.waterMinY - Map.waterBufferY,0))
+
+            Map.generateBottom(generateAmountZ, randomNum, mountain1)
+
+          else:
+            mountain1 = Entity(model=f"models/mountain{randomNum}.obj", 
+                              texture=f"textures/mountainTexture{randomNum}.png",
+                              parent=mountain1,
+                              scale=1,
+                              position = Vec3(0,0,-8))
+
+            Map.generateBottom(generateAmountZ, randomNum, mountain1)
 
 
 class Fish():
@@ -315,7 +339,6 @@ class Algorithms():
   def Gubi():
     
     for point in Settings.inRangePoints:
-      
       if point.data["value"] < 6:
         
         Settings.inRangePoints.remove(point)
