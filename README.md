@@ -44,6 +44,8 @@ Ha mind ez sikerült, akkor látni kell 2 darab ikont az asztal bal felső sark�
     <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/1efbd075-3d00-4c47-bcfd-0058499b0aa1" style="width:200px; "/>
 </p>
 
+---
+
 1. Adja meg a fájlt, amely tartalmazza a gyöngyök pozicióját.
 > [!NOTE]
 > Figyeljen arra, hogyha a fájl eleje tartalmaz betűket, akkor kapcsolja be az **Első sor törlése** opciót.
