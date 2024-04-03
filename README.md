@@ -1,6 +1,6 @@
-<div style="display: flex; flex-direction: row; margin: 0; justify-content: center; align-content: center">
-  <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/1cae5473-d150-4c05-9bd2-a19618c527dc" alt="Image Description" style="width:300px; " />
-</div>
+<p align="center">
+    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/1cae5473-d150-4c05-9bd2-a19618c527dc" alt="Image Description" style="width:300px; " />
+</p>
 
 ## TELEPÍTÉS
 
