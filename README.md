@@ -48,7 +48,7 @@ Ha mind ez sikerült, akkor látni fog 2 darab ikont az asztal bal felső sarká
 
 1. Adja meg a fájlt, amely tartalmazza a gyöngyök pozicióját.
 > [!NOTE]
-> Figyeljen arra, hogyha a fájl eleje tartalmaz betűket, akkor kapcsolja be az **Első sor törlése** opciót.
+> Figyeljen arra, hogyha a fájl eleje tartalmaz betűket, akkor kapcsolja be az **Első sor törlése** opciót, valamint ügyeljen arra, hogy a fájlban ne legyenek felesleges szóközök és sorok.
 
 ![Screenshot 2024-04-03 203150](https://github.com/PITRv1/ScubaBot/assets/159771306/51d912dc-b2e7-459f-b68a-70d1e6820c55)
 
