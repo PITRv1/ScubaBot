@@ -4,7 +4,7 @@
 
 > [!IMPORTANT]
 > Amennyiben lehetséges a program futtatása közben vegye fel a hangerőt a jobb élmény elérése érdekében.
-> ---
+> 
 > Az összeszedett pontokat megtalálja a pontok.txt-ben.
 
 ## TELEPÍTÉS
