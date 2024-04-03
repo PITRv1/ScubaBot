@@ -58,13 +58,13 @@ Ha mind ez sikerült, akkor látni kell 2 darab ikont az asztal bal felső sark�
 
 5. A program majd automatikusan bezárja magát és elindítja a 3D-s környzetet.
 1. Kamera forgatása
-   -W: felfele
-   -S: lefele
-   -A: balra
-   -D: jobbra
+   - W: felfele
+   - S: lefele
+   - A: balra
+   - D: jobbra
 
 2. Kamera mozgása
-   -LEFT CTRL: lefele
-   -SPACE: felfele
-   -GÖRGŐ FEL: közelítés
-   -GÖRGŐ LE:  távolítás
+   - LEFT CTRL: lefele
+   - SPACE: felfele
+   - GÖRGŐ FEL: közelítés
+   - GÖRGŐ LE:  távolítás
