@@ -1,6 +1,8 @@
 <p align="center">
     <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/1cae5473-d150-4c05-9bd2-a19618c527dc" style="width:300px; "/>
 </p>
+> [!IMPORTANT]
+> Amennyiben lehetséges a program futtatása közben vegye fel a hangerőt a jobb élmény elérése érdekében.
 
 ## TELEPÍTÉS
 
@@ -47,14 +49,22 @@ Ha mind ez sikerült, akkor látni kell 2 darab ikont az asztal bal felső sark�
 
 ![Screenshot 2024-04-03 203150](https://github.com/PITRv1/ScubaBot/assets/159771306/51d912dc-b2e7-459f-b68a-70d1e6820c55)
 
+---
+
 2. Állítsa be a medencét tetszőleges méretre vagy hagyja a minimum értékeken.
 ![Screenshot 2024-04-03 203804](https://github.com/PITRv1/ScubaBot/assets/159771306/7f65afd8-c4f6-4ee7-863b-4b9e17bab764)
+
+---
 
 3. Adja meg az időt, sebességet és amennyiben szeretne belsőnézetben lenni, pipálja be a dobozt.
 ![Screenshot 2024-04-03 204031](https://github.com/PITRv1/ScubaBot/assets/159771306/b18075f5-2956-47e5-be47-998d436f26a7)
 
+---
+
 4. Amennyiben van ideje, nézze végig az animációkat.
 ![Screenshot 2024-04-03 204247](https://github.com/PITRv1/ScubaBot/assets/159771306/2bfaff62-67aa-4924-acc5-50f270897947)
+
+---
 
 5. A program majd automatikusan bezárja magát és elindítja a 3D-s környzetet.
 - Kamera forgatása
