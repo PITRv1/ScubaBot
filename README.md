@@ -32,5 +32,6 @@ Ha mind ez sikerült, akkor látni kell 2 darab ikont az asztal bal felső sark�
 - sysfo.run: Ebben a programban találja meg a készítőket.
 
 <p align="center">
-    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/fefa9293-afa1-4ca4-b927-04ab3cacb4b8" style="width:1920px; "/>
+    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/9214bd5d-fb8f-4230-9ba9-dfe1dcab2754" style="width:1920px; "/>
 </p>
+
