@@ -22,5 +22,5 @@ Kaptál egy új munkát egy Sea Corp. nevezetű cégnél. A te feladatod kezelni
 Lépjen be a program mappájába. Nyissa meg a _**main.py**_-t. Ez a program fogja emulálni a Sea OS-t.
 
 <p align="center">
-    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/fbf3b679-acaf-41dd-945e-4a3b7db5a2ca" style="width:300px; "/>
+    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/fbf3b679-acaf-41dd-945e-4a3b7db5a2ca" style="width:400px; "/>
 </p>
