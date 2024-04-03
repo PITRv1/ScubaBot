@@ -3,7 +3,6 @@ import time
 import ast
 import math
 from module import GetMedence, config
-from algorithm import collectCloud, calculateClouds, updateCurrentLocation, pathCalculation
 
 class Settings():
   app = Ursina(icon='./assets/images/michael.icon', 
@@ -53,7 +52,7 @@ class UI():
   text_x = window.top_left[0]
   text_y = window.top_left[1]
 
-  Text.default_font = "system.ttf"
+  Text.default_font = "./assets/system.ttf"
 
   system_text = Text("Michael 3D Environment Visualizer (M3DEV)", position=(text_x, text_y), color=color.green)
   speed_text = Text(f"Speed: {Settings.Speed} m/s", position=(text_x, text_y-0.03), color=color.green)
@@ -448,7 +447,7 @@ class Algorithms():
     
   print("pontok: ", pront)
   
-  with open("pontok.txt", "a") as f:
+  with open("pontok.txt", "a", encoding="utf8") as f:
      f.write(f"Pontok száma: {pront} \n\n")
      
 class Game():
