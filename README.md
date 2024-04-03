@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/1cae5473-d150-4c05-9bd2-a19618c527dc" style="width:300px; " />
+    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/1cae5473-d150-4c05-9bd2-a19618c527dc" style="width:300px; "/>
 </p>
 
 ## TELEPÍTÉS
@@ -14,5 +14,12 @@ pip install customtkinter moviepy pillow configparser ursina
 Kaptál egy új munkát egy Sea Corp. nevezetű cégnél. A te feladatod kezelni M.I.C.H.A.E.L.-t, a búvárrobotot egy régi számítógépről és egy még régebbi operációs rendszer segítségével.
 
 <p align="center">
-    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/c6da00b1-7dcf-4a1f-bf43-ef91d7eec8a7" style="width:300px; " />
+    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/c6da00b1-7dcf-4a1f-bf43-ef91d7eec8a7" style="width:300px; "/>
+</p>
+
+## ÚTMUTATÓ
+Lépjen be a program mappájába. Nyissa meg a **main.py**-t. Ez a program fogja emulálni a Sea OS-t.
+
+<p align="center">
+    <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/fbf3b679-acaf-41dd-945e-4a3b7db5a2ca" style="width:300px; "/>
 </p>
