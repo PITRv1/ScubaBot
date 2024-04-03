@@ -29,5 +29,5 @@ Lépjen be a program mappájába. Nyissa meg a _**main.py**_-t. Ez a program fog
 </p>
 
 Ha mind ez sikerült, akkor látni kell 2 darab ikont az asztal bal felső sarkában.
--sysfo.run: Ebben a programban találja meg a készítőket.
+- sysfo.run: Ebben a programban találja meg a készítőket.
 ![Screenshot 2024-04-03 202523](https://github.com/PITRv1/ScubaBot/assets/159771306/0daf1241-4e4e-4f25-8c42-876095113d6e) ![Screenshot 2024-04-03 202539](https://github.com/PITRv1/ScubaBot/assets/159771306/1cc40577-200e-4833-9ebf-b7802ddd2574)
