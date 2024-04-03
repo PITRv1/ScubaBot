@@ -5,6 +5,7 @@
 ## TELEPÍTÉS
 
 Töltse le a python minimum 3.12-es verzióját: [Python 3.12.2](https://www.python.org/ftp/python/3.12.2/python-3.12.2-amd64.exe)
+
 Amint feltelepítette a Python-t, a következő paranccsal töltse le a szükséges könyvtárakat:
 ```
 pip install customtkinter moviepy pillow configparser ursina
