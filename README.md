@@ -41,3 +41,7 @@ Ha mind ez sikerült, akkor látni kell 2 darab ikont az asztal bal felső sark�
     <img src="https://github.com/PITRv1/ScubaBot/assets/159771306/1efbd075-3d00-4c47-bcfd-0058499b0aa1" style="width:200px; "/>
 </p>
 
+1. Adja meg a fájlt, amely tartalmazza a gyöngyök pozicióját.
+![Screenshot 2024-04-03 203150](https://github.com/PITRv1/ScubaBot/assets/159771306/51d912dc-b2e7-459f-b68a-70d1e6820c55)
+
+2. 
