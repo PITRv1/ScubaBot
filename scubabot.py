@@ -16,7 +16,7 @@ class Settings():
   window.collider_counter.enabled = False
   window.entity_counter.enabled = False
   window.borderless = False
-  window.fullscreen = False
+  window.fullscreen = True
   
   Speed = float(config.get("3DSCENE", "speed"))
   Time = config.getint("3DSCENE", "time")
@@ -498,7 +498,8 @@ class Game():
       Assets.diveBot.rotation = (180,0,0)
       Assets.diveBot.look_at(point.data["lookPoint"])
 
-  moveToGem(Algorithms.path[0])
+  if len(Algorithms.path) > 0:
+    moveToGem(Algorithms.path[0])
 
 # -----------------------///////UPDATE METHOD//////-------------------------
 
