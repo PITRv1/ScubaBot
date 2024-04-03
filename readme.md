@@ -5,6 +5,9 @@
 > [!IMPORTANT]
 > Amennyiben lehetséges a program futtatása közben vegye fel a hangerőt a jobb élmény elérése érdekében.
 
+> [!IMPORTANT]
+> Az összeszedett pontokat megtalálja a pontok.txt-ben.
+
 ## TELEPÍTÉS
 
 Töltse le a python minimum 3.12-es verzióját: [Python 3.12.2](https://www.python.org/ftp/python/3.12.2/python-3.12.2-amd64.exe)
