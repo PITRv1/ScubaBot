@@ -7,7 +7,7 @@ from module import GetMedence, config
 class Settings():
   app = Ursina(#icon='./assets/images/michael.icon', 
                title='Scubabot',
-               development_mode = False)
+               development_mode = True)
   
   window.title = 'Scubabot'
   window.cog_button.enabled = False

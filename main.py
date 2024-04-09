@@ -281,7 +281,6 @@ def LoadMichaelApp():
                 
 
         def LoadScene():
-            return
             Popen(["python3", "scubabot.py"])
 
         
