@@ -8,7 +8,7 @@ SetView(0)
 app = CTk()
 app.title("SEAOS")
 app.attributes("-fullscreen", True)
-app.iconbitmap("./assets/images/michael.ico")
+#app.iconbitmap("/assets/images/michael.ico")
 default_height = app.winfo_screenheight()
 default_width = app.winfo_screenwidth()
 
@@ -281,7 +281,8 @@ def LoadMichaelApp():
                 
 
         def LoadScene():
-            Popen(["python", "scubabot.py"])
+            return
+            Popen(["python3", "scubabot.py"])
 
         
         LoadOpenFileStage()

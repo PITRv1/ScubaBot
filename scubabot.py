@@ -5,7 +5,7 @@ import math
 from module import GetMedence, config
 
 class Settings():
-  app = Ursina(icon='./assets/images/michael.icon', 
+  app = Ursina(#icon='./assets/images/michael.icon', 
                title='Scubabot',
                development_mode = False)
   

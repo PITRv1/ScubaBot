@@ -91,7 +91,7 @@ def PlaceRow(attributes: list, values:list):
         attribute.configure(font=font, text_color="white", bg_color=framecolor, fg_color=framecolor)
         value.configure(font=font, text_color=accentcolor, bg_color=framecolor, fg_color=framecolor)
 
-        attribute.place(x=770, y=ypos, anchor="w")
+        attribute.place(x=720, y=ypos, anchor="w")
         value.place(x=1110, y=ypos, anchor="e")
 
 
