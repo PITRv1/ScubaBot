@@ -565,7 +565,7 @@ def input(key):
 # -----------------------///////ENGINE PARAMETERS && STARTUP FUNCTIONS//////-------------------------
       
 Map.generateEnv()
-invoke(Game.playMusic, delay=200)
+invoke(Game.playMusic, delay=2000)
 Game.playWaterSounds()
 Game.playForestSounds()
 
