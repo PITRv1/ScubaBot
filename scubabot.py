@@ -549,10 +549,10 @@ def cameraHandeler():
       camera.rotation_x -= 1 * time.dt * Settings.cameraSpd * 5
 
     elif held_keys["left control"] and Camera.cameraOrbiter.z < -10:
-      Camera.cameraOrbiter.z += 1 * time.dt * Settings.cameraSpd * 9
+      Camera.cameraOrbiter.z += 1 * time.dt * Settings.cameraSpd * 20
 
     elif held_keys["space"] and Camera.cameraOrbiter.z > -Map.largestSide * 10:
-      Camera.cameraOrbiter.z -= 1 * time.dt * Settings.cameraSpd * 9
+      Camera.cameraOrbiter.z -= 1 * time.dt * Settings.cameraSpd * 20
 
 #One Time actions
 def input(key):
