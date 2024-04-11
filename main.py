@@ -72,8 +72,8 @@ def LoadDesktop():
     app.after(6*timescale, lambda: desktop_background.place(x=0, y=0, relwidth=1, relheight=1))
     app.after(13*timescale, lambda: taskbar.place(x=0, y=default_height-taskbar_height, relwidth=1))
     app.after(20*timescale, lambda: taskbar_button.place(x=2, y=2))
-    app.after(35*timescale, lambda: time.place(x=default_width-70, y=0))
-    app.after(35*timescale, lambda: date.place(x=default_width-85, y=20))
+    app.after(35*timescale, lambda: time.place(x=default_width-78, y=0))
+    app.after(35*timescale, lambda: date.place(x=default_width-95, y=20))
 
     app.after(40*timescale, lambda: LoadDesktopIcons())
     app.after(50*timescale, lambda: UpdateTime())
@@ -282,8 +282,7 @@ def LoadMichaelApp():
 
         def LoadScene():
             Popen(["python3", "scubabot.py"])
-
-        
+     
         LoadOpenFileStage()
 
 if fastboot:

@@ -93,7 +93,7 @@ class Map():
                  parent=root_entity,
                  scale=Vec3(waterMinX/2 + waterBufferX, waterMinY/2 + waterBufferY, waterMinZ/2),
                  position = (waterMinX/2, -waterMinY/2, waterMinZ/2),
-                 alpha = .65)
+                 alpha = .8)
 
   outsideWater = Entity(parent = root_entity,
                         model="quad",
@@ -434,7 +434,7 @@ class Algorithms():
     helper2.append(pront)
     
     helper.update({f"{pront}": item})
-  
+
   bestAlg = max(helper2)
   
   path = helper[f"{bestAlg}"]
@@ -537,10 +537,10 @@ def update():
 def cameraHandeler():
   if Settings.canMoveCamera:
     if held_keys["a"]:
-      Camera.cameraOrbiter.rotation_z += 1 * time.dt * Settings.cameraSpd * 7
+      Camera.cameraOrbiter.rotation_z += 1 * time.dt * Settings.cameraSpd * 2
 
     elif held_keys["d"]:
-      Camera.cameraOrbiter.rotation_z -= 1 * time.dt * Settings.cameraSpd * 7
+      Camera.cameraOrbiter.rotation_z -= 1 * time.dt * Settings.cameraSpd * 2
 
     elif held_keys["s"] and camera.rotation_x < 0:
       camera.rotation_x += 1 * time.dt * Settings.cameraSpd * 5
@@ -549,10 +549,10 @@ def cameraHandeler():
       camera.rotation_x -= 1 * time.dt * Settings.cameraSpd * 5
 
     elif held_keys["left control"] and Camera.cameraOrbiter.z < -10:
-      Camera.cameraOrbiter.z += 1 * time.dt * Settings.cameraSpd * 7
+      Camera.cameraOrbiter.z += 1 * time.dt * Settings.cameraSpd * 9
 
     elif held_keys["space"] and Camera.cameraOrbiter.z > -Map.largestSide * 10:
-      Camera.cameraOrbiter.z -= 1 * time.dt * Settings.cameraSpd * 7
+      Camera.cameraOrbiter.z -= 1 * time.dt * Settings.cameraSpd * 9
 
 #One Time actions
 def input(key):

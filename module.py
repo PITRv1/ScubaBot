@@ -92,7 +92,7 @@ def PlaceRow(attributes: list, values:list):
         value.configure(font=font, text_color=accentcolor, bg_color=framecolor, fg_color=framecolor)
 
         attribute.place(x=720, y=ypos, anchor="w")
-        value.place(x=1110, y=ypos, anchor="e")
+        value.place(x=1170, y=ypos, anchor="e")
 
 
 def SetSpeedAndTime(speed: str, speedtype: str, time: str, timetype: str):
